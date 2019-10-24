@@ -16,9 +16,12 @@ public abstract class user {
 	{
 		password = psswrd;
 	}
-	
-	public String getUsername()
-	{
+
+	public boolean login(String psswrd) {
+		return (psswrd == password);
+	}
+
+	public String getUsername() {
 		return username;
 	}
 	
@@ -41,4 +44,5 @@ public abstract class user {
 	{
 		ID = ID.randomUUID();
 	}
+
 }
