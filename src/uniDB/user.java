@@ -14,7 +14,7 @@ public abstract class user {
 	
 	public void setPassword(String psswrd)
 	{
-		password = psswrd;
+		this.password = psswrd;
 	}
 
 	public boolean login(String psswrd) {
@@ -22,7 +22,7 @@ public abstract class user {
 	}
 
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 	
 	public String setUsername(String username)
@@ -32,7 +32,7 @@ public abstract class user {
 	
 	public String getFullname()
 	{
-		return username;
+		return this.username;
 	}
 	
 	public String setFullname(String fullname)
@@ -42,7 +42,7 @@ public abstract class user {
 	
 	public void generateID()
 	{
-		ID = ID.randomUUID();
+		this.ID = ID.randomUUID();
 	}
 
 }
