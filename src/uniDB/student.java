@@ -3,7 +3,8 @@ package uniDB;
 public class student extends user {
 	private double GPA;
 	private String classification;
-
+	private String major;
+	
 	public student() {}
 	public student(String username, String password, String fullname)
 	{
@@ -27,6 +28,14 @@ public class student extends user {
 
 	public void setClassification(String classification) {
 		this.classification = classification;
+	}
+	
+	public String getMajor() {
+		return this.major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
 	}
 
 }
