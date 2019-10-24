@@ -1,32 +1,30 @@
 package uniDB;
 
-public class faculty extends user{
+public class faculty extends user {
 	private double salary;
 	private String title;
-	
-	public faculty() {}
-	public faculty(String username, String password)
-	{
+
+	public faculty() {
+	}
+
+	public faculty(String username, String password) {
 		this.username = username;
 		this.setPassword(password);
 	}
-	public double getSalary()
-	{
+
+	public double getSalary() {
 		return this.salary;
 	}
-	
-	public void setSalary(double salary)
-	{
+
+	public void setSalary(double salary) {
 		this.salary = salary;
 	}
-	
-	public String getTitle()
-	{
+
+	public String getTitle() {
 		return this.title;
 	}
-	
-	public void setTitle(String title)
-	{
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
