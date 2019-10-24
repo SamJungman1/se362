@@ -5,10 +5,12 @@ public class faculty extends user{
 	private String title;
 	
 	public faculty() {}
-	public faculty(String username, String password)
+	public faculty(String username, String password, String fullname)
 	{
-		this.username = username;
+		this.setUsername(username);
 		this.setPassword(password);
+		this.setFullname(fullname);
+		this.generateID();
 	}
 	public double getSalary()
 	{

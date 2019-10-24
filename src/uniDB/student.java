@@ -5,10 +5,12 @@ public class student extends user{
 	private String classification;
 	
 	public student() {}
-	public student(String username, String password)
+	public student(String username, String password, String fullname)
 	{
-		this.username = username;
+		this.setUsername(username);
 		this.setPassword(password);
+		this.setFullname(fullname);
+		this.generateID();
 	}
 	public double getGPA()
 	{
