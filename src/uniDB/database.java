@@ -20,12 +20,31 @@ public class database {
 		facultyTable.add(f);
 	}
 
-	public void removeStudent(student s) {
-		studentTable.remove(studentTable.indexOf(s));
+	public void removeStudent(String username) {
+		studentTable.remove(studentTable.indexOf(findStudent(username)));
 	}
 
-	public void removeFaculty(faculty f) {
-		facultyTable.remove(facultyTable.indexOf(f));
+	public void removeFaculty(String username) {
+		facultyTable.remove(facultyTable.indexOf(findFaculty(username)));		
 	}
-
+	
+	public faculty findFaculty(String username)
+	{
+		for(faculty f: facultyTable)
+		{
+			if(f.getUsername().equals(username))
+				return f;
+		}
+		return null;
+	}
+	
+	public student findStudent(String username)
+	{
+		for(student s: studentTable)
+		{
+			if(s.getUsername().equals(username))
+				return s;
+		}
+		return null;
+	}
 }
