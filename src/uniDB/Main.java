@@ -1,15 +1,14 @@
 package uniDB;
 
+import java.util.Scanner;
 
 public class Main {
 	
-	public static boolean loop = true;
+
 	
-	public static void main(String[] args) {		
-		
-		while (loop) {
-			
-		}
+	public static void main(String[] args) {				
+		cmdView cmd = new cmdView();
+		cmd.start();
 	}
 
 }

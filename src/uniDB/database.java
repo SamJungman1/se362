@@ -27,5 +27,7 @@ public class database {
 	public void removeFaculty(faculty f) {
 		facultyTable.remove(facultyTable.indexOf(f));
 	}
+	
+
 
 }
