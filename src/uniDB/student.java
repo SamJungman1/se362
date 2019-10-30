@@ -1,9 +1,12 @@
 package uniDB;
+import java.util.List;
+import java.util.ArrayList;
 
 public class student extends user {
 	private double GPA;
 	private String classification;
 	private String major;
+	private	List<String> attribute;
 	
 	public student() {}
 	public student(String username, String password, String fullname)
@@ -12,6 +15,7 @@ public class student extends user {
 		this.setPassword(password);
 		this.setFullname(fullname);
 		this.generateID();
+		attribute = new ArrayList<String>();
 	}
 
 	public double getGPA() {
@@ -37,5 +41,15 @@ public class student extends user {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-
+	
+	public void addAttribute(String attribut)
+	{
+		attribute.add(attribut);
+	}
+	
+	public void removeAttribute(String attribut)
+	{
+		attribute.remove(attribute.indexOf(attribut));
+	}
 }
+

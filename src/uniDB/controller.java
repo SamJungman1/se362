@@ -13,7 +13,7 @@ public class controller {
 		user user = database.findUser(username);
 		
 		if(user != null) {
-			return user.login(password);
+			return user.login(username, password);
 		} else {
 			return false;
 		}
