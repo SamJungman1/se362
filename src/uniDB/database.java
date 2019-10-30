@@ -6,10 +6,12 @@ import java.util.ArrayList;
 public class database {
 	public static List<student> studentTable;
 	public static List<faculty> facultyTable;
+	public static List<Major> majorTable;
 
 	public database() {
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
+		majorTable = new ArrayList<Major>();
 	}
 
 	public void addStudent(student s) {
@@ -20,6 +22,8 @@ public class database {
 		facultyTable.add(f);
 	}
 
+	public void addMajor(Major m){majorTable.add(m);}
+
 	public void removeStudent(String username) {
 		studentTable.remove(studentTable.indexOf(findStudent(username)));
 }
@@ -27,6 +31,8 @@ public class database {
 	public void removeFaculty(String username) {
 		facultyTable.remove(facultyTable.indexOf(findFaculty(username)));		
 	}
+
+	public void removeMajor(String id){majorTable.remove(majorTable.indexOf(findMajor(id)));}
 	
 	public faculty findFaculty(String username)
 	{
@@ -47,8 +53,12 @@ public class database {
 		}
 		return null;
 	}
-	
-
-
-
+	public Major findMajor(String id){
+		for(Major m: majorTable){
+			if(m.getId().equals(id)){
+				return m;
+			}
+		}
+		return null;
+	}
 }
