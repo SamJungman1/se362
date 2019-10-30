@@ -34,7 +34,7 @@ public class database {
 
 	public void removeMajor(String id){majorTable.remove(majorTable.indexOf(findMajor(id)));}
 	
-	public faculty findFaculty(String username)
+	public static faculty findFaculty(String username)
 	{
 		for(faculty f: facultyTable)
 		{
@@ -44,7 +44,7 @@ public class database {
 		return null;
 	}
 	
-	public student findStudent(String username)
+	public static student findStudent(String username)
 	{
 		for(student s: studentTable)
 		{
@@ -53,7 +53,7 @@ public class database {
 		}
 		return null;
 	}
-	public Major findMajor(String id){
+	public static Major findMajor(String id){
 		for(Major m: majorTable){
 			if(m.getId().equals(id)){
 				return m;
