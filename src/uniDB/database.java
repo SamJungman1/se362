@@ -29,7 +29,7 @@ public class database {
 
 	public void removeStudent(String username) {
 		studentTable.remove(studentTable.indexOf(findStudent(username)));
-	}
+}
 
 	public void removeFaculty(String username) {
 		facultyTable.remove(facultyTable.indexOf(findFaculty(username)));		
@@ -50,7 +50,8 @@ public class database {
 		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getId().toString().equals(id.toString()))
+			System.out.println(s.getId());
+			if(s.getId().equalsIgnoreCase(id))
 				temp = s;
 			break;
 		}
@@ -66,4 +67,8 @@ public class database {
 		}
 		return null;
 	}
+	
+
+
+
 }

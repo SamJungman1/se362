@@ -53,7 +53,7 @@ public abstract class user {
 	}
 
 	public String getId(){
-		return this.ID.toString();
+		return ID.toString();
 	}
 	
 	public void generateID()

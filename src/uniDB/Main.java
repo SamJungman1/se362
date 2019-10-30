@@ -1,15 +1,12 @@
 package uniDB;
 
-import java.io.Console;
+import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {		
-//		Console c = System.console();
-//		String login = c.readLine("Enter your info: ");
-		database db = new database();
+	public static void main(String[] args) {
 		cmdView cmd = new cmdView();
-		cmd.processCommands();
+		cmd.start();
 	}
 
 }

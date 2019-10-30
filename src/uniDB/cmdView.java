@@ -3,17 +3,40 @@ package uniDB;
 import java.util.Scanner;
 
 public class cmdView {
-    Controller controller = new Controller();
 
-    public void processCommands(){
-        while(true) {
-            Scanner scan = new Scanner(System.in);
-            display("enter command:");
-            display(controller.parseCommand(scan.nextLine()));
-        }
-    }
+	private Scanner scanner;
+	private boolean loggedIn;
+	private Controller controller;
 
-    public void display(Object message) {
-        System.out.println(message);
-    }
+	public cmdView() {
+		scanner = new Scanner(System.in);
+		loggedIn = false;
+		controller = new Controller();
+	}
+
+	public void start() {
+
+		while(!loggedIn) {
+			loggedIn = login();
+		}
+		if(loggedIn)
+			while(true){
+				System.out.println("enter command:");
+				System.out.println(controller.parseCommand(scanner.nextLine()));
+			}
+	}
+
+	private boolean login() {
+		System.out.print("Enter Username: ");
+		// Take username
+		String username =  scanner.nextLine();
+
+		System.out.print("Enter Password: ");
+		// Get password from user
+		String password = scanner.nextLine();
+
+		return true;
+		//return controller.login(username, password);
+	}
+
 }

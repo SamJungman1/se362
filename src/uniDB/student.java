@@ -8,8 +8,7 @@ public class student extends user {
 	private double GPA;
 	private String classification;
 	private String major;
-	private	List<String> attribute;
-
+	private String id;
 	private Map<String, String> att;
 
 	public student() {}
@@ -19,7 +18,6 @@ public class student extends user {
 		this.setPassword(password);
 		this.setFullname(fullname);
 		this.generateID();
-		attribute = new ArrayList<String>();
 		att = new HashMap<>();
 	}
 
@@ -65,7 +63,12 @@ public class student extends user {
 
 	@Override
 	public String toString(){
-		return getFullname() + "\n" + getId() + "\n" + getUsername() + "\n" + getClassification() + "\n" + getMajor() + "\n";
+		String toReturn = null;
+		toReturn += getFullname() + "\n" + getId() + "\n" + getUsername() + "\n" + getClassification() + "\n" + getMajor() + "\n";
+		for(String key: att.keySet()){
+			toReturn += key.toString() + ":" + att.get(key);
+		}
+		return toReturn;
 	}
 }
 
