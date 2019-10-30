@@ -1,21 +1,28 @@
 package uniDB;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 
 public class database {
 	public static List<student> studentTable;
 	public static List<faculty> facultyTable;
+	public static List<Group> groupTable;
 	public static List<Major> majorTable;
 
 	public database() {
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
+		groupTable = new ArrayList<Group>();
 		majorTable = new ArrayList<Major>();
 	}
 
-	public void addStudent(student s) {
+	public static void addStudent(student s) {
 		studentTable.add(s);
+	}
+
+	public static void addGroup(Group g){
+		groupTable.add(g);
 	}
 
 	public void addFaculty(faculty f) {
@@ -44,16 +51,29 @@ public class database {
 		return null;
 	}
 	
-	public static student findStudent(String username)
+	public static student findStudent(String id)
 	{
+		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getUsername().equals(username))
-				return s;
+			System.out.println(s.getId());
+			if(s.getId().equalsIgnoreCase(id))
+				temp = s;
+			break;
+		}
+		return temp;
+	}
+
+	public static Group findGroup(String id)
+	{
+		for(Group g: groupTable)
+		{
+			if(g.getGroupName().equals(id))
+				return g;
 		}
 		return null;
 	}
-	public static Major findMajor(String id){
+	public Major findMajor(String id){
 		for(Major m: majorTable){
 			if(m.getId().equals(id)){
 				return m;

@@ -51,6 +51,10 @@ public abstract class user {
 	{
 		return this.fullname = fullname;
 	}
+
+	public String getId(){
+		return ID.toString();
+	}
 	
 	public void generateID()
 	{

@@ -9,28 +9,14 @@ import java.util.regex.Pattern;
 public class Controller {
 
     private List<String> commands;
-    private database db;
 
     public Controller(){
-        db = new database();
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
         commands.add("add student");
         commands.add("create group");
         commands.add("edit group");
-    }
-
-    protected boolean login(String username, String password) {
-
-        user user = null;
-       // user user = database.findUser(username);
-
-        if(user != null) {
-            return user.login(username, password);
-        } else {
-            return false;
-        }
     }
 
     public Object parseCommand(String command){
@@ -51,13 +37,11 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
-                    //TODO:
                 case "remove student:":
 
                     break;
                 case"add student:":
                     return createStudent(command);
-                    //TODO:
                 case"edit student:":
                     break;
                 case"edit group:":
@@ -116,10 +100,10 @@ public class Controller {
            return null;
         }
         for (String studentId : com.split(",")) {
-            if (database.findStudent(studentId.trim()) == null) {
+            if (database.findStudent(studentId) == null) {
                 //student not found
-                //group = null;
-               // return group;
+                group = null;
+                return group;
             }
             else{
                 found.add(database.findStudent(studentId));
