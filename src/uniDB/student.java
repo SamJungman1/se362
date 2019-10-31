@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.LinkedList;
 
 public class student extends user {
 	private double GPA;
@@ -19,8 +20,16 @@ public class student extends user {
 		this.setFullname(fullname);
 		this.generateID();
 		att = new HashMap<>();
+		id = this.ID.toString();
+		this.inbox = new LinkedList();
+
 	}
 
+	public String getId()
+	{
+		return this.id;
+	}
+	
 	public double getGPA() {
 		return this.GPA;
 	}
