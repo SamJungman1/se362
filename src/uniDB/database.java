@@ -51,12 +51,12 @@ public class database {
 		return null;
 	}
 	
-	public static student findStudent(String id)
+	public static student findStudent(String username)
 	{
 		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getId().equalsIgnoreCase(id))
+			if(s.getUsername().equals(username))
 				temp = s;
 			break;
 		}
@@ -80,4 +80,40 @@ public class database {
 		}
 		return null;
 	}
+	
+	public String getMsgsStudent(String username)
+	{
+		String s = new String();
+		String[] arr = findStudent(username).flushInbox();
+		for(String a: arr)
+		{
+			s += a;
+			s += "\n";
+		}
+		return s;
+	}
+	
+	public String getMsgsFaculty(String username)
+	{
+		String s = new String();
+		String[] arr = findFaculty(username).flushInbox();
+		for(String a: arr)
+		{
+			s += a;
+			s += "\n";
+		}
+		return s;
+	}
+	
+	public void msgStudent(String username, String msg)
+	{
+		findStudent(username).addMessage(msg);
+	}
+	
+	public void msgFacutly(String username, String msg)
+	{
+		findFaculty(username).addMessage(msg);
+	}
+	
+	
 }

@@ -1,5 +1,5 @@
 package uniDB;
-
+import java.util.LinkedList;
 public class faculty extends user {
 	private double salary;
 	private String title;
@@ -11,6 +11,7 @@ public class faculty extends user {
 		this.setPassword(password);
 		this.setFullname(fullname);
 		this.generateID();
+		this.inbox = new LinkedList();
 	}
 
 	public double getSalary() {

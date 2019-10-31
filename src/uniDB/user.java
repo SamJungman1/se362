@@ -1,6 +1,8 @@
 package uniDB;
 
 import java.util.UUID;
+import java.util.Queue;
+
 
 /**
  * 
@@ -11,7 +13,9 @@ public abstract class user {
 	public String username;
 	private String password;
 	public String fullname;
-	private UUID ID;
+
+	protected UUID ID;
+	protected Queue<String> inbox;
 
 	/**
 	 * 
@@ -56,4 +60,23 @@ public abstract class user {
 		this.ID = ID.randomUUID();
 	}
 
+	public String[] flushInbox()
+	{	
+		String[] arr = new String[inbox.size()];
+		if(inbox.size() == 0)
+		{
+			arr[0] = "Inbox is empty";
+			return arr;
+		}
+		for(int i = 0; i < inbox.size(); i++)
+		{
+			arr[i] = inbox.poll();
+		}
+		return arr;
+	}
+	
+	public void addMessage(String message)
+	{
+		inbox.add(message);
+	}
 }
