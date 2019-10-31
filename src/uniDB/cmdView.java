@@ -35,8 +35,8 @@ public class cmdView {
 		// Get password from user
 		String password = scanner.nextLine();
 
-		return true;
-		//return controller.login(username, password);
+		//return true;
+		return controller.login(username, password);
 	}
 
 }

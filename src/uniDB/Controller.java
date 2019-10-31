@@ -9,14 +9,56 @@ import java.util.regex.Pattern;
 public class Controller {
 
     private List<String> commands;
+    private database db;
+    public String user;
 
     public Controller(){
+        db = new database();
+        db.addFaculty(new faculty("admin", "admin", "admin"));
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
         commands.add("add student");
         commands.add("create group");
         commands.add("edit group");
+        commands.add("pay tuition");
+    }
+
+    protected boolean login(String username, String password) {
+
+        //user user = null;
+        student stu = db.findStudent(username);
+        faculty fac = db.findFaculty(username);
+        boolean login = false;
+        
+        if(stu != null) {
+        	user = username;
+        	login = stu.login(username, password);
+        	if(login) {
+        		return login;
+        	} else {
+        		System.out.println("Login Failed, invalid credentials");
+        		return false;
+        	}
+        } else if(fac != null) {
+        	user = username;
+        	login = fac.login(username, password);
+        	if(login) {
+        		return login;
+        	} else {
+        		System.out.println("Login Failed, invalid credentials");
+        		return false;
+        	}
+        } else {
+        	System.out.println("Login Failed, invalid credentials");
+        	return false;
+        }
+//        if(user != null) {
+//            return user.login(username, password);
+//        } else {
+//        	System.out.println("Login Failed, invalid credentials");
+//            return false;
+//        }
     }
 
     public Object parseCommand(String command){
@@ -37,11 +79,13 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                    //TODO:
                 case "remove student:":
 
                     break;
                 case"add student:":
                     return createStudent(command);
+                    //TODO:
                 case"edit student:":
                     break;
                 case"edit group:":
@@ -59,6 +103,9 @@ public class Controller {
                         return "successfully added group";
                     }
                     else {return "one or more invalid id's, please retry";}
+                    
+                case "pay tuition":
+                	return 
             }
         }
 
@@ -100,10 +147,10 @@ public class Controller {
            return null;
         }
         for (String studentId : com.split(",")) {
-            if (database.findStudent(studentId) == null) {
+            if (database.findStudent(studentId.trim()) == null) {
                 //student not found
-                group = null;
-                return group;
+                //group = null;
+               // return group;
             }
             else{
                 found.add(database.findStudent(studentId));
