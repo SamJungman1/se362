@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Scanner;
 
 public class student extends user {
 	private double GPA;
@@ -11,8 +12,9 @@ public class student extends user {
 	private String major;
 	private String id;
 	private Map<String, String> att;
-	private int tuition;
-	private String payentSchedule;
+	private final int TUITION = 20000;
+	private int totalTuition;
+	private int monthlyTuition;
 
 	public student() {
 	}
@@ -23,7 +25,8 @@ public class student extends user {
 		this.setFullname(fullname);
 		this.generateID();
 		att = new HashMap<>();
-		tuition = 20000;
+		totalTuition = TUITION;
+		monthlyTuition = totalTuition / 12;
 	}
 
 	public double getGPA() {
@@ -52,10 +55,9 @@ public class student extends user {
 
 	public void addAttribute(String attribut, String value) {
 		att.put(attribut, value);
-<<<<<<< HEAD
+
 		// attribute.add(attribut);
-=======
->>>>>>> 7d5a594542e2b715d75f2ab680b0f4faa3e74753
+
 	}
 
 	public void editAttribute(String attribut, String value) {
@@ -64,14 +66,40 @@ public class student extends user {
 
 	public void removeAttribute(String attribut) {
 		att.remove(attribut);
-<<<<<<< HEAD
+
 		// attribute.remove(attribute.indexOf(attribut));
 	}
 	
-	public void payTuition() {
+	public void payTuition(String command) {
+		int amount = Integer.parseInt(command);
+		Scanner scanner = new Scanner(System.in);
+		while(true) {
+			System.out.print("Enter Credit Card Number XXXXXXXXXXX:");
+			String num = scanner.nextLine();
+			
+			System.out.print("Enter Expiration date MM/YY: ");
+			String exp = scanner.nextLine();
+			
+			System.out.print("Enter CCV XXX: ");
+			String ccv = scanner.nextLine();
+			
+			if(num.length() != 16 || exp.length() != 5 || ccv.length() != 3) {
+				System.out.println("Invalid information");
+			} else {
+				break;
+			}
+		}
 		
-=======
->>>>>>> 7d5a594542e2b715d75f2ab680b0f4faa3e74753
+		if(amount > monthlyTuition) {
+			amount -= monthlyTuition;
+			totalTuition -= amount;
+		} else {
+			monthlyTuition -= amount;
+		}
+		
+		System.out.println("Tuition Remaining: " + totalTuition);
+		System.out.println("Montly Tuition Remaining: "+ monthlyTuition);
+
 	}
 
 	@Override
