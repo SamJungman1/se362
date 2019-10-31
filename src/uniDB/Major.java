@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Major {
-/*
+
     private String ID;              // exp:  "ComS "
     private List<faculty> Advisers;
     private List<Class> Classes;
@@ -16,7 +16,7 @@ public class Major {
     }
     public class Class {                   // Class that is added to Major
 
-        private String ID;          // exp:  "ComS 362"
+        private String ID;          // exp:  "362"
         private faculty Instructor;
         private List<student> Attendance;
 
@@ -28,7 +28,16 @@ public class Major {
         public String getID() {
             return this.ID;
         }
-    } // end class Class                              end class Class
+
+        public student getStudent(String username){
+            for(student stu: this.Attendance){
+                if(stu.getUsername().equals(username)){
+                    return stu;
+                }
+            }
+            return null;
+        }
+    }// end class Class                              end class Class
 
     public String getId() {
         return this.ID;
@@ -48,7 +57,7 @@ public class Major {
         return null;
     } //  end isAdviser
     public boolean addAdviser(String username) {
-        faculty adv = database.facultyTable.findFaculty(username);
+        faculty adv = database.findFaculty(username);
         if(adv != null) {
             this.Advisers.add(adv);
             return true;
@@ -98,7 +107,7 @@ public class Major {
     }
     public boolean addInstructor(String id, String username) {
         Class cl = this.findClass(id);
-        faculty fl = database.facultyTable.findFaculty(username);
+        faculty fl = database.findFaculty(username);
         if(cl != null && fl != null) {
             cl.Instructor = fl;
             return true;
@@ -126,7 +135,7 @@ public class Major {
     }
     public boolean addStudent(String id, String username) {
         Class cl = this.findClass(id);
-        student st = database.studentTable.findStudent(username);
+        student st = database.findStudent(username);
         if(cl != null && st != null) {
             cl.Attendance.add(st);
             return true;
@@ -135,8 +144,11 @@ public class Major {
     }
     public boolean removeStudent(String id, String username) {
         Class cl = this.findClass(id);
-        student st = cl.
-        if(cl != null) {cl.Attendance.remove(index)
+        student st = cl.getStudent(username);
+        if(st != null){
+            cl.Attendance.remove(st);
+            return true;
         }
-*/
+        return false;
     }
+}
