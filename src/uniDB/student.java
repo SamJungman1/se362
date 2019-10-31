@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-<<<<<<< HEAD
 import java.util.Scanner;
-=======
 import java.util.LinkedList;
->>>>>>> 86d2b8d8465913fced6a3b6fcc6886b6f25ae9a4
+
 
 public class student extends user {
 	private double GPA;
@@ -29,14 +27,10 @@ public class student extends user {
 		this.setFullname(fullname);
 		this.generateID();
 		att = new HashMap<>();
-<<<<<<< HEAD
 		totalTuition = TUITION;
 		monthlyTuition = totalTuition / 12;
-=======
 		id = this.ID.toString();
 		this.inbox = new LinkedList();
-		tuition = 20000;
->>>>>>> 86d2b8d8465913fced6a3b6fcc6886b6f25ae9a4
 	}
 
 	public String getId()
@@ -70,12 +64,6 @@ public class student extends user {
 
 	public void addAttribute(String attribut, String value) {
 		att.put(attribut, value);
-<<<<<<< HEAD
-
-		// attribute.add(attribut);
-
-=======
->>>>>>> 86d2b8d8465913fced6a3b6fcc6886b6f25ae9a4
 	}
 
 	public void editAttribute(String attribut, String value) {
@@ -85,10 +73,6 @@ public class student extends user {
 	public void removeAttribute(String attribut) {
 		att.remove(attribut);
 
-<<<<<<< HEAD
-		// attribute.remove(attribute.indexOf(attribut));
-=======
->>>>>>> 86d2b8d8465913fced6a3b6fcc6886b6f25ae9a4
 	}
 	
 	public void payTuition(String command) {
@@ -111,7 +95,6 @@ public class student extends user {
 			}
 		}
 		
-<<<<<<< HEAD
 		if(amount > monthlyTuition) {
 			amount -= monthlyTuition;
 			totalTuition -= amount;
@@ -121,8 +104,7 @@ public class student extends user {
 		
 		System.out.println("Tuition Remaining: " + totalTuition);
 		System.out.println("Montly Tuition Remaining: "+ monthlyTuition);
-=======
->>>>>>> 86d2b8d8465913fced6a3b6fcc6886b6f25ae9a4
+
 
 	}
 
