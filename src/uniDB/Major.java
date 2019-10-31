@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Major {
-
+/*
     private String ID;              // exp:  "ComS "
     private List<faculty> Advisers;
     private List<Class> Classes;
@@ -138,5 +138,5 @@ public class Major {
         student st = cl.
         if(cl != null) {cl.Attendance.remove(index)
         }
-
+*/
     }
