@@ -48,7 +48,6 @@ public class student extends user {
 	public void addAttribute(String attribut, String value)
 	{
 		att.put(attribut, value);
-		//attribute.add(attribut);
 	}
 
 	public void editAttribute(String attribut, String value) {
@@ -58,7 +57,6 @@ public class student extends user {
 	public void removeAttribute(String attribut)
 	{
 		att.remove(attribut);
-		//attribute.remove(attribute.indexOf(attribut));
 	}
 
 	@Override
