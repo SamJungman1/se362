@@ -56,7 +56,6 @@ public class database {
 		student temp = null;
 		for(student s: studentTable)
 		{
-			System.out.println(s.getId());
 			if(s.getId().equalsIgnoreCase(id))
 				temp = s;
 			break;
@@ -75,9 +74,9 @@ public class database {
 	}
 	public Major findMajor(String id){
 		for(Major m: majorTable){
-			if(m.getId().equals(id)){
-				return m;
-			}
+			//if(m.getId().equals(id)){
+			//	return m;
+			//}
 		}
 		return null;
 	}

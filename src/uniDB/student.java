@@ -52,7 +52,10 @@ public class student extends user {
 
 	public void addAttribute(String attribut, String value) {
 		att.put(attribut, value);
+<<<<<<< HEAD
 		// attribute.add(attribut);
+=======
+>>>>>>> 7d5a594542e2b715d75f2ab680b0f4faa3e74753
 	}
 
 	public void editAttribute(String attribut, String value) {
@@ -61,11 +64,14 @@ public class student extends user {
 
 	public void removeAttribute(String attribut) {
 		att.remove(attribut);
+<<<<<<< HEAD
 		// attribute.remove(attribute.indexOf(attribut));
 	}
 	
 	public void payTuition() {
 		
+=======
+>>>>>>> 7d5a594542e2b715d75f2ab680b0f4faa3e74753
 	}
 
 	@Override
