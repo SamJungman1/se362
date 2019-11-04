@@ -64,7 +64,6 @@ public class database {
 		return temp;
 		}
 
-
 	public static Group findGroup(String id)
 	{
 		for(Group g: groupTable)
@@ -94,7 +93,7 @@ public class database {
 		}
 		return s;
 	}
-
+	
 	public String getMsgsFaculty(String username)
 	{
 		String s = new String();
