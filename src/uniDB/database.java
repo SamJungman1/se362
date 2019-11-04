@@ -56,12 +56,14 @@ public class database {
 		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getUsername().equals(username))
+			if(s.getUsername().trim().equals(username.trim())) {
 				temp = s;
 				break;
+				}
 			}
-        return temp;
+		return temp;
 		}
+
 
 	public static Group findGroup(String id)
 	{

@@ -120,7 +120,6 @@ public class Controller {
                     break;
                 case"add student:":
                     return createStudent(command);
-                    //TODO:
                 case"edit student:":
                     if(findStudents(command) != null){
                         editField(command);
@@ -128,6 +127,7 @@ public class Controller {
                     else{
                         return "student not found, please try again";
                     }
+                    return "successfully updated student";
                 case"edit group:":
                     if(findGroup(command) != null) {
                         //edit group:groupName field fieldValue
