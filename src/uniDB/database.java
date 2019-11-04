@@ -60,9 +60,8 @@ public class database {
 				temp = s;
 				break;
 			}
+        return temp;
 		}
-		return temp;
-	}
 
 	public static Group findGroup(String id)
 	{
