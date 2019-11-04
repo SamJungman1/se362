@@ -53,14 +53,12 @@ public class database {
 	
 	public static student findStudent(String username)
 	{
-		student temp = null;
-		for(student s: studentTable)
-		{
-			if(s.getUsername().equals(username))
-				temp = s;
-			break;
+		for(student s: studentTable) {
+			if (s.getUsername().equals(username)) {
+				return s;
+			}
 		}
-		return temp;
+		return null;
 	}
 
 	public static Group findGroup(String id)
