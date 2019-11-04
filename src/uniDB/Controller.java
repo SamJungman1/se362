@@ -18,13 +18,14 @@ public class Controller {
      * stored instance of available commands
      */
     private List<String> commands;
-    /**
-     * stored instance of the database used when calling database object methods
-     */
     private database db;
+    public String user;      
+
 
     public Controller(){
         db = new database();
+        db.addFaculty(new faculty("admin", "admin", "admin"));
+        db.addStudent(new student("test", "test", "test"));
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
@@ -32,7 +33,13 @@ public class Controller {
         commands.add("create group");
         commands.add("edit group");
         commands.add("edit student");
+        commands.add("pay tuition");
+        commands.add("make major");
+        commands.add("add adviser");
+        commands.add("make class");
+        commands.add("change major id");
     }
+
 
     /**
      * This method is used to verify that given a username and password there exists a
@@ -43,14 +50,39 @@ public class Controller {
      */
     protected boolean login(String username, String password) {
 
-        user user = null;
-       // user user = database.findUser(username);
-
-        if(user != null) {
-            return user.login(username, password);
+        //user user = null;
+        student stu = db.findStudent(username);
+        faculty fac = db.findFaculty(username);
+        boolean login = false;
+        
+        if(stu != null) {
+        	user = username;
+        	login = stu.login(username, password);
+        	if(login) {
+        		return login;
+        	} else {
+        		System.out.println("Login Failed, invalid credentials");
+        		return false;
+        	}
+        } else if(fac != null) {
+        	user = username;
+        	login = fac.login(username, password);
+        	if(login) {
+        		return login;
+        	} else {
+        		System.out.println("Login Failed, invalid credentials");
+        		return false;
+        	}
         } else {
-            return false;
+        	System.out.println("Login Failed, invalid credentials");
+        	return false;
         }
+//        if(user != null) {
+//            return user.login(username, password);
+//        } else {
+//        	System.out.println("Login Failed, invalid credentials");
+//            return false;
+//        }
     }
 
     /**
@@ -111,9 +143,48 @@ public class Controller {
                         return "successfully added group";
                     }
                     else {return "one or more invalid id's, please retry";}
+                    
+                case "pay tuition:":
+                	student stu = db.findStudent(user);
+                	stu.payTuition(command.substring(11));
+                	
+                case "msg student:":
+                	db.msgStudent(command.substring(11), "What's crackin");
+                	
+                case "msg faculty:":
+                	db.msgStudent(command.substring(11), "What's crackin");
+                	
+                case "getMsg student:":
+                	db.getMsgsStudent(command.substring(14));
+                	
+                case "getMsg faculty:":
+                	db.getMsgsStudent(command.substring(14));
+                case "make major:":
+                    Major newmajor = new Major(command.substring(11).trim());
+                    db.addMajor(newmajor);
+                    return "major "+command.substring(11)+" has been made.";
+                case "add adviser:": // major = args[0]     faculty = args[1]
+                    String aa = command.replaceFirst("add adviser:", "");
+                    String[] aargs = aa.trim().split(" ");
+                    faculty adv = db.findFaculty(aargs[1]); Major major1 = db.findMajor(aargs[0]);
+                    if(major1 == null){return aargs[0]+" is an invalid major id. Please use a valid id.";}
+                        if(adv == null){return aargs[1]+" is an invalid username. Please use a valid username.";}
+                            if(major1.addAdviser(aargs[1])){return aargs[1]+" has been added as adviser to "+aargs[0]+" major.";}
+                            else{return "addition of "+aargs[1]+" to adviser list has failed.";}
+                case "make class:":
+                    String mc = command.replaceFirst("make class:", "");
+                    String[] margs = mc.trim().split(" ");  // [0] major  [1] new class
+                    Major ma = db.findMajor(margs[0]);
+                    if (ma == null) {return"major entered is invalid";}
+                    if(ma.makeClass(margs[1])){return "class "+margs[1]+" has been created";}
+                    else{return "Failed to make class";}
+                case "change major id:":
+                    String cmi = command.replaceFirst("change major id:", "");
+                    String[] cargs = cmi.trim().split(" ");  //[0] major old id  [1] major new id
+                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
+                    ma.changeID(cargs[1]); return "major id has been changed to "+cargs[1];
             }
         }
-
         return "invalid command";
     }
 
