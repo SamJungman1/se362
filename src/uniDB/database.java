@@ -74,9 +74,9 @@ public class database {
 	}
 	public Major findMajor(String id){
 		for(Major m: majorTable){
-			//if(m.getId().equals(id)){
-			//	return m;
-			//}
+			if(m.getId().equals(id)){
+				return m;
+			}
 		}
 		return null;
 	}

@@ -34,6 +34,10 @@ public class Controller {
         commands.add("edit group");
         commands.add("edit student");
         commands.add("pay tuition");
+        commands.add("make major");
+        commands.add("add adviser");
+        commands.add("make class");
+        commands.add("change major id");
     }
 
 
@@ -150,10 +154,33 @@ public class Controller {
                 	
                 case "getMsg faculty:":
                 	db.getMsgsStudent(command.substring(14));
+                case "make major:":
+                    Major newmajor = new Major(command.substring(11).trim());
+                    db.addMajor(newmajor);
+                    return "major "+command.substring(11)+" has been made.";
+                case "add adviser:": // major = args[0]     faculty = args[1]
+                    String aa = command.replaceFirst("add adviser:", "");
+                    String[] aargs = aa.trim().split(" ");
+                    faculty adv = db.findFaculty(aargs[1]); Major major1 = db.findMajor(aargs[0]);
+                    if(major1 == null){return aargs[0]+" is an invalid major id. Please use a valid id.";}
+                        if(adv == null){return aargs[1]+" is an invalid username. Please use a valid username.";}
+                            if(major1.addAdviser(aargs[1])){return aargs[1]+" has been added as adviser to "+aargs[0]+" major.";}
+                            else{return "addition of "+aargs[1]+" to adviser list has failed.";}
+                case "make class:":
+                    String mc = command.replaceFirst("make class:", "");
+                    String[] margs = mc.trim().split(" ");  // [0] major  [1] new class
+                    Major ma = db.findMajor(margs[0]);
+                    if (ma == null) {return"major entered is invalid";}
+                    if(ma.makeClass(margs[1])){return "class "+margs[1]+" has been created";}
+                    else{return "Failed to make class";}
+                case "change major id:":
+                    String cmi = command.replaceFirst("change major id:", "");
+                    String[] cargs = cmi.trim().split(" ");  //[0] major old id  [1] major new id
+                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
+                    ma.changeID(cargs[1]); return "major id has been changed to "+cargs[1];
             }
         }
         return "invalid command";
-        		
     }
 
     /**
