@@ -44,7 +44,7 @@ public abstract class user {
 	
 	public String getFullname()
 	{
-		return this.username;
+		return this.fullname;
 	}
 	
 	public String setFullname(String fullname)

@@ -61,11 +61,12 @@ public class student extends user {
 
 	@Override
 	public String toString(){
-		String toReturn = null;
+		String toReturn = "--------------------\n";
 		toReturn += getFullname() + "\n" + getId() + "\n" + getUsername() + "\n" + getClassification() + "\n" + getMajor() + "\n";
 		for(String key: att.keySet()){
-			toReturn += key.toString() + ":" + att.get(key);
+			toReturn += key.toString() + ":" + att.get(key) + "\n";
 		}
+		toReturn += "--------------------\n";
 		return toReturn;
 	}
 }

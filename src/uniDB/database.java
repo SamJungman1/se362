@@ -56,9 +56,10 @@ public class database {
 		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getId().equalsIgnoreCase(id))
+			if(s.getId().trim().equalsIgnoreCase(id.trim())) {
 				temp = s;
-			break;
+				break;
+			}
 		}
 		return temp;
 	}
