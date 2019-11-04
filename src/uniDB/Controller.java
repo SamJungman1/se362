@@ -122,12 +122,11 @@ public class Controller {
                     return createStudent(command);
                 case"edit student:":
                     if(findStudents(command) != null){
-                        editField(command);
+                        return editField(command);
                     }
                     else{
                         return "student not found, please try again";
                     }
-                    return "successfully updated student";
                 case"edit group:":
                     if(findGroup(command) != null) {
                         //edit group:groupName field fieldValue
@@ -193,7 +192,7 @@ public class Controller {
      * and the editAttribute method of the student object
      * @param command
      */
-    public void editField(String command){
+    public String editField(String command){
         String name = null;
         String com = command.replaceFirst("(.*?)edit student\\:", "");
         Pattern pattern = Pattern.compile("([^\\s]+)");
@@ -204,8 +203,19 @@ public class Controller {
         }
         String[] args = com.split(" ");
         if(name != null && findStudents(name) != null) {
-            findStudents(name).get(0).editAttribute(args[1],args[2]);
+            if(args[1].equalsIgnoreCase("Major")){
+                if(db.findMajor(args[2]) != null) {
+                    findStudents(name).get(0).setMajor(args[2]);
+                }
+                else{
+                    return "Major does not exist";
+                }
+            }
+            else {
+                findStudents(name).get(0).editAttribute(args[1], args[2]);
+            }
         }
+        return "successfully updated student";
     }
 
 
