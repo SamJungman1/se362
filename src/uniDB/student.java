@@ -111,7 +111,7 @@ public class student extends user {
 	@Override
 	public String toString(){
 		String toReturn = "--------------------\n";
-		toReturn += getFullname() + "\n" + getId() + "\n" + getUsername() + "\n" + getClassification() + "\n" + getMajor() + "\n";
+		toReturn += "Name:" + getFullname() + "\nId:" + getId() + "\nUsername:" + getUsername() + "\nGPA:" + getGPA() + "\nClassification:" + getClassification() + "\nMajor:" + getMajor() + "\n";
 		for(String key: att.keySet()){
 			toReturn += key.toString() + ":" + att.get(key) + "\n";
 		}

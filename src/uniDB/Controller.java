@@ -121,12 +121,7 @@ public class Controller {
                 case"add student:":
                     return createStudent(command);
                 case"edit student:":
-                    if(findStudents(command) != null){
                         return editField(command);
-                    }
-                    else{
-                        return "student not found, please try again";
-                    }
                 case"edit group:":
                     if(findGroup(command) != null) {
                         //edit group:groupName field fieldValue
@@ -202,7 +197,7 @@ public class Controller {
             com = com.replace(name, "");
         }
         String[] args = com.split(" ");
-        if(name != null && findStudents(name) != null) {
+        if(name != null && !findStudents(name).isEmpty()) {
             if(args[1].equalsIgnoreCase("Major")){
                 if(db.findMajor(args[2]) != null) {
                     findStudents(name).get(0).setMajor(args[2]);
@@ -210,6 +205,9 @@ public class Controller {
                 else{
                     return "Major does not exist";
                 }
+            }
+            else if(args[1].equalsIgnoreCase("gpa")){
+                findStudents(name).get(0).setGPA(Double.parseDouble(args[2]));
             }
             else {
                 findStudents(name).get(0).editAttribute(args[1], args[2]);
@@ -307,7 +305,7 @@ public class Controller {
     public List<student> findStudents(String command){
         //remove eveything before command colon
         List<student> found = new ArrayList<>();
-        String com = command.replaceFirst("(.*?)get student\\:", "");
+        String com = command.replaceFirst("(.*?)\\:", "");
         if(com.contains(",")) {
             for (String studentId : com.split(",")) {
                 if (database.findStudent(studentId) == null) {
@@ -320,9 +318,10 @@ public class Controller {
             }
         }
             else {
-                found.add(database.findStudent(com));
-                return found;
-            }
+                    found.add(database.findStudent(com));
+                    return found;
+                }
+
         return found;
     }
 
