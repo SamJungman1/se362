@@ -35,7 +35,14 @@ public class Major {
 			this.Instructor = null;
 			this.Attendance = new ArrayList<student>();
 		}
-
+		public boolean addstudenttoclass(student stu){
+			this.Attendance.add(stu);
+			return true;
+		}
+		public boolean changeclassinstructor(faculty ins){
+			this.Instructor = ins;
+			return true;
+		}
 		/**
 		 * Method return the String Identification for this Class.
 		 * @return The String ID of this Class
@@ -56,6 +63,10 @@ public class Major {
 				}
 			}
 			return null;
+		}
+		public boolean changeClassId(String newid){
+			this.ID = newid;
+			return true;
 		}
 	} // end class Class end class Class
 
@@ -155,7 +166,7 @@ public class Major {
 	 */
 	public boolean makeClass(String id) { // exmple of id = "362"
 		if (this.findClass(id) == null) {
-			Class newclass = new Class(this.ID + id);
+			Class newclass = new Class(id);
 			this.Classes.add(newclass);
 			return true;
 		}

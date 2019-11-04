@@ -38,6 +38,10 @@ public class Controller {
         commands.add("add adviser");
         commands.add("make class");
         commands.add("change major id");
+        commands.add("remove adviser");
+        commands.add("change class id");
+        commands.add("change class instructor");
+        commands.add("add student to class");
     }
 
 
@@ -178,6 +182,33 @@ public class Controller {
                     String[] cargs = cmi.trim().split(" ");  //[0] major old id  [1] major new id
                     ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
                     ma.changeID(cargs[1]); return "major id has been changed to "+cargs[1];
+                case "remove adviser:":
+                    cmi = command.replaceFirst("remove adviser:", "");
+                    cargs = cmi.trim().split(" "); //  [0] major  [1] username of adviser to be removed
+                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
+                    adv = db.findFaculty(cargs[1]); if(adv == null){return "username of adviser does not exist";}
+                    if(ma.removeAdvisor(cargs[1])){return "adviser "+cargs[1]+" has been removed";}
+                    else{return "failed to remove adviser";}
+                case "change class id:":
+                    cmi = command.replaceFirst("change class id:", "");
+                    String[] ccargs = cmi.trim().split(" "); // [0] major  [1] old class id [2] new class id
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    Major.Class cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    if(cl.changeClassId(ccargs[2])){return "class id has been changed to "+ccargs[2];}
+                case "change class instructor:":
+                    cmi = command.replaceFirst("change class instructor:", "");
+                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = faculty user name
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    adv = db.findFaculty(ccargs[2]); if(adv == null){return "instructor username is invalid";}
+                    if(cl.changeclassinstructor(adv)){return "class "+ccargs[2]+" instructor has been changed to "+ccargs[2];}
+                case "add student to class:":
+                    cmi = command.replaceFirst("add student to class:", "");
+                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = student username
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
+                    if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
             }
         }
         return "invalid command";
