@@ -19,7 +19,7 @@ public class Controller {
      */
     private List<String> commands;
     private database db;
-    public String user;      
+    public String user;
 
 
     public Controller(){
@@ -34,6 +34,14 @@ public class Controller {
         commands.add("edit group");
         commands.add("edit student");
         commands.add("pay tuition");
+        commands.add("make major");
+        commands.add("add adviser");
+        commands.add("make class");
+        commands.add("change major id");
+        commands.add("remove adviser");
+        commands.add("change class id");
+        commands.add("change class instructor");
+        commands.add("add student to class");
     }
 
 
@@ -50,7 +58,7 @@ public class Controller {
         student stu = db.findStudent(username);
         faculty fac = db.findFaculty(username);
         boolean login = false;
-        
+
         if(stu != null) {
         	user = username;
         	login = stu.login(username, password);
@@ -94,10 +102,15 @@ public class Controller {
             MatchResult result = match.toMatchResult();
             switch(match.group(0)) {
                 case "get student:":
-                    String studentsFound = null;
+                    String studentsFound = "";
                     for(student x: findStudents(command))
                     {
-                        studentsFound += x.toString() + "\n";
+                        if(x == null){
+                            studentsFound += "failed to find student";
+                        }
+                        else {
+                            studentsFound += x.toString() + "\n";
+                        }
                     }
                     if(studentsFound != null) {
                         return studentsFound;
@@ -111,14 +124,8 @@ public class Controller {
                     break;
                 case"add student:":
                     return createStudent(command);
-                    //TODO:
                 case"edit student:":
-                    if(findStudents(command) != null){
-                        editField(command);
-                    }
-                    else{
-                        return "student not found, please try again";
-                    }
+                        return editField(command);
                 case"edit group:":
                     if(findGroup(command) != null) {
                         //edit group:groupName field fieldValue
@@ -126,7 +133,7 @@ public class Controller {
                         return "updated values for group:" + findGroup(command).getGroupName();
                     }
                     else{
-                        return null;
+                        return "Could not find group with that name";
                     }
                 case"create group:":
                     if(createGroup(command) != null) {
@@ -134,15 +141,94 @@ public class Controller {
                         return "successfully added group";
                     }
                     else {return "one or more invalid id's, please retry";}
-                    
 
                 case "pay tuition:":
                 	student stu = db.findStudent(user);
-                	stu.payTuition(command.substring(13)); 
-                	return "Tuition payed";
+                	stu.payTuition(command.substring(13));
+                    return "Tuition Payed";
+
+                case "msg student:":
+                	String name = null;
+                    String com = command.replaceFirst("(.*?)\\:", "");
+                    Pattern reg = Pattern.compile("([^\\s]+)");
+                    Matcher matcher = reg.matcher(com);
+                    if(matcher.find() && !matcher.group(0).trim().equals("")){
+                        name = matcher.group(0);
+                        com = com.replace(name, "");
+                    }
+                	db.msgStudent(name, user + ": " + com);
+                	return "Sent!";
+
+                case "msg faculty:":
+                	String namer = null;
+                    String comm = command.replaceFirst("(.*?)\\:", "");
+                    Pattern rege = Pattern.compile("([^\\s]+)");
+                    Matcher matchers = rege.matcher(comm);
+                    if(matchers.find() && !matchers.group(0).trim().equals("")){
+                        namer = match.group(0);
+                        comm = comm.replace(namer, "");
+                    }
+                	db.msgFacutly(namer, user + ": " + comm);
+                	return "Sent!";
+
+                case "getMsg student":
+                	return db.getMsgsStudent(user);
+
+                case "getMsg faculty":
+                	return db.getMsgsStudent(user);
+                case "make major:":
+                    Major newmajor = new Major(command.substring(11).trim());
+                    db.addMajor(newmajor);
+                    return "major "+command.substring(11)+" has been made.";
+                case "add adviser:": // major = args[0]     faculty = args[1]
+                    String aa = command.replaceFirst("add adviser:", "");
+                    String[] aargs = aa.trim().split(" ");
+                    faculty adv = db.findFaculty(aargs[1]); Major major1 = db.findMajor(aargs[0]);
+                    if(major1 == null){return aargs[0]+" is an invalid major id. Please use a valid id.";}
+                        if(adv == null){return aargs[1]+" is an invalid username. Please use a valid username.";}
+                            if(major1.addAdviser(aargs[1])){return aargs[1]+" has been added as adviser to "+aargs[0]+" major.";}
+                            else{return "addition of "+aargs[1]+" to adviser list has failed.";}
+                case "make class:":
+                    String mc = command.replaceFirst("make class:", "");
+                    String[] margs = mc.trim().split(" ");  // [0] major  [1] new class
+                    Major ma = db.findMajor(margs[0]);
+                    if (ma == null) {return"major entered is invalid";}
+                    if(ma.makeClass(margs[1])){return "class "+margs[1]+" has been created";}
+                    else{return "Failed to make class";}
+                case "change major id:":
+                    String cmi = command.replaceFirst("change major id:", "");
+                    String[] cargs = cmi.trim().split(" ");  //[0] major old id  [1] major new id
+                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
+                    ma.changeID(cargs[1]); return "major id has been changed to "+cargs[1];
+                case "remove adviser:":
+                    cmi = command.replaceFirst("remove adviser:", "");
+                    cargs = cmi.trim().split(" "); //  [0] major  [1] username of adviser to be removed
+                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
+                    adv = db.findFaculty(cargs[1]); if(adv == null){return "username of adviser does not exist";}
+                    if(ma.removeAdvisor(cargs[1])){return "adviser "+cargs[1]+" has been removed";}
+                    else{return "failed to remove adviser";}
+                case "change class id:":
+                    cmi = command.replaceFirst("change class id:", "");
+                    String[] ccargs = cmi.trim().split(" "); // [0] major  [1] old class id [2] new class id
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    Major.Class cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    if(cl.changeClassId(ccargs[2])){return "class id has been changed to "+ccargs[2];}
+                case "change class instructor:":
+                    cmi = command.replaceFirst("change class instructor:", "");
+                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = faculty user name
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    adv = db.findFaculty(ccargs[2]); if(adv == null){return "instructor username is invalid";}
+                    if(cl.changeclassinstructor(adv)){return "class "+ccargs[2]+" instructor has been changed to "+ccargs[2];}
+                case "add student to class:":
+                    cmi = command.replaceFirst("add student to class:", "");
+                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = student username
+                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
+                    student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
+                    if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
             }
         }
-
         return "invalid command";
     }
 
@@ -151,7 +237,7 @@ public class Controller {
      * and the editAttribute method of the student object
      * @param command
      */
-    public void editField(String command){
+    public String editField(String command){
         String name = null;
         String com = command.replaceFirst("(.*?)edit student\\:", "");
         Pattern pattern = Pattern.compile("([^\\s]+)");
@@ -161,9 +247,23 @@ public class Controller {
             com = com.replace(name, "");
         }
         String[] args = com.split(" ");
-        if(name != null && findStudents(name) != null) {
-            findStudents(name).get(0).editAttribute(args[1],args[2]);
+        if(name != null && !findStudents(name).isEmpty()) {
+            if(args[1].equalsIgnoreCase("Major")){
+                if(db.findMajor(args[2]) != null) {
+                    findStudents(name).get(0).setMajor(args[2]);
+                }
+                else{
+                    return "Major does not exist";
+                }
+            }
+            else if(args[1].equalsIgnoreCase("gpa")){
+                findStudents(name).get(0).setGPA(Double.parseDouble(args[2]));
+            }
+            else {
+                findStudents(name).get(0).editAttribute(args[1], args[2]);
+            }
         }
+        return "successfully updated student";
     }
 
 
@@ -198,7 +298,7 @@ public class Controller {
     public Group createGroup(String command){
         List<student> found = new ArrayList<>();
         Group group;
-        String name = null;
+        String name = "";
         String com = command.replaceFirst("(.*?)create group\\:", "");
         Pattern pattern = Pattern.compile("([^\\s]+)");
         Matcher matcher = pattern.matcher(com);
@@ -230,7 +330,16 @@ public class Controller {
      */
     public Group findGroup(String command){
         //regex for splitting command to find name
-        String name = "group1";
+        Group group;
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+       // String name = "group1";
         if(database.findGroup(name) != null){
             return database.findGroup(name);
         }
@@ -246,7 +355,7 @@ public class Controller {
     public List<student> findStudents(String command){
         //remove eveything before command colon
         List<student> found = new ArrayList<>();
-        String com = command.replaceFirst("(.*?)get student\\:", "");
+        String com = command.replaceFirst("(.*?)\\:", "");
         if(com.contains(",")) {
             for (String studentId : com.split(",")) {
                 if (database.findStudent(studentId) == null) {
@@ -259,9 +368,10 @@ public class Controller {
             }
         }
             else {
-                found.add(database.findStudent(com));
-                return found;
-            }
+                    found.add(database.findStudent(com));
+                    return found;
+                }
+
         return found;
     }
 

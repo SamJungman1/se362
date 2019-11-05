@@ -37,7 +37,7 @@ public class student extends user {
 	{
 		return this.id;
 	}
-	
+
 	public double getGPA() {
 		return this.GPA;
 	}
@@ -74,23 +74,22 @@ public class student extends user {
 
 	public void removeAttribute(String attribut) {
 		att.remove(attribut);
-		// attribute.remove(attribute.indexOf(attribut));
 
 	}
-	
+
 	public void payTuition(String command) {
 		int amount = Integer.parseInt(command);
 		Scanner scanner = new Scanner(System.in);
 		while(true) {
 			System.out.print("Enter Credit Card Number XXXXXXXXXXX:");
 			String num = scanner.nextLine();
-			
+
 			System.out.print("Enter Expiration date MM/YY: ");
 			String exp = scanner.nextLine();
-			
+
 			System.out.print("Enter CCV XXX: ");
 			String ccv = scanner.nextLine();
-			
+
 			if(num.length() != 16 || exp.length() != 5 || ccv.length() != 3) {
 				System.out.println("Invalid information");
 			} else {
@@ -104,20 +103,21 @@ public class student extends user {
 		} else {
 			monthlyTuition -= amount;
 		}
-		
+
 		System.out.println("Tuition Remaining: " + totalTuition);
 		System.out.println("Montly Tuition Remaining: "+ monthlyTuition);
+
 
 	}
 
 	@Override
-	public String toString() {
-		String toReturn = null;
-		toReturn += getFullname() + "\n" + getId() + "\n" + getUsername() + "\n" + getClassification() + "\n"
-				+ getMajor() + "\n";
-		for (String key : att.keySet()) {
-			toReturn += key.toString() + ":" + att.get(key);
+	public String toString(){
+		String toReturn = "--------------------\n";
+		toReturn += "Name:" + getFullname() + "\nId:" + getId() + "\nUsername:" + getUsername() + "\nGPA:" + getGPA() + "\nClassification:" + getClassification() + "\nMajor:" + getMajor() + "\n";
+		for(String key: att.keySet()){
+			toReturn += key.toString() + ":" + att.get(key) + "\n";
 		}
+		toReturn += "--------------------\n";
 		return toReturn;
 	}
 }

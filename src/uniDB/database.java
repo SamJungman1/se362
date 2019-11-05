@@ -56,12 +56,13 @@ public class database {
 		student temp = null;
 		for(student s: studentTable)
 		{
-			if(s.getUsername().equals(username))
+			if(s.getUsername().trim().equals(username.trim())) {
 				temp = s;
-			break;
-		}
+				break;
+				}
+			}
 		return temp;
-	}
+		}
 
 	public static Group findGroup(String id)
 	{
@@ -74,13 +75,13 @@ public class database {
 	}
 	public Major findMajor(String id){
 		for(Major m: majorTable){
-			//if(m.getId().equals(id)){
-			//	return m;
-			//}
+			if(m.getId().equals(id)){
+				return m;
+			}
 		}
 		return null;
 	}
-	
+
 	public String getMsgsStudent(String username)
 	{
 		String s = new String();
@@ -104,16 +105,16 @@ public class database {
 		}
 		return s;
 	}
-	
+
 	public void msgStudent(String username, String msg)
 	{
 		findStudent(username).addMessage(msg);
 	}
-	
+
 	public void msgFacutly(String username, String msg)
 	{
 		findFaculty(username).addMessage(msg);
 	}
-	
-	
+
+
 }

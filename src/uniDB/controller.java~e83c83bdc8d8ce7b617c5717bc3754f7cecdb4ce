@@ -68,10 +68,15 @@ public class Controller {
             MatchResult result = match.toMatchResult();
             switch(match.group(0)) {
                 case "get student:":
-                    String studentsFound = null;
+                    String studentsFound = "";
                     for(student x: findStudents(command))
                     {
-                        studentsFound += x.toString() + "\n";
+                        if(x == null){
+                            studentsFound += "failed to find student";
+                        }
+                        else {
+                            studentsFound += x.toString() + "\n";
+                        }
                     }
                     if(studentsFound != null) {
                         return studentsFound;
@@ -95,7 +100,7 @@ public class Controller {
                         return "updated values for group:" + findGroup(command).getGroupName();
                     }
                     else{
-                        return null;
+                        return "Could not find group with that name";
                     }
                 case"create group:":
                     if(createGroup(command) != null) {
@@ -135,7 +140,7 @@ public class Controller {
     public Group createGroup(String command){
         List<student> found = new ArrayList<>();
         Group group;
-        String name = null;
+        String name = "";
         String com = command.replaceFirst("(.*?)create group\\:", "");
         Pattern pattern = Pattern.compile("([^\\s]+)");
         Matcher matcher = pattern.matcher(com);
@@ -162,7 +167,16 @@ public class Controller {
 
     public Group findGroup(String command){
         //regex for splitting command to find name
-        String name = "group1";
+        Group group;
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+       // String name = "group1";
         if(database.findGroup(name) != null){
             return database.findGroup(name);
         }

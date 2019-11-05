@@ -43,9 +43,10 @@ public abstract class user {
 	public String setUsername(String username) {
 		return this.username = username;
 	}
-
-	public String getFullname() {
-		return this.username;
+	
+	public String getFullname()
+	{
+		return this.fullname;
 	}
 
 	public String setFullname(String fullname) {
@@ -61,7 +62,7 @@ public abstract class user {
 	}
 
 	public String[] flushInbox()
-	{	
+	{
 		String[] arr = new String[inbox.size()];
 		if(inbox.size() == 0)
 		{
@@ -74,7 +75,7 @@ public abstract class user {
 		}
 		return arr;
 	}
-	
+
 	public void addMessage(String message)
 	{
 		inbox.add(message);
