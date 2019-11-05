@@ -230,7 +230,7 @@ public class Controller {
                     ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     adv = db.findFaculty(ccargs[2]); if(adv == null){return "instructor username is invalid";}
-                    if(cl.changeclassinstructor(adv)){return "class "+ccargs[2]+" instructor has been changed to "+ccargs[2];}
+                    if(cl.changeclassinstructor(adv)){return "class "+ccargs[1]+" instructor has been changed to "+ccargs[2];}
                 case "add student to class:":
                     cmi = command.replaceFirst("add student to class:", "");
                     ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = student username

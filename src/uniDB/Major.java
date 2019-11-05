@@ -129,7 +129,7 @@ public class Major {
 	 */
 	public boolean removeAdvisor(String username) {
 		for (faculty adv : this.Advisers) {
-			if (adv.getUsername().equals(username)) {
+			if (adv.getUsername().trim().equals(username.trim())) {
 				this.Advisers.remove(adv);
 				return true;
 			}
