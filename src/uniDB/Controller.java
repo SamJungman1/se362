@@ -45,6 +45,10 @@ public class Controller {
         commands.add("add faculty");
         commands.add("remove faculty");
         commands.add("get faculty");
+        commands.add("msg student");
+        commands.add("msg faculty");
+        commands.add("getMsg student");
+        commands.add("getMsg faculty");
     }
 
 
