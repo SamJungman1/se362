@@ -182,10 +182,10 @@ public class Controller {
                 	db.msgFacutly(namer, user + ": " + comm);
                 	return "Sent!";
 
-                case "getMsg student":
+                case "getMsg student:":
                 	return db.getMsgsStudent(user);
 
-                case "getMsg faculty":
+                case "getMsg faculty:":
                 	return db.getMsgsStudent(user);
                 case "make major:":
                     Major newmajor = new Major(command.substring(11).trim());
@@ -269,6 +269,9 @@ public class Controller {
             }
             else if(args[1].equalsIgnoreCase("gpa")){
                 findStudents(name).get(0).setGPA(Double.parseDouble(args[2]));
+            }
+            else if(args[1].equalsIgnoreCase("classification")){
+                findStudents(name).get(0).setClassification(args[2]);
             }
             else {
                 findStudents(name).get(0).editAttribute(args[1], args[2]);
