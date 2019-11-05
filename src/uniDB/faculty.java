@@ -30,4 +30,8 @@ public class faculty extends user {
 		this.title = title;
 	}
 
+	@Override
+	public String toString(){
+		return "Name:" + getFullname() + "\nUsername:" + getUsername() +"\nId:" + getId() + "\nTitle:" + getTitle() + "\nSalary:" + getSalary() + "\n";
+	}
 }

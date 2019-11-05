@@ -42,6 +42,9 @@ public class Controller {
         commands.add("change class id");
         commands.add("change class instructor");
         commands.add("add student to class");
+        commands.add("add faculty");
+        commands.add("remove faculty");
+        commands.add("get faculty");
     }
 
 
@@ -118,10 +121,14 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
-                    //TODO:
+                case "get faculty:":
+                    return findFaculty(command);
                 case "remove student:":
-
-                    break;
+                    return removeStudent(command);
+                case"add faculty:":
+                    return createFaculty(command);
+                case"remove faculty:":
+                    return removeFaculty(command);
                 case"add student:":
                     return createStudent(command);
                 case"edit student:":
@@ -356,6 +363,29 @@ public class Controller {
         return found;
     }
 
+    public List<faculty> findFaculty(String command){
+        //remove eveything before command colon
+        List<faculty> found = new ArrayList<>();
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if(com.contains(",")) {
+            for (String facultyId : com.split(",")) {
+                if (database.findFaculty(facultyId) == null) {
+                    //faculty not found
+                    return null;
+                }
+                else{
+                    found.add(database.findFaculty(facultyId));
+                }
+            }
+        }
+        else {
+            found.add(database.findFaculty(com));
+            return found;
+        }
+
+        return found;
+    }
+
     /**
      * This method is responsible for taking a command and parsing its arguments to create a student object which is then added
      * to the database via the addStudent method of the database object
@@ -366,8 +396,50 @@ public class Controller {
         String com = command.replaceFirst("(.*?)add student\\:", "");
         String[] args = com.split(",");
         student temp = new student(args[0], args[1], args[2]);
-        database.addStudent(temp);
+        db.addStudent(temp);
         return "added Student: Username:" + args[0] + " Password:" + args[1] + " Full Name:" + args[2] + " with id:" + temp.getId();
+    }
+
+    public String removeStudent(String command){
+        String removed = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        for(String x: args){
+            if(findStudents(x) != null){
+                db.removeStudent(x);
+                removed += "removed student:" + x + "\n";
+            }
+            else{
+                removed += "failed to remove student:" + x + "\n";
+            }
+        }
+        return "Successfully removed students";
+
+    }
+
+    public String createFaculty(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        faculty temp = new faculty(args[0], args[1], args[2]);
+        db.addFaculty(temp);
+        return "added Faculty: Username:" + args[0] + "Password:" + args[1] + "Full Name:" + args[2] + temp.getId();
+    }
+
+    public String removeFaculty(String command){
+        String removed = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        for(String x: args){
+            if(db.findFaculty(x) != null){
+                db.removeFaculty(x);
+                removed += "removed faculty:" + x + "\n";
+            }
+            else{
+                removed += "failed to remove faculty:" + x + "\n";
+            }
+        }
+        return "Successfully removed faculty";
+
     }
 
     /**

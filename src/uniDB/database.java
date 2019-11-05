@@ -45,7 +45,7 @@ public class database {
 	{
 		for(faculty f: facultyTable)
 		{
-			if(f.getUsername().equals(username))
+			if(f.getUsername().trim().equals(username.trim()))
 				return f;
 		}
 		return null;
