@@ -25,7 +25,7 @@ public class Controller {
     public Controller(){
         db = new database();
         db.addFaculty(new faculty("admin", "admin", "admin"));
-        
+        db.addStudent(new student("test", "test", "test"));
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
@@ -135,8 +135,11 @@ public class Controller {
                     }
                     else {return "one or more invalid id's, please retry";}
                     
-                case "pay tuition":
-                	return null;              			
+
+                case "pay tuition:":
+                	student stu = db.findStudent(user);
+                	stu.payTuition(command.substring(13)); 
+                	return "Tuition payed";
             }
         }
 
