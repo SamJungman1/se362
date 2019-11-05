@@ -19,7 +19,7 @@ public class Controller {
      */
     private List<String> commands;
     private database db;
-    public String user;      
+    public String user;
 
 
     public Controller(){
@@ -61,7 +61,7 @@ public class Controller {
         student stu = db.findStudent(username);
         faculty fac = db.findFaculty(username);
         boolean login = false;
-        
+
         if(stu != null) {
         	user = username;
         	login = stu.login(username, password);
@@ -148,22 +148,41 @@ public class Controller {
                         return "successfully added group";
                     }
                     else {return "one or more invalid id's, please retry";}
-                    
+
                 case "pay tuition:":
                 	student stu = db.findStudent(user);
-                	stu.payTuition(command.substring(11));
-                	
+                	stu.payTuition(command.substring(13));
+                    return "Tuition Payed";
+
                 case "msg student:":
-                	db.msgStudent(command.substring(11), "What's crackin");
-                	
+                	String name = null;
+                    String com = command.replaceFirst("(.*?)\\:", "");
+                    Pattern reg = Pattern.compile("([^\\s]+)");
+                    Matcher matcher = reg.matcher(com);
+                    if(matcher.find() && !matcher.group(0).trim().equals("")){
+                        name = matcher.group(0);
+                        com = com.replace(name, "");
+                    }
+                	db.msgStudent(name, user + ": " + com);
+                	return "Sent!";
+
                 case "msg faculty:":
-                	db.msgStudent(command.substring(11), "What's crackin");
-                	
-                case "getMsg student:":
-                	db.getMsgsStudent(command.substring(14));
-                	
-                case "getMsg faculty:":
-                	db.getMsgsStudent(command.substring(14));
+                	String namer = null;
+                    String comm = command.replaceFirst("(.*?)\\:", "");
+                    Pattern rege = Pattern.compile("([^\\s]+)");
+                    Matcher matchers = rege.matcher(comm);
+                    if(matchers.find() && !matchers.group(0).trim().equals("")){
+                        namer = match.group(0);
+                        comm = comm.replace(namer, "");
+                    }
+                	db.msgFacutly(namer, user + ": " + comm);
+                	return "Sent!";
+
+                case "getMsg student":
+                	return db.getMsgsStudent(user);
+
+                case "getMsg faculty":
+                	return db.getMsgsStudent(user);
                 case "make major:":
                     Major newmajor = new Major(command.substring(11).trim());
                     db.addMajor(newmajor);
