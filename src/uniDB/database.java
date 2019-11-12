@@ -9,12 +9,14 @@ public class database {
 	public static List<faculty> facultyTable;
 	public static List<Group> groupTable;
 	public static List<Major> majorTable;
+	public static List<Dorm> dormTable;
 
 	public database() {
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
 		groupTable = new ArrayList<Group>();
 		majorTable = new ArrayList<Major>();
+		dormTable = new ArrayList<Dorm>();
 	}
 
 	public static void addStudent(student s) {
@@ -30,7 +32,29 @@ public class database {
 	}
 
 	public void addMajor(Major m){majorTable.add(m);}
-
+	
+	public void addDorm(Dorm d) {
+		dormTable.add(d);
+	}
+	
+	public void listDorms() {
+		for (int i = 0; i < dormTable.size(); i++) {
+			System.out.println(dormTable.get(i).getName() + " " + dormTable.get(i).getSize() + " rooms");
+		}
+	}
+	
+	public Dorm getDorm(String name) {
+		Dorm dorm = null;
+		
+		for (int i = 0; i < dormTable.size(); i++) {
+			if(dormTable.get(i).getName().equals(name)) {
+				dorm = dormTable.get(i);
+			}
+		}
+		
+		return dorm;
+	}
+	
 	public void removeStudent(String username) {
 		studentTable.remove(studentTable.indexOf(findStudent(username)));
 }

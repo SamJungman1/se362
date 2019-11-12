@@ -2,6 +2,7 @@ package uniDB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +27,13 @@ public class Controller {
         db = new database();
         db.addFaculty(new faculty("admin", "admin", "admin"));
         db.addStudent(new student("test", "test", "test"));
+        
+        List<Room> rooms = new ArrayList<Room>();
+        rooms.add(new Room(11));
+        rooms.add(new Room(12));
+        db.addDorm(new Dorm(rooms, "Friley"));
+//        db.getDorm("Friley").createRooms(0, 10, 0);
+        
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
@@ -49,6 +57,9 @@ public class Controller {
         commands.add("msg faculty");
         commands.add("getMsg student");
         commands.add("getMsg faculty");
+        commands.add("create dorm");
+        commands.add("list dorms");
+        commands.add("select housing");
     }
 
 
@@ -238,6 +249,38 @@ public class Controller {
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
+                
+                case "create dorm:":
+                	db.addDorm(new Dorm(command.substring(13)));
+                	return "Dorm created";
+                
+                case "list dorms:":
+                	db.listDorms();
+                	return "done";
+                case "select housing:":
+                	
+                	String dormName = command.substring(16);
+                	Dorm dorm = db.getDorm(dormName);
+                	if(dorm != null) {
+                		dorm.listOpenRooms();
+                		Scanner scan = new Scanner(System.in);
+                		
+                		while(true) {
+                			System.out.print("Select room by id: ");
+                			String id = scan.next();
+                			Room room = dorm.getRoomById(Integer.parseInt(id));
+                			
+                			if(room != null) {
+                				room.changeCapacity(room.getCapacity() - 1);
+                				return "Added to room " + id;
+                			} else {
+                				System.out.println("Room not found");
+                			}
+                		}
+                	} else {
+                		return "Dorm not found";
+                	}
+                	
             }
         }
         return "invalid command";
