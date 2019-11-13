@@ -10,6 +10,7 @@ public class database {
 	public static List<Group> groupTable;
 	public static List<Major> majorTable;
 	public static List<Dorm> dormTable;
+	public static List<StudentOrg> studentOrgsTable;
 
 	public database() {
 		studentTable = new ArrayList<student>();
@@ -17,6 +18,7 @@ public class database {
 		groupTable = new ArrayList<Group>();
 		majorTable = new ArrayList<Major>();
 		dormTable = new ArrayList<Dorm>();
+		studentOrgsTable = new ArrayList<StudentOrg>();
 	}
 
 	public static void addStudent(student s) {
@@ -26,6 +28,10 @@ public class database {
 	public static void addGroup(Group g){
 		groupTable.add(g);
 	}
+
+	public void addStudentOrg(StudentOrg studentOrg) { studentOrgsTable.add(studentOrg);}
+
+	public void addStudentToOrg(StudentOrg studentOrg, student s){if(!studentOrg.isMember(s)){ studentOrg.addMember(s);}}
 
 	public void addFaculty(faculty f) {
 		facultyTable.add(f);
@@ -54,7 +60,16 @@ public class database {
 		
 		return dorm;
 	}
-	
+
+	public StudentOrg getStudentOrg(String name) {
+		for(int i = 0; i < studentOrgsTable.size(); i++){
+			if(studentOrgsTable.get(i).getOrgName().trim().equalsIgnoreCase(name.trim())){
+				return studentOrgsTable.get(i);
+			}
+		}
+		return null;
+	}
+
 	public void removeStudent(String username) {
 		studentTable.remove(studentTable.indexOf(findStudent(username)));
 }

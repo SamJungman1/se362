@@ -60,6 +60,10 @@ public class Controller {
         commands.add("create dorm");
         commands.add("list dorms");
         commands.add("select housing");
+        commands.add("msg Org");
+        commands.add("create student org");
+        commands.add("add student to org");
+        commands.add("show org");
     }
 
 
@@ -249,7 +253,15 @@ public class Controller {
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
-                
+
+                case "create student org:":
+                    return createStudentOrg(command);
+                case "add student to org:":
+                    return addStudentToOrg(command);
+                case "msg Org:":
+                   return msgOrg(command);
+                case "show org:":
+                       return findStudentOrg(command);
                 case "create dorm:":
                 	db.addDorm(new Dorm(command.substring(13)));
                 	return "Dorm created";
@@ -378,6 +390,99 @@ public class Controller {
         }
         group = new Group(name, found);
         return group;
+    }
+
+    public String addStudentToOrg(String command){
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        StudentOrg temp = findStudentOrg(name);
+        if(temp != null){
+            student tempStudent = db.findStudent(com);
+            if(tempStudent != null){
+                if(temp.isMember(tempStudent)){
+                    return "student is already a member of org";
+                }
+                else {
+                    temp.addMember(tempStudent);
+                    return "added " + tempStudent.getUsername() + " to " + temp.getOrgName();
+                }
+            }
+            else{
+                return "no student with the username " + com;
+            }
+        }
+        else{
+            return "no org found with the name " + name;
+        }
+    }
+
+    public String createStudentOrg(String command) {
+        String[] args;
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if (com.contains(",")) {
+            args = com.split(",");
+            StudentOrg temp = findStudentOrg(args[0]);
+            if (temp != null) {
+                return "student org with the name " + args[0] + " already exists";
+            } else {
+                if(database.findFaculty(args[1]) == null){
+                    return "no faculty by that username";
+                }
+                else {
+                    temp = new StudentOrg(args[0], database.findFaculty(args[1]), database.findStudent(user));
+                    db.addStudentOrg(temp);
+                    return "added student org";
+                }
+            }
+        }
+        return "invalid parameters. create student org:name,advisor";
+    }
+
+    public String msgOrg(String command){
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        StudentOrg temp = findStudentOrg(name);
+        if(temp != null){
+            if(!temp.get_president().getUsername().trim().equalsIgnoreCase(user.trim()) || !user.equalsIgnoreCase("admin")) {
+                for (student x : temp.getOrgMembers()) {
+                    db.msgStudent(x.username, user + ":" + com);
+                }
+                return "sucessfully messaged " + temp.getOrgName();
+            }
+            else{
+                return "you are not allowed to mass message this group";
+            }
+        }
+        return "no student org found by the name " + name;
+    }
+
+
+    public StudentOrg findStudentOrg(String command){
+        StudentOrg studentOrg;
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        if(db.getStudentOrg(name) != null){
+            return db.getStudentOrg(name);
+        }
+        return null;
     }
 
     /**
