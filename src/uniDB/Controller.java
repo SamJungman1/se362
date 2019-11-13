@@ -2,6 +2,7 @@ package uniDB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -21,13 +22,14 @@ public class Controller {
     private List<String> commands;
     private database db;
     public String user;
-
+    private Library library;
 
     public Controller(){
         db = new database();
         db.addFaculty(new faculty("admin", "admin", "admin"));
         db.addStudent(new student("test", "test", "test"));
-        
+
+        library = new Library();
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(11));
         rooms.add(new Room(12));
@@ -60,10 +62,12 @@ public class Controller {
         commands.add("create dorm");
         commands.add("list dorms");
         commands.add("select housing");
-        commands.add("msg Org");
-        commands.add("create student org");
-        commands.add("add student to org");
-        commands.add("show org");
+        commands.add("add book");
+        commands.add("remove book");
+        commands.add("list books");
+        commands.add("get overdue books");
+        commands.add("check in book");
+        commands.add("check out book");
     }
 
 
@@ -140,6 +144,18 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                case "add book:":
+                    return addBook(command);
+                case "remove book:":
+                    return removeBook(command);
+                case "check in book:":
+                    return checkIn(command);
+                case "check out book:":
+                    return checkOut(command);
+                case"get overdue books:":
+                    return overDueBooks(command);
+                case "list books:":
+                    return listBooks(command);
                 case "get faculty:":
                     return findFaculty(command);
                 case "remove student:":
@@ -589,6 +605,82 @@ public class Controller {
         }
         return "Successfully removed students";
 
+    }
+
+    public String addBook(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. add book:title,author";
+        }
+        else {
+            Book temp = new Book(args[0], args[1]);
+            library.addBook(temp);
+        }
+        return "added book";
+    }
+
+    public String checkIn(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. check in book:title,author";
+        }
+        else {
+            Book temp = library.findBook(args[0], args[1]);
+            if(temp != null){
+                student tempStudent = database.findStudent(user);
+                return library.checkInBook(tempStudent, temp);
+            }
+            else{
+                return "no book by that title and author";
+            }
+        }
+    }
+
+    public String checkOut(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. check out book:title,author";
+        }
+        else {
+            Book temp = library.findBook(args[0], args[1]);
+            if(temp != null){
+                student tempStudent = database.findStudent(user);
+                return library.checkOutBook(tempStudent, temp);
+            }
+            else{
+                return "no book by that title and author";
+            }
+        }
+    }
+
+    public String overDueBooks(String command){
+        String temp = "";
+        for(Map.Entry<Book,student> entry: library.checkForLate().entrySet()){
+            temp += "Book:" + entry.getKey().toString() + " Student:" + entry.getValue().getFullname();
+        }
+        return temp;
+    }
+
+    public String listBooks(String command){
+        return library.getBooks();
+    }
+
+    public String removeBook(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. remove book:title,author";
+        }
+        else {
+           Book temp = library.findBook(args[0], args[1]);
+           if(temp != null) {
+               library.removeBook(temp);
+           }
+        }
+        return "removed book";
     }
 
     public String createFaculty(String command){
