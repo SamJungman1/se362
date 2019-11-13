@@ -68,8 +68,20 @@ public class Major {
 			this.ID = newid;
 			return true;
 		}
+
 	} // end class Class end class Class
 
+	public String majorToString(){                               // working on this
+		String answer = this.ID+"\n";
+		for(faculty adv: this.Advisers){
+			answer += adv.getUsername()+" ";
+		}
+		answer += "\n";
+		for(Class cl: this.Classes){
+			answer += cl.getID()+" ";
+		}
+		return answer;
+	}
 	/**
 	 * Method returns the String Identification for this Major.
 	 * @return The String ID for this Major.

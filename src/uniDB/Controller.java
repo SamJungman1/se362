@@ -60,6 +60,10 @@ public class Controller {
         commands.add("create dorm");
         commands.add("list dorms");
         commands.add("select housing");
+        commands.add("generate parkingLots");     // makes parking lots
+        commands.add("make lot");
+        commands.add("remove lot");
+        commands.add("list majors");
     }
 
 
@@ -249,6 +253,12 @@ public class Controller {
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
+                case "list majors:":
+                    for(Major m: database.majorTable){
+                        String str = m.majorToString();
+                        System.out.println(str);
+                    }
+                    return "end of list";
                 
                 case "create dorm:":
                 	db.addDorm(new Dorm(command.substring(13)));
