@@ -2,6 +2,7 @@ package uniDB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -21,13 +22,14 @@ public class Controller {
     private List<String> commands;
     private database db;
     public String user;
-
+    private Library library;
 
     public Controller(){
         db = new database();
         db.addFaculty(new faculty("admin", "admin", "admin"));
         db.addStudent(new student("test", "test", "test"));
-        
+
+        library = new Library();
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(11));
         rooms.add(new Room(12));
@@ -60,10 +62,12 @@ public class Controller {
         commands.add("create dorm");
         commands.add("list dorms");
         commands.add("select housing");
-        commands.add("generate parkingLots");     // makes parking lots
-        commands.add("make lot");
-        commands.add("remove lot");
-        commands.add("list majors");
+        commands.add("add book");
+        commands.add("remove book");
+        commands.add("list books");
+        commands.add("get overdue books");
+        commands.add("check in book");
+        commands.add("check out book");
     }
 
 
@@ -140,6 +144,18 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                case "add book:":
+                    return addBook(command);
+                case "remove book:":
+                    return removeBook(command);
+                case "check in book:":
+                    return checkIn(command);
+                case "check out book:":
+                    return checkOut(command);
+                case"get overdue books:":
+                    return overDueBooks(command);
+                case "list books:":
+                    return listBooks(command);
                 case "get faculty:":
                     return findFaculty(command);
                 case "remove student:":
@@ -253,13 +269,15 @@ public class Controller {
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
-                case "list majors:":
-                    for(Major m: database.majorTable){
-                        String str = m.majorToString();
-                        System.out.println(str);
-                    }
-                    return "end of list";
-                
+
+                case "create student org:":
+                    return createStudentOrg(command);
+                case "add student to org:":
+                    return addStudentToOrg(command);
+                case "msg Org:":
+                   return msgOrg(command);
+                case "show org:":
+                       return findStudentOrg(command);
                 case "create dorm:":
                 	db.addDorm(new Dorm(command.substring(13)));
                 	return "Dorm created";
@@ -390,6 +408,99 @@ public class Controller {
         return group;
     }
 
+    public String addStudentToOrg(String command){
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        StudentOrg temp = findStudentOrg(name);
+        if(temp != null){
+            student tempStudent = db.findStudent(com);
+            if(tempStudent != null){
+                if(temp.isMember(tempStudent)){
+                    return "student is already a member of org";
+                }
+                else {
+                    temp.addMember(tempStudent);
+                    return "added " + tempStudent.getUsername() + " to " + temp.getOrgName();
+                }
+            }
+            else{
+                return "no student with the username " + com;
+            }
+        }
+        else{
+            return "no org found with the name " + name;
+        }
+    }
+
+    public String createStudentOrg(String command) {
+        String[] args;
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if (com.contains(",")) {
+            args = com.split(",");
+            StudentOrg temp = findStudentOrg(args[0]);
+            if (temp != null) {
+                return "student org with the name " + args[0] + " already exists";
+            } else {
+                if(database.findFaculty(args[1]) == null){
+                    return "no faculty by that username";
+                }
+                else {
+                    temp = new StudentOrg(args[0], database.findFaculty(args[1]), database.findStudent(user));
+                    db.addStudentOrg(temp);
+                    return "added student org";
+                }
+            }
+        }
+        return "invalid parameters. create student org:name,advisor";
+    }
+
+    public String msgOrg(String command){
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        StudentOrg temp = findStudentOrg(name);
+        if(temp != null){
+            if(!temp.get_president().getUsername().trim().equalsIgnoreCase(user.trim()) || !user.equalsIgnoreCase("admin")) {
+                for (student x : temp.getOrgMembers()) {
+                    db.msgStudent(x.username, user + ":" + com);
+                }
+                return "sucessfully messaged " + temp.getOrgName();
+            }
+            else{
+                return "you are not allowed to mass message this group";
+            }
+        }
+        return "no student org found by the name " + name;
+    }
+
+
+    public StudentOrg findStudentOrg(String command){
+        StudentOrg studentOrg;
+        String name = "";
+        String com = command.replaceFirst("(.*?)\\:", "");
+        Pattern pattern = Pattern.compile("([^\\s]+)");
+        Matcher matcher = pattern.matcher(com);
+        if(matcher.find() && !matcher.group(0).trim().equals("")){
+            name = matcher.group(0);
+            com = com.replace(name, "");
+        }
+        if(db.getStudentOrg(name) != null){
+            return db.getStudentOrg(name);
+        }
+        return null;
+    }
+
     /**
      * This method is responsible for retrieving/verifying Group objects from the database object
      * @param command
@@ -494,6 +605,82 @@ public class Controller {
         }
         return "Successfully removed students";
 
+    }
+
+    public String addBook(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. add book:title,author";
+        }
+        else {
+            Book temp = new Book(args[0], args[1]);
+            library.addBook(temp);
+        }
+        return "added book";
+    }
+
+    public String checkIn(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. check in book:title,author";
+        }
+        else {
+            Book temp = library.findBook(args[0], args[1]);
+            if(temp != null){
+                student tempStudent = database.findStudent(user);
+                return library.checkInBook(tempStudent, temp);
+            }
+            else{
+                return "no book by that title and author";
+            }
+        }
+    }
+
+    public String checkOut(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. check out book:title,author";
+        }
+        else {
+            Book temp = library.findBook(args[0], args[1]);
+            if(temp != null){
+                student tempStudent = database.findStudent(user);
+                return library.checkOutBook(tempStudent, temp);
+            }
+            else{
+                return "no book by that title and author";
+            }
+        }
+    }
+
+    public String overDueBooks(String command){
+        String temp = "";
+        for(Map.Entry<Book,student> entry: library.checkForLate().entrySet()){
+            temp += "Book:" + entry.getKey().toString() + " Student:" + entry.getValue().getFullname();
+        }
+        return temp;
+    }
+
+    public String listBooks(String command){
+        return library.getBooks();
+    }
+
+    public String removeBook(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. remove book:title,author";
+        }
+        else {
+           Book temp = library.findBook(args[0], args[1]);
+           if(temp != null) {
+               library.removeBook(temp);
+           }
+        }
+        return "removed book";
     }
 
     public String createFaculty(String command){
