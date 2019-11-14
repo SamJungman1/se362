@@ -11,6 +11,7 @@ public class database {
 	public static List<Major> majorTable;
 	public static List<Dorm> dormTable;
 	public static List<StudentOrg> studentOrgsTable;
+	public static List<Lot> parkingLotTable;
 
 	public database() {
 		studentTable = new ArrayList<student>();
@@ -19,11 +20,23 @@ public class database {
 		majorTable = new ArrayList<Major>();
 		dormTable = new ArrayList<Dorm>();
 		studentOrgsTable = new ArrayList<StudentOrg>();
+		parkingLotTable = new ArrayList<Lot>();
 	}
 
 	public static void addStudent(student s) {
 		studentTable.add(s);
 	}
+
+	public static void addLot(Lot l){parkingLotTable.add(l);}
+	public static Lot findLot(String id){
+		for(Lot l: parkingLotTable){
+			if (l.getID().equals(id)){
+				return l;
+			}
+		}
+		return null;
+	}
+	public static void removeLot(Lot l){parkingLotTable.remove(l);}
 
 	public static void addGroup(Group g){
 		groupTable.add(g);

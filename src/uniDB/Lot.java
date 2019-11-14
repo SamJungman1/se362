@@ -5,15 +5,16 @@ import java.util.ArrayList;
 
 public class Lot {
     String ID;    //ST for stadium, G for gimnasium, A for auditorium, D for dorm parking, f for faculty parking, S for student parking
-    private int Spaces;
+    private int spaces;
+    List<user> aproved;
 
     Lot(String id){
         this.ID = id;
-        this.Spaces = 0;
+        this.spaces = 0;
     }
     Lot(String id, int spaces){
         super();
-        this.Spaces = spaces;
+        this.spaces = spaces;
     }
     public void generatelots(){
         int i = 0;
