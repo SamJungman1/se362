@@ -68,6 +68,8 @@ public class Controller {
         commands.add("get overdue books");
         commands.add("check in book");
         commands.add("check out book");
+        commands.add("list majors");          //
+        commands.add("list class");
     }
 
 
@@ -269,7 +271,20 @@ public class Controller {
                     cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
                     student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
-
+                case "list majors:":
+                    for(Major m: database.majorTable){
+                        String str = m.toString();
+                        System.out.print(str);
+                    }
+                    return "end of Major list";
+                case "list class:":
+                    cmi = command.replaceFirst("list class:", "");
+                    margs = mc.trim().split(" ");  // [0] major  [1] new class
+                    ma = db.findMajor(margs[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(margs[1]); if(cl == null){return "class id is invalid";}
+                    String str = cl.toString();
+                    System.out.print(str);
+                    return "end of Class list";
                 case "create student org:":
                     return createStudentOrg(command);
                 case "add student to org:":
