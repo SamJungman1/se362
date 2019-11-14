@@ -17,6 +17,7 @@ public class student extends user {
 	private final int TUITION = 20000;
 	private int totalTuition;
 	private int monthlyTuition;
+	private int mealSwipes;
 
 	public student() {
 	}
@@ -31,6 +32,7 @@ public class student extends user {
 		monthlyTuition = totalTuition / 12;
 		id = this.ID.toString();
 		this.inbox = new LinkedList();
+		mealSwipes = 500;
 	}
 
 	public String getId()
@@ -110,6 +112,27 @@ public class student extends user {
 
 	}
 
+	public void resetSwipes()
+	{
+		this.mealSwipes = 500;
+	}
+	
+	public int getSwipes()
+	{
+		return this.mealSwipes;
+	}
+	
+	/**
+	 * Attempts to subtract a swipe and returns success or failure
+	 * @return
+	 */
+	public boolean useSwipe()
+	{
+		this.mealSwipes--;
+		return (this.mealSwipes >= 0);
+	}
+
+	
 	@Override
 	public String toString(){
 		String toReturn = "--------------------\n";

@@ -1,5 +1,5 @@
 package uniDB;
-
+import java.util.Calendar;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
@@ -10,6 +10,11 @@ public class database {
 	public static List<Group> groupTable;
 	public static List<Major> majorTable;
 	public static List<Dorm> dormTable;
+	public static DiningCenter seasons;
+	public static DiningCenter conversations;
+	public static DiningCenter udcc;
+	public static DiningCenter windows;
+	public Calendar calendar;
 
 	public database() {
 		studentTable = new ArrayList<student>();
@@ -17,6 +22,13 @@ public class database {
 		groupTable = new ArrayList<Group>();
 		majorTable = new ArrayList<Major>();
 		dormTable = new ArrayList<Dorm>();
+		int[][] hours = {{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19}};
+		seasons = new DiningCenter(hours, "Seasons");
+		conversations = new DiningCenter(hours, "Conversations");
+	    udcc = new DiningCenter(hours, "UDCC");
+		windows = new DiningCenter(hours, "Windows");
+		
+		calendar = Calendar.getInstance();
 	}
 
 	public static void addStudent(student s) {
@@ -140,5 +152,58 @@ public class database {
 		findFaculty(username).addMessage(msg);
 	}
 
+	/**
+	 * Returns the current number of swipes a student has remaining
+	 * @param username of Current Student
+	 * @return String
+	 */
+	public String getMealSwipes(String username)
+	{
+		return username + " has " + findStudent(username).getSwipes() + "remaining!";
+	}
+	/**
+	 * Returns a message about the success or failure of the usage of a meal swipe by a student.
+	 * @param username of Current Student
+	 * @return String
+	 */
+	public String useSwipe(String username)
+	{
+		if(findStudent(username).useSwipe())
+		{
+			return "Success\n" + getMealSwipes(username);
+		}
+		else
+			return username + " is out of swipes!";
+		
+	}
+	
+	public String checkDiningCenter(String name)
+	{
+		int day = calendar.get(Calendar.DAY_OF_WEEK);
+		int time = calendar.get(Calendar.HOUR_OF_DAY);
+		if(name == "Conversations")
+			return conversations.checkAvailibility(day, time);
+		if(name == "Seasons")
+			return seasons.checkAvailibility(day, time);
+		if(name == "UDCC")
+			return udcc.checkAvailibility(day, time);
+		if(name == "Windows")
+			return windows.checkAvailibility(day, time);
+		return "No dining center by that name";
+	}
+	
+	public String getMeal(String name)
+	{
+		if(name == "Conversations")
+			return conversations.checkMenu();
+		if(name == "Seasons")
+			return seasons.checkMenu();
+		if(name == "UDCC")
+			return udcc.checkMenu();
+		if(name == "Windows")
+			return windows.checkMenu();
+		return "No dining center by that name";
+	}
+	
 
 }
