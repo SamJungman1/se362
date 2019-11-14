@@ -3,6 +3,10 @@ import java.util.Calendar;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Scanner;
 
 public class database {
 	public static List<student> studentTable;
@@ -189,6 +193,7 @@ public class database {
 	{
 		return username + " has " + findStudent(username).getSwipes() + "remaining!";
 	}
+	
 	/**
 	 * Returns a message about the success or failure of the usage of a meal swipe by a student.
 	 * @param username of Current Student
@@ -205,6 +210,11 @@ public class database {
 		
 	}
 	
+	/**
+	 * Based on current time, gives nearest availibility of a particluar dining center
+	 * @param name Of Dining Center
+	 * @return String
+	 */
 	public String checkDiningCenter(String name)
 	{
 		int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -220,6 +230,11 @@ public class database {
 		return "No dining center by that name";
 	}
 	
+	/**
+	 * Fetches a string containing the meal of a particular dining center
+	 * @param name Of Dining Center
+	 * @return String
+	 */
 	public String getMeal(String name)
 	{
 		if(name == "Conversations")
@@ -232,6 +247,95 @@ public class database {
 			return windows.checkMenu();
 		return "No dining center by that name";
 	}
+	/**
+	 * At initialization of database, this variable will load all persistent data into the tables
+	 * @throws FileNotFoundException 
+	 */
+	public void load() throws FileNotFoundException
+	{
+		loadStudent();
+		loadFaculty();
+		loadGroup();
+		loadMajor();
+		loadDorm();
+		loadStuOrgs();
+		loadParkingLot();
+	}
 	
-
+	/**
+	 * Helper method for load, specifically handles the studentTable
+	 * @throws FileNotFoundException 
+	 */
+	private void loadStudent() throws FileNotFoundException
+	{
+		FileReader f = new FileReader("student.txt");
+		Scanner s = new Scanner(f);
+		
+		ArrayList<String> input = new ArrayList<String>();
+		while(s.hasNextLine());
+			input.add(s.nextLine());
+		
+		String[] attr;
+		for(String n: input)
+		{
+			 attr = n.split(":|");
+			 student e = new student(attr[1], attr[3], attr[5]);
+			 //FIX
+			 
+			 for(int i = 12; i < attr.length - 1; i+=2)
+			 {
+				 e.addAttribute(attr[i], attr[i++]);
+			 }
+			 studentTable.add(e);
+			 
+		}
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the facultyTable
+	 */
+	private void loadFaculty()
+	{
+		//TODO
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the groupTable
+	 */
+	private void loadGroup()
+	{
+		//TODO
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the majorTable
+	 */
+	private void loadMajor()
+	{
+		//TODO
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the dormTable
+	 */
+	private void loadDorm()
+	{
+		//TODO
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the studentOrgsTable
+	 */
+	private void loadStuOrgs()
+	{
+		//TODO
+	}
+	
+	/**
+	 * Helper method for load, specifically handles the parkingLotTable
+	 */
+	private void loadParkingLot()
+	{
+		//TODO
+	}
 }

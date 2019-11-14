@@ -154,11 +154,18 @@ public class student extends user {
 		System.out.println("Montly housing Remaining: "+ montlyHousing);
 	}
 	
+	/**
+	 * Resets students swipe number to that they started with
+	 */
 	public void resetSwipes()
 	{
 		this.mealSwipes = 500;
 	}
 	
+	/**
+	 * Get method that returns student's swipes
+	 * @return
+	 */
 	public int getSwipes()
 	{
 		return this.mealSwipes;
@@ -174,6 +181,30 @@ public class student extends user {
 		return (this.mealSwipes >= 0);
 	}
 
+	/**
+	 * Simple set method for swipes
+	 * @param num Of Swipes
+	 */
+	public void setSwipes(int num)
+	{
+		this.mealSwipes = num;
+	}
+	
+	/**
+	 * Generates a String in a format suitable to be written to to a file
+	 * @return String 
+	 */
+	public String toFile()
+	{
+		//FIX
+		String s = "Username:" + this.username + "|" + "Password:" + this.password + "|" + "Fullname:" + this.fullname + "|"
+				+ "DormAssignment:" + this.dormAssignment + "|" + "RoomAssignment:" + this.roomAssignment + "|" + "MealSwipes:" + this.mealSwipes + "|";
+		for(String key: att.keySet())
+		{
+			s += key.toString() + ":" + att.get(key) + "|";
+		}
+		return s;
+	}
 	
 	@Override
 	public String toString(){

@@ -11,7 +11,7 @@ import java.util.Queue;
  */
 public abstract class user {
 	public String username;
-	private String password;
+	protected String password;
 	public String fullname;
 
 	protected UUID ID;
