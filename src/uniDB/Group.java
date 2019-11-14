@@ -22,4 +22,12 @@ public class Group {
     public void addToGroup(student s){
         _group.add(s);
     }
+    
+    public String toFile()
+    {
+    	String s = "Groupname:" + this.groupName + "|";
+    	for(student e: _group)
+    		s += e.getUsername() + ":";
+    	return s;
+    }
 }

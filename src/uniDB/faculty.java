@@ -29,6 +29,18 @@ public class faculty extends user {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	/**
+	 * Generates a String in a format suitable to be written to to a file
+	 * @return String 
+	 */
+	public String toFile()
+	{
+		
+		String s = "Username:" + this.username + "|" + "Password:" + this.password + "|" + "Fullname:" + this.fullname + "|"
+				+ "Salary:" + this.salary + "|" + "Title:" + this.title;
+		return s;
+	}
 
 	@Override
 	public String toString(){

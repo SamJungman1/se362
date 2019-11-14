@@ -1,5 +1,7 @@
 package uniDB;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class Controller {
     public String user;
     private Library library;
 
-    public Controller(){
+    public Controller() throws FileNotFoundException{
         db = new database();
         db.addFaculty(new faculty("admin", "admin", "admin"));
         db.addStudent(new student("test", "test", "test"));
@@ -74,6 +76,7 @@ public class Controller {
         commands.add("use swipe");
         commands.add("check times");
         commands.add("check meal");
+        commands.add("save");
     }
 
 
@@ -236,7 +239,14 @@ public class Controller {
                 
                 case "check meal:":
                     return db.getMeal(command.substring(12));
-                
+                case "save:":
+				try {
+					db.save();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return "Save files not found";
+				}
+                	return "Saved!";
                 	
                 case "make major:":
                     Major newmajor = new Major(command.substring(11).trim());
@@ -297,7 +307,7 @@ public class Controller {
                     return "end of Major list";
                 case "list class:":
                     cmi = command.replaceFirst("list class:", "");
-                    margs = mc.trim().split(" ");  // [0] major  [1] new class
+                    margs = cmi.trim().split(" ");  // [0] major  [1] new class //NOTE CHANGED AN MC TO A CMI
                     ma = db.findMajor(margs[0]); if(ma == null){return "major id is invalid";}
                     cl = ma.findClass(margs[1]); if(cl == null){return "class id is invalid";}
                     String str = cl.toString();

@@ -196,9 +196,9 @@ public class student extends user {
 	 */
 	public String toFile()
 	{
-		//FIX
+		
 		String s = "Username:" + this.username + "|" + "Password:" + this.password + "|" + "Fullname:" + this.fullname + "|"
-				+ "DormAssignment:" + this.dormAssignment + "|" + "RoomAssignment:" + this.roomAssignment + "|" + "MealSwipes:" + this.mealSwipes + "|";
+				+ "classification:" + this.classification + "|" + "GPA:" + this.GPA + "|"+ "Major:" + this.major + "|" + "|" + "MealSwipes:" + this.mealSwipes + "|";
 		for(String key: att.keySet())
 		{
 			s += key.toString() + ":" + att.get(key) + "|";

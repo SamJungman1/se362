@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import uniDB.Major;
 
 public class database {
 	public static List<student> studentTable;
@@ -22,7 +24,7 @@ public class database {
 	public static DiningCenter windows;
 	public Calendar calendar;
 
-	public database() {
+	public database() throws FileNotFoundException {
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
 		groupTable = new ArrayList<Group>();
@@ -35,8 +37,8 @@ public class database {
 		conversations = new DiningCenter(hours, "Conversations");
 	    udcc = new DiningCenter(hours, "UDCC");
 		windows = new DiningCenter(hours, "Windows");
-		
 		calendar = Calendar.getInstance();
+		this.load();
 	}
 
 	public static void addStudent(student s) {
@@ -247,6 +249,46 @@ public class database {
 			return windows.checkMenu();
 		return "No dining center by that name";
 	}
+	
+	public void save() throws IOException
+	{
+		ArrayList<String> lines = new ArrayList<String>();
+		for(student S: studentTable)
+			lines.add(S.toFile());
+		FileWriter f = new FileWriter("student.txt");
+		for(String l: lines)
+		{
+			f.write(l);
+			f.write("\n");
+		}
+		lines = new ArrayList<String>();
+		for(faculty F: facultyTable)
+			lines.add(F.toFile());
+		f = new FileWriter("faculty.txt");
+		for(String l: lines)
+		{
+			f.write(l);
+			f.write("\n");
+		}
+		lines = new ArrayList<String>();
+		for(Major C: majorTable)
+			lines.add(C.toFile());
+		f = new FileWriter("major.txt");
+		for(String l: lines)
+		{
+			f.write(l);
+			f.write("\n");
+		}
+		lines = new ArrayList<String>();
+		for(Group G: groupTable)
+			lines.add(G.toFile());
+		f = new FileWriter("group.txt");
+		for(String l: lines)
+		{
+			f.write(l);
+			f.write("\n");
+		}
+	}
 	/**
 	 * At initialization of database, this variable will load all persistent data into the tables
 	 * @throws FileNotFoundException 
@@ -257,9 +299,6 @@ public class database {
 		loadFaculty();
 		loadGroup();
 		loadMajor();
-		loadDorm();
-		loadStuOrgs();
-		loadParkingLot();
 	}
 	
 	/**
@@ -280,62 +319,117 @@ public class database {
 		{
 			 attr = n.split(":|");
 			 student e = new student(attr[1], attr[3], attr[5]);
-			 //FIX
-			 
-			 for(int i = 12; i < attr.length - 1; i+=2)
+			 e.setClassification(attr[7]);
+			 e.setGPA(Double.valueOf(attr[9]));
+			 e.setMajor(attr[11]);
+			 e.setSwipes(Integer.valueOf(attr[13]));
+			 for(int i = 14; i < attr.length - 1; i+=2)
 			 {
 				 e.addAttribute(attr[i], attr[i++]);
 			 }
 			 studentTable.add(e);
-			 
 		}
+		s.close();
 	}
 	
 	/**
 	 * Helper method for load, specifically handles the facultyTable
+	 * @throws FileNotFoundException 
 	 */
-	private void loadFaculty()
+	private void loadFaculty() throws FileNotFoundException
 	{
-		//TODO
+		FileReader f = new FileReader("faculty.txt");
+		Scanner s = new Scanner(f);
+		
+		ArrayList<String> input = new ArrayList<String>();
+		while(s.hasNextLine());
+			input.add(s.nextLine());
+		
+		String[] attr;
+		for(String n: input)
+		{
+			 attr = n.split(":|");
+			 faculty e = new faculty(attr[1], attr[3], attr[5]);
+			 e.setSalary(Double.valueOf(attr[7]));
+			 e.setTitle(attr[9]);
+			 facultyTable.add(e);
+		}
+		s.close();
 	}
 	
 	/**
 	 * Helper method for load, specifically handles the groupTable
+	 * @throws FileNotFoundException 
 	 */
-	private void loadGroup()
+	private void loadGroup() throws FileNotFoundException
 	{
-		//TODO
+		FileReader f = new FileReader("group.txt");
+		Scanner s = new Scanner(f);
+		
+		ArrayList<String> input = new ArrayList<String>();
+		while(s.hasNextLine());
+			input.add(s.nextLine());
+		
+		String[] attr;
+		List<student> l = new ArrayList<student>();
+		for(String n: input)
+		{
+			 attr = n.split(":|");
+			 for(int i = 2; i < attr.length; i++)
+				 l.add(findStudent(attr[i]));
+			 Group e = new Group(attr[1], l);
+			 groupTable.add(e);
+		}
+		s.close();
 	}
 	
 	/**
 	 * Helper method for load, specifically handles the majorTable
+	 * @throws FileNotFoundException 
 	 */
-	private void loadMajor()
+	private void loadMajor() throws FileNotFoundException
 	{
-		//TODO
-	}
-	
-	/**
-	 * Helper method for load, specifically handles the dormTable
-	 */
-	private void loadDorm()
-	{
-		//TODO
-	}
-	
-	/**
-	 * Helper method for load, specifically handles the studentOrgsTable
-	 */
-	private void loadStuOrgs()
-	{
-		//TODO
-	}
-	
-	/**
-	 * Helper method for load, specifically handles the parkingLotTable
-	 */
-	private void loadParkingLot()
-	{
-		//TODO
+		FileReader f = new FileReader("major.txt");
+		Scanner s = new Scanner(f);
+		
+		ArrayList<String> input = new ArrayList<String>();
+		while(s.hasNextLine());
+			input.add(s.nextLine());
+		
+		String[] attr;
+		List<faculty> fal = new ArrayList<faculty>();
+		List<Major.Class> cls = new ArrayList<Major.Class>();
+		List<student> stu = new ArrayList<student>();
+		for(String n: input)
+		{
+			 attr = n.split(":|");
+			 Major m = new Major(attr[1]);
+			 int i = 3;
+			 while(attr[i] != "END")
+			 {
+					fal.add(findFaculty(attr[i]));
+					i++;
+			 }
+			 m.Advisers = fal;
+			 i++;
+			 while(i < attr.length)
+			 {
+					Major.Class c = new Major.Class(attr[i]);
+					i++;
+					c.setInstructor(findFaculty(attr[i]));
+					i++;
+					while(attr[i] == "END")
+					{
+						stu.add(findStudent(attr[i]));
+						i++;
+					}
+					c.setAttendance(stu);
+					i++;
+					cls.add(c);
+			 }
+			 m.Classes = cls;
+			 majorTable.add(m);
+		}
+		s.close();
 	}
 }

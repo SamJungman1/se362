@@ -11,26 +11,46 @@ import java.util.List;
 public class Major {
 
 	private String ID; // exp: "ComS "
-	private List<faculty> Advisers;  //  faculty assigned to advise students in this Major.
-	private List<Class> Classes;  //  Classes available to attend in this Major.
+	public List<faculty> Advisers;  //  faculty assigned to advise students in this Major.
+	public List<Class> Classes;  //  Classes available to attend in this Major.
 
 	Major(String id) {
 		this.ID = id;
 		this.Advisers = new ArrayList<faculty>();
 		this.Classes = new ArrayList<Class>();
 	}
+	
+	public String toFile()
+	{
+		String s = "ID:" + this.ID + "|" + "Faculty:";
+		for(faculty f: Advisers)
+			s += f.username + ":";
+		s += "END|";
+		for(Class g: Classes)
+		{
+			s += g.getID() + ":";
+			s += g.getInstructor().getUsername() + ":";
+			for(student h: g.getAttendance())
+			{
+				s += h.getUsername() + ":";
+			}
+			s += "END|";
+		}
+		
+		return s;
+	}
 
 	/**
 	 * Classes available in a particular Major. Contains String Identification, faculty Instructor,
 	 * List<student> Attendance.
 	 */
-	public class Class { // Class that is added to Major
+	public static class Class { // Class that is added to Major
 
 		private String ID; // exp: "362"
 		private faculty Instructor; // faculty assigned to teach this class.
 		private List<student> Attendance;  //  Students assigned to attend course.
 
-		Class(String ID) {
+		public Class(String ID) {
 			this.ID = ID;
 			this.Instructor = null;
 			this.Attendance = new ArrayList<student>();
@@ -42,6 +62,22 @@ public class Major {
 		public boolean changeclassinstructor(faculty ins){
 			this.Instructor = ins;
 			return true;
+		}
+		public faculty getInstructor()
+		{
+			return this.Instructor;
+		}
+		public void setInstructor(faculty f)
+		{
+			this.Instructor = f;
+		}
+		public List<student> getAttendance()
+		{
+			return this.Attendance;
+		}
+		public void setAttendance(List<student> s)
+		{
+			this.Attendance = s;
 		}
 		/**
 		 * Method return the String Identification for this Class.
