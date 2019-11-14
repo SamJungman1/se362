@@ -17,6 +17,8 @@ public class student extends user {
 	private final int TUITION = 20000;
 	private int totalTuition;
 	private int monthlyTuition;
+	private int totalHousing;
+	private int montlyHousing;
 
 	public student() {
 	}
@@ -29,8 +31,11 @@ public class student extends user {
 		att = new HashMap<>();
 		totalTuition = TUITION;
 		monthlyTuition = totalTuition / 12;
+		totalHousing = 8000;
+		montlyHousing = totalHousing / 12;
 		id = this.ID.toString();
 		this.inbox = new LinkedList();
+		
 	}
 
 	public String getId()
@@ -109,7 +114,38 @@ public class student extends user {
 
 
 	}
+	
+	public void payHousing(String command) {
+		int amount = Integer.parseInt(command);
+		Scanner scanner = new Scanner(System.in);
+		while(true) {
+			System.out.print("Enter Credit Card Number XXXXXXXXXXX:");
+			String num = scanner.nextLine();
 
+			System.out.print("Enter Expiration date MM/YY: ");
+			String exp = scanner.nextLine();
+
+			System.out.print("Enter CCV XXX: ");
+			String ccv = scanner.nextLine();
+
+			if(num.length() != 16 || exp.length() != 5 || ccv.length() != 3) {
+				System.out.println("Invalid information");
+			} else {
+				break;
+			}
+		}
+
+		if(amount > montlyHousing) {
+			amount -= montlyHousing;
+			totalHousing -= amount;
+		} else {
+			montlyHousing -= amount;
+		}
+
+		System.out.println("Housing Bill Remaining: " + totalHousing);
+		System.out.println("Montly housing Remaining: "+ montlyHousing);
+	}
+	
 	@Override
 	public String toString(){
 		String toReturn = "--------------------\n";
