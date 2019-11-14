@@ -19,6 +19,8 @@ public class student extends user {
 	private int monthlyTuition;
 	private int totalHousing;
 	private int montlyHousing;
+	private Dorm dormAssignment;
+	private Room roomAssignment;
 
 	public student() {
 	}
@@ -75,6 +77,11 @@ public class student extends user {
 
 	public void editAttribute(String attribut, String value) {
 		att.put(attribut, value);
+	}
+	
+	public void changeHousing(Dorm dorm, Room room) {
+		this.dormAssignment = dorm;
+		this.roomAssignment = room;
 	}
 
 	public void removeAttribute(String attribut) {
