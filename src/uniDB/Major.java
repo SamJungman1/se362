@@ -64,13 +64,13 @@ public class Major {
 			}
 			return null;
 		}
-		public void classToString(){
+		public String classToString(){
 			String answer = this.ID+"\n";
 			answer += this.Instructor+"\n";
 			for(student stu: this.Attendance){
 				answer += stu.getId()+" ";
 			}
-			answer +="\n";
+			return answer +="\n";
 		}
 		public boolean changeClassId(String newid){
 			this.ID = newid;

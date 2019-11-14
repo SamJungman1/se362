@@ -6,15 +6,35 @@ import java.util.ArrayList;
 public class Lot {
     String ID;    //ST for stadium, G for gimnasium, A for auditorium, D for dorm parking, f for faculty parking, S for student parking
     private int spaces;
-    List<user> aproved;
+    List<user> parkers;
 
     Lot(String id){
         this.ID = id;
         this.spaces = 0;
+        this.parkers = new ArrayList<user>();
     }
     Lot(String id, int spaces){
         super();
         this.spaces = spaces;
+    }
+    public void changLotId(String id){
+        this.ID = id;
+    }
+    public boolean addparker(String id){
+        user looser = database.findFaculty(id);
+        if(looser != null){ this.parkers.add(looser); return true;}
+        looser = database.findStudent(id);
+        if(looser != null){this.parkers.add(looser); return true;}
+        return false;
+    }
+    public boolean removeparker(String id){
+        for(user looser: this.parkers){
+            if(looser.getId().equals(id)){
+                this.parkers.remove(looser);
+                return true;
+            }
+        }
+        return false;
     }
     public void generatelots(){
         int i = 0;
@@ -68,6 +88,13 @@ public class Lot {
         }
         return false;
     }
+    public void addLotSpace(int s){
+        this.spaces = spaces + s;
+    }
+    public void removeLotspace(int s){
+        this.spaces = spaces - s;
+    }
+    public void
     public boolean removeLot(String id){
         Lot delete = database.findLot(id);
         if(delete != null){
