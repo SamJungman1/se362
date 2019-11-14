@@ -70,6 +70,10 @@ public class Controller {
         commands.add("check out book");
         commands.add("list majors");          //
         commands.add("list class");
+        commands.add("get swipes");
+        commands.add("use swipe");
+        commands.add("check times");
+        commands.add("check meal");
     }
 
 
@@ -220,6 +224,20 @@ public class Controller {
 
                 case "getMsg faculty:":
                 	return db.getMsgsStudent(user);
+                
+                case "use swipe:":
+                	return db.useSwipe(user);
+                
+                case "get swipes:":
+                	return db.getMealSwipes(user);
+                	
+                case "check times:":
+                    return db.checkDiningCenter(command.substring(13));
+                
+                case "check meal:":
+                    return db.getMeal(command.substring(12));
+                
+                	
                 case "make major:":
                     Major newmajor = new Major(command.substring(11).trim());
                     db.addMajor(newmajor);

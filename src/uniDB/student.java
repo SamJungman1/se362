@@ -21,6 +21,7 @@ public class student extends user {
 	private int montlyHousing;
 	private Dorm dormAssignment;
 	private Room roomAssignment;
+	private int mealSwipes;
 
 	public student() {
 	}
@@ -37,7 +38,7 @@ public class student extends user {
 		montlyHousing = totalHousing / 12;
 		id = this.ID.toString();
 		this.inbox = new LinkedList();
-		
+		mealSwipes = 500;
 	}
 
 	public String getId()
@@ -152,6 +153,27 @@ public class student extends user {
 		System.out.println("Housing Bill Remaining: " + totalHousing);
 		System.out.println("Montly housing Remaining: "+ montlyHousing);
 	}
+	
+	public void resetSwipes()
+	{
+		this.mealSwipes = 500;
+	}
+	
+	public int getSwipes()
+	{
+		return this.mealSwipes;
+	}
+	
+	/**
+	 * Attempts to subtract a swipe and returns success or failure
+	 * @return
+	 */
+	public boolean useSwipe()
+	{
+		this.mealSwipes--;
+		return (this.mealSwipes >= 0);
+	}
+
 	
 	@Override
 	public String toString(){
