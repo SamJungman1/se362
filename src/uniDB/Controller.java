@@ -70,7 +70,13 @@ public class Controller {
         commands.add("get overdue books");
         commands.add("check in book");
         commands.add("check out book");
-        commands.add("list majors");          //
+        commands.add("make lot");
+        commands.add("add lot space");
+        commands.add("remove lot space");
+        commands.add("add parker");
+        commands.add("remove parker");
+        (commands.add("change lot id");
+        commands.add("list major");
         commands.add("list class");
         commands.add("get swipes");
         commands.add("use swipe");
@@ -249,67 +255,79 @@ public class Controller {
                 	return "Saved!";
                 	
                 case "make major:":
-                    Major newmajor = new Major(command.substring(11).trim());
-                    db.addMajor(newmajor);
-                    return "major "+command.substring(11)+" has been made.";
+                    String mc = command.replaceFirst("make major:", "");
+                    if(database.findMajor(command.trim()) == null){
+                        Major newmajor = new Major(command.trim());
+                        db.addMajor(newmajor);
+                        return "major "+newmajor.getId()+" has been made.";
+                    }
+                    return "major already exists!";
                 case "add adviser:": // major = args[0]     faculty = args[1]
-                    String aa = command.replaceFirst("add adviser:", "");
-                    String[] aargs = aa.trim().split(" ");
-                    faculty adv = db.findFaculty(aargs[1]); Major major1 = db.findMajor(aargs[0]);
-                    if(major1 == null){return aargs[0]+" is an invalid major id. Please use a valid id.";}
-                        if(adv == null){return aargs[1]+" is an invalid username. Please use a valid username.";}
-                            if(major1.addAdviser(aargs[1])){return aargs[1]+" has been added as adviser to "+aargs[0]+" major.";}
-                            else{return "addition of "+aargs[1]+" to adviser list has failed.";}
+                    mc = command.replaceFirst("add adviser:", "");
+                    String[] argtwo = mc.trim().split(" ");   // [0] Major   [1] addviser username
+                    faculty adv = db.findFaculty(argtwo[1]); Major major1 = db.findMajor(argtwo[0]);
+                    if(major1 == null){return argtwo[0]+" is an invalid major id. Please use a valid id.";}
+                        if(adv == null){return argtwo[1]+" is an invalid username. Please use a valid username.";}
+                            if(major1.addAdviser(argtwo[1])){return argtwo[1]+" has been added as adviser to "+argtwo[0]+" major.";}
+                            else{return "addition of "+argtwo[1]+" to adviser list has failed.";}
                 case "make class:":
-                    String mc = command.replaceFirst("make class:", "");
-                    String[] margs = mc.trim().split(" ");  // [0] major  [1] new class
-                    Major ma = db.findMajor(margs[0]);
+                    mc = command.replaceFirst("make class:", "");
+                    argtwo = mc.trim().split(" ");  // [0] major  [1] new class
+                    Major ma = db.findMajor(argtwo[0]);
                     if (ma == null) {return"major entered is invalid";}
-                    if(ma.makeClass(margs[1])){return "class "+margs[1]+" has been created";}
+                    if(ma.makeClass(argtwo[1])){return "class "+argtwo[1]+" has been created";}
                     else{return "Failed to make class";}
                 case "change major id:":
-                    String cmi = command.replaceFirst("change major id:", "");
-                    String[] cargs = cmi.trim().split(" ");  //[0] major old id  [1] major new id
-                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
-                    ma.changeID(cargs[1]); return "major id has been changed to "+cargs[1];
+                    mc = command.replaceFirst("change major id:", "");
+                    argtwo = mc.trim().split(" ");  //[0] major old id  [1] major new id
+                    ma = db.findMajor(argtwo[0]); if(ma == null){return "major id is invalid";}
+                    ma.changeID(argtwo[1]); return "major id has been changed to "+argtwo[1];
                 case "remove adviser:":
-                    cmi = command.replaceFirst("remove adviser:", "");
-                    cargs = cmi.trim().split(" "); //  [0] major  [1] username of adviser to be removed
-                    ma = db.findMajor(cargs[0]); if(ma == null){return "major id is invalid";}
-                    adv = db.findFaculty(cargs[1]); if(adv == null){return "username of adviser does not exist";}
-                    if(ma.removeAdvisor(cargs[1])){return "adviser "+cargs[1]+" has been removed";}
+                    mc = command.replaceFirst("remove adviser:", "");
+                    argtwo = mc.trim().split(" "); //  [0] major  [1] username of adviser to be removed
+                    ma = db.findMajor(argtwo[0]); if(ma == null){return "major id is invalid";}
+                    adv = db.findFaculty(argtwo[1]); if(adv == null){return "username of adviser does not exist";}
+                    if(ma.removeAdvisor(argtwo[1])){return "adviser "+argtwo[1]+" has been removed";}
                     else{return "failed to remove adviser";}
                 case "change class id:":
-                    cmi = command.replaceFirst("change class id:", "");
-                    String[] ccargs = cmi.trim().split(" "); // [0] major  [1] old class id [2] new class id
-                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
-                    Major.Class cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
-                    if(cl.changeClassId(ccargs[2])){return "class id has been changed to "+ccargs[2];}
+                    mc = command.replaceFirst("change class id:", "");
+                    String[] argthree = mc.trim().split(" "); // [0] major  [1] old class id [2] new class id
+                    ma = db.findMajor(argthree[0]); if(ma == null){return "major id is invalid";}
+                    Major.Class cl = ma.findClass(argthree[1]); if(cl == null){return "class id is invalid";}
+                    if(cl.changeClassId(argthree[2])){return "class id has been changed to "+argthree[2];}
                 case "change class instructor:":
-                    cmi = command.replaceFirst("change class instructor:", "");
-                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = faculty user name
-                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
-                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
-                    adv = db.findFaculty(ccargs[2]); if(adv == null){return "instructor username is invalid";}
-                    if(cl.changeclassinstructor(adv)){return "class "+ccargs[1]+" instructor has been changed to "+ccargs[2];}
+                    mc = command.replaceFirst("change class instructor:", "");
+                    argthree = mc.trim().split(" "); // [0] = major id [1] = class id [2] = faculty user name
+                    ma = db.findMajor(argthree[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(argthree[1]); if(cl == null){return "class id is invalid";}
+                    adv = db.findFaculty(argthree[2]); if(adv == null){return "instructor username is invalid";}
+                    if(cl.changeclassinstructor(adv)){return "class "+argthree[1]+" instructor has been changed to "+argthree[2];}
                 case "add student to class:":
-                    cmi = command.replaceFirst("add student to class:", "");
-                    ccargs = cmi.trim().split(" "); // [0] = major id [1] = class id [2] = student username
-                    ma = db.findMajor(ccargs[0]); if(ma == null){return "major id is invalid";}
-                    cl = ma.findClass(ccargs[1]); if(cl == null){return "class id is invalid";}
-                    student st = db.findStudent(ccargs[2]); if(st == null){return "student username is invalid";}
-                    if(cl.addstudenttoclass(st)){ return "student "+ccargs[2]+" successfully added to class "+ccargs[1];}
-                case "list majors:":
-                    for(Major m: database.majorTable){
-                        String str = m.toString();
-                        System.out.print(str);
-                    }
+                    mc = command.replaceFirst("add student to class:", "");
+                    argthree = mc.trim().split(" "); // [0] = major id [1] = class id [2] = student username
+                    ma = db.findMajor(argthree[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(argthree[1]); if(cl == null){return "class id is invalid";}
+                    student st = db.findStudent(argthree[2]); if(st == null){return "student username is invalid";}
+                    if(cl.addstudenttoclass(st)){ return "student "+argthree[2]+" successfully added to class "+argthree[1];}
+                case"make lot:":
+                    return "working";
+                case"change lot id:":
+                    return "working";
+                case"remove lot space:":
+                    return "working";
+                case"add lot space:":
+                    return "working";
+                case "add parker:" :
+                    return "working";
+                case "remove parker:":
+                    return "working";
+                case "list major:":
                     return "end of Major list";
                 case "list class:":
-                    cmi = command.replaceFirst("list class:", "");
-                    margs = cmi.trim().split(" ");  // [0] major  [1] new class //NOTE CHANGED AN MC TO A CMI
-                    ma = db.findMajor(margs[0]); if(ma == null){return "major id is invalid";}
-                    cl = ma.findClass(margs[1]); if(cl == null){return "class id is invalid";}
+                    mc = command.replaceFirst("list class:", "");
+                    argtwo = mc.trim().split(" ");  // [0] major  [1] new class //NOTE CHANGED AN MC TO A CMI
+                    ma = db.findMajor(argtwo[0]); if(ma == null){return "major id is invalid";}
+                    cl = ma.findClass(argtwo[1]); if(cl == null){return "class id is invalid";}
                     String str = cl.toString();
                     System.out.print(str);
                     return "end of Class list";

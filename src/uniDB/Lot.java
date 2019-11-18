@@ -80,21 +80,21 @@ public class Lot {
     public String getID(){
         return this.ID;
     }
-    public boolean makeLot(String id, int spaces){
-        if(database.findLot(id) != null){
-            Lot newlot = new Lot(id, spaces);
-            database.addLot(newlot);
-            return true;
-        }
-        return false;
-    }
+
     public void addLotSpace(int s){
         this.spaces = spaces + s;
     }
     public void removeLotspace(int s){
         this.spaces = spaces - s;
     }
-    public void
+    public boolean makeLot(String id, int spaces){
+        if(database.findLot(id) == null){
+            Lot newlot = new Lot(id, spaces);
+            database.addLot(newlot);
+            return true;
+        }
+        return false;
+    }
     public boolean removeLot(String id){
         Lot delete = database.findLot(id);
         if(delete != null){

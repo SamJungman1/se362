@@ -143,7 +143,8 @@ public class database {
 		}
 		return null;
 	}
-	public Major findMajor(String id){
+
+	public static Major findMajor(String id){
 		for(Major m: majorTable){
 			if(m.getId().equals(id)){
 				return m;
