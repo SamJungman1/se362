@@ -75,7 +75,7 @@ public class Controller {
         commands.add("remove lot space");
         commands.add("add parker");
         commands.add("remove parker");
-        (commands.add("change lot id");
+        commands.add("change lot id");
         commands.add("list major");
         commands.add("list class");
         commands.add("get swipes");
@@ -310,25 +310,52 @@ public class Controller {
                     student st = db.findStudent(argthree[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+argthree[2]+" successfully added to class "+argthree[1];}
                 case"make lot:":
-                    return "working";
+                    mc = command.replaceFirst("make Lot:", "").trim();
+                    argtwo = mc.split(" ");  //[0] new lot id [1] number of new lot spaces
+                    if(Lot.makeLot(argtwo[0], Integer.valueOf(argtwo[1]))){ return "lot "+argtwo[0]+" has been created.";}
+                    return "creation of lot "+argtwo[0]+" has failed.";
                 case"change lot id:":
-                    return "working";
+                    mc = command.replaceFirst("change lot id:", "").trim();
+                    argtwo = mc.split(" ");  // [0] old lot id    [1] new lot id
+                    Lot lot = db.findLot(argtwo[0]); if(lot == null) {return "Lot id is invalid.";}
+                    lot.changLotId(argtwo[1]);
+                    return "Lot id has been changed to "+argtwo[1];
                 case"remove lot space:":
-                    return "working";
+                    mc = command.replaceFirst("remove lot space:", "").trim();
+                    argtwo = mc.split(" ");  // [0] lot id   [1] number of spaces to be removed from lot spaces
+                    lot = db.findLot(argtwo[0]); if(lot == null) {return "Lot id is invalid.";}
+                    lot.removeLotspace(Integer.valueOf(argtwo[1]));
+                    return "Lot spaces removed.";
                 case"add lot space:":
-                    return "working";
+                    mc = command.replaceFirst("add lot space:", "").trim();
+                    argtwo = mc.split(" ");  // [0] lot id   [1] number of spaces to be add to lot spaces
+                    lot = db.findLot(argtwo[0]); if(lot == null) {return "Lot id is invalid.";}
+                    lot.addLotSpace(Integer.valueOf(argtwo[1]));
+                    return "Lot spaces added.";
                 case "add parker:" :
-                    return "working";
+                    mc = command.replaceFirst("add parker:", "").trim();
+                    argtwo = mc.split(" ");  // [0] lot id   [1] username of user to be added
+                    lot = db.findLot(argtwo[0]); if(lot == null) {return "Lot id is invalid.";}
+                    if(lot.addparker(argtwo[1])){return "Parker successfully added.";}
+                    return "failed to add parker";
                 case "remove parker:":
-                    return "working";
+                    mc = command.replaceFirst("remove parker:", "").trim();
+                    argtwo = mc.split(" ");  // [0] lot id   [1] username of user to be removed
+                    lot = db.findLot(argtwo[0]); if(lot == null) {return "Lot id is invalid.";}
+                    if(lot.removeparker(argtwo[1])){ return "Parker successfully removed.";}
+                    return "failed to remove parker";
                 case "list major:":
+                    mc = command.replaceFirst("list major:", "").trim();
+                    ma = db.findMajor(mc); if (ma == null){ return "major id is invalid";}
+                    String str = ma.majorToString();
+                    System.out.print(str);
                     return "end of Major list";
                 case "list class:":
                     mc = command.replaceFirst("list class:", "");
                     argtwo = mc.trim().split(" ");  // [0] major  [1] new class //NOTE CHANGED AN MC TO A CMI
                     ma = db.findMajor(argtwo[0]); if(ma == null){return "major id is invalid";}
                     cl = ma.findClass(argtwo[1]); if(cl == null){return "class id is invalid";}
-                    String str = cl.toString();
+                    str = cl.classToString();
                     System.out.print(str);
                     return "end of Class list";
                 case "create student org:":

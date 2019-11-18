@@ -124,7 +124,7 @@ public class Major {
 		for(Class cl: this.Classes){
 			answer += cl.getID()+" ";
 		}
-		return answer;
+		return answer+"\n";
 	}
 	/**
 	 * Method returns the String Identification for this Major.

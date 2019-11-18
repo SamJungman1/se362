@@ -87,7 +87,8 @@ public class Lot {
     public void removeLotspace(int s){
         this.spaces = spaces - s;
     }
-    public boolean makeLot(String id, int spaces){
+
+    public static boolean makeLot(String id, int spaces){
         if(database.findLot(id) == null){
             Lot newlot = new Lot(id, spaces);
             database.addLot(newlot);
