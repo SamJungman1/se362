@@ -1,5 +1,6 @@
 package uniDB;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class cmdView {
@@ -8,7 +9,7 @@ public class cmdView {
 	private boolean loggedIn;
 	private Controller controller;
 
-	public cmdView() {
+	public cmdView() throws FileNotFoundException {
 		scanner = new Scanner(System.in);
 		loggedIn = false;
 		controller = new Controller();

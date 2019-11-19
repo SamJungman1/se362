@@ -102,9 +102,9 @@ public class Major {
 		}
 		public String classToString(){
 			String answer = this.ID+"\n";
-			answer += this.Instructor+"\n";
+			answer += this.Instructor.getUsername()+"\n";
 			for(student stu: this.Attendance){
-				answer += stu.getId()+" ";
+				answer += stu.getUsername()+" ";
 			}
 			return answer +="\n";
 		}
@@ -112,10 +112,9 @@ public class Major {
 			this.ID = newid;
 			return true;
 		}
-
 	} // end class Class end class Class
 
-	public String majorToString(){                               // working on this
+	public String majorToString(){
 		String answer = this.ID+"\n";
 		for(faculty adv: this.Advisers){
 			answer += adv.getUsername()+" ";

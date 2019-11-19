@@ -255,9 +255,9 @@ public class Controller {
                 	return "Saved!";
                 	
                 case "make major:":
-                    String mc = command.replaceFirst("make major:", "");
-                    if(database.findMajor(command.trim()) == null){
-                        Major newmajor = new Major(command.trim());
+                    String mc = command.replaceFirst("make major:", "").trim();
+                    if(database.findMajor(mc) == null){
+                        Major newmajor = new Major(mc);
                         db.addMajor(newmajor);
                         return "major "+newmajor.getId()+" has been made.";
                     }
@@ -310,10 +310,9 @@ public class Controller {
                     student st = db.findStudent(argthree[2]); if(st == null){return "student username is invalid";}
                     if(cl.addstudenttoclass(st)){ return "student "+argthree[2]+" successfully added to class "+argthree[1];}
                 case"make lot:":
-                    mc = command.replaceFirst("make Lot:", "").trim();
-                    argtwo = mc.split(" ");  //[0] new lot id [1] number of new lot spaces
-                    if(Lot.makeLot(argtwo[0], Integer.valueOf(argtwo[1]))){ return "lot "+argtwo[0]+" has been created.";}
-                    return "creation of lot "+argtwo[0]+" has failed.";
+                    mc = command.replaceFirst("make lot:", "").trim();
+                    if(Lot.makeLot(mc )) { return "lot "+mc+" has been created.";}
+                    return "creation of lot "+mc+" has failed.";
                 case"change lot id:":
                     mc = command.replaceFirst("change lot id:", "").trim();
                     argtwo = mc.split(" ");  // [0] old lot id    [1] new lot id

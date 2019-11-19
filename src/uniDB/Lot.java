@@ -88,9 +88,9 @@ public class Lot {
         this.spaces = spaces - s;
     }
 
-    public static boolean makeLot(String id, int spaces){
+    public static boolean makeLot(String id){
         if(database.findLot(id) == null){
-            Lot newlot = new Lot(id, spaces);
+            Lot newlot = new Lot(id);
             database.addLot(newlot);
             return true;
         }
