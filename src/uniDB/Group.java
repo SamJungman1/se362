@@ -25,7 +25,7 @@ public class Group {
     
     public String toFile()
     {
-    	String s = "Groupname:" + this.groupName + "|";
+    	String s = "Groupname:" + this.groupName + ":";
     	for(student e: _group)
     		s += e.getUsername() + ":";
     	return s;

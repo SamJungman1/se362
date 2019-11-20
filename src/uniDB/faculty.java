@@ -35,10 +35,9 @@ public class faculty extends user {
 	 * @return String 
 	 */
 	public String toFile()
-	{
-		
-		String s = "Username:" + this.username + "|" + "Password:" + this.password + "|" + "Fullname:" + this.fullname + "|"
-				+ "Salary:" + this.salary + "|" + "Title:" + this.title;
+	{	
+		String s = "Username:" + this.username + ":" + "Password:" + this.password + ":" + "Fullname:" + this.fullname + ":"
+				+ "Salary:" + this.salary + ":" + "Title:" + this.title;
 		return s;
 	}
 

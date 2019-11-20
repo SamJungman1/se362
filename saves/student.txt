@@ -1,0 +1,2 @@
+Username:test:Password:test:Fullname:test:classification:Freshman:GPA:4.0:Major:CS:MealSwipes:500:
+Username:filer:Password:file:Fullname:Sam:classification:Senior:GPA:3.5:Major:SE:MealSwipes:377:

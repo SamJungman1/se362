@@ -197,11 +197,11 @@ public class student extends user {
 	public String toFile()
 	{
 		
-		String s = "Username:" + this.username + "|" + "Password:" + this.password + "|" + "Fullname:" + this.fullname + "|"
-				+ "classification:" + this.classification + "|" + "GPA:" + this.GPA + "|"+ "Major:" + this.major + "|" + "|" + "MealSwipes:" + this.mealSwipes + "|";
+		String s = "Username:" + this.username + ":" + "Password:" + this.password + ":" + "Fullname:" + this.fullname + ":"
+				+ "classification:" + this.classification + ":" + "GPA:" + this.GPA + ":"+ "Major:" + this.major + ":" + "MealSwipes:" + this.mealSwipes + ":";
 		for(String key: att.keySet())
 		{
-			s += key.toString() + ":" + att.get(key) + "|";
+			s += key.toString() + ":" + att.get(key) + ":";
 		}
 		return s;
 	}

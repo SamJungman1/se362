@@ -22,10 +22,10 @@ public class Major {
 	
 	public String toFile()
 	{
-		String s = "ID:" + this.ID + "|" + "Faculty:";
+		String s = "ID:" + this.ID + ":" + "Faculty:";
 		for(faculty f: Advisers)
 			s += f.username + ":";
-		s += "END|";
+		s += "END:";
 		for(Class g: Classes)
 		{
 			s += g.getID() + ":";
@@ -34,7 +34,7 @@ public class Major {
 			{
 				s += h.getUsername() + ":";
 			}
-			s += "END|";
+			s += "END:";
 		}
 		
 		return s;

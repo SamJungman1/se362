@@ -28,9 +28,7 @@ public class Controller {
 
     public Controller() throws FileNotFoundException{
         db = new database();
-        db.addFaculty(new faculty("admin", "admin", "admin"));
-        db.addStudent(new student("test", "test", "test"));
-
+        
         library = new Library();
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(11));
@@ -247,7 +245,7 @@ public class Controller {
                     return db.getMeal(command.substring(12));
                 case "save:":
 				try {
-					db.save();
+					String s = db.save();
 				} catch (IOException e) {
 					e.printStackTrace();
 					return "Save files not found";
