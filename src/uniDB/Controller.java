@@ -81,6 +81,10 @@ public class Controller {
         commands.add("check times");
         commands.add("check meal");
         commands.add("save");
+        commands.add("create student org");
+        commands.add("add student to org");
+        commands.add("msg Org");
+        commands.add("show org");
     }
 
 
@@ -733,7 +737,12 @@ public class Controller {
             Book temp = library.findBook(args[0], args[1]);
             if(temp != null){
                 student tempStudent = database.findStudent(user);
-                return library.checkOutBook(tempStudent, temp);
+                if(tempStudent != null) {
+                    return library.checkOutBook(tempStudent, temp);
+                }
+                else{
+                    return "must be a student in order to check out book";
+                }
             }
             else{
                 return "no book by that title and author";
