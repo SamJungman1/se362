@@ -2,6 +2,7 @@ package uniDB;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class Controller {
         rooms.add(new Room(11));
         rooms.add(new Room(12));
         db.addDorm(new Dorm(rooms, "Friley"));
+        db.majorTable.add(new Major("ComS"));
 //        db.getDorm("Friley").createRooms(0, 10, 0);
         
         commands = new ArrayList<>();
@@ -81,6 +83,8 @@ public class Controller {
         commands.add("check times");
         commands.add("check meal");
         commands.add("save");
+        commands.add("apply");
+        commands.add("review app");
     }
 
 
@@ -393,6 +397,41 @@ public class Controller {
                 	} else {
                 		return "Dorm not found";
                 	}
+                	
+                case "apply:":
+                	student stud = db.findStudent(user);
+                	
+                	if(stud == null) { 
+                		return "Cannot Apply, not a student";
+                	}
+                	
+				try {
+					stud.apply();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                	return "done";
+                	
+                case "review app:":
+                	faculty fac = db.findFaculty(user);
+                	
+                	if(fac == null) {
+                		return "Cannot review applications, not a faculty member";
+                	}
+                	
+				try {
+					fac.reviewApp();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+                	return "done";
                 	
             }
         }

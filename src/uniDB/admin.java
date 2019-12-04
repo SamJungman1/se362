@@ -10,7 +10,6 @@ public class admin  extends user {
 		this.username = username;
 		setPassword(password);
 	}
-	
-	
+
 
 }

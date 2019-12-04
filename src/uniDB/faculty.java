@@ -1,5 +1,9 @@
 package uniDB;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.LinkedList;
+import java.util.Scanner;
 public class faculty extends user {
 	private double salary;
 	private String title;
@@ -28,6 +32,30 @@ public class faculty extends user {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public void reviewApp() throws FileNotFoundException {
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("--- Pending Apps ---");
+		
+		File directory = new File(System.getProperty("user.dir") + "\\apps\\");
+		String[] directoryFiles = directory.list();
+		
+		for (int i = 0; i < directoryFiles.length; i++) {
+			System.out.println(directoryFiles[i]);
+		}
+		
+		System.out.print("Enter Student's Name: ");
+		String name = in.nextLine();
+		
+		File app = new File(System.getProperty("user.dir") + "\\apps\\" + name + ".txt");
+		
+		Scanner file = new Scanner(app);
+		
+		while(file.hasNextLine()) {
+			System.out.println(file.nextLine());
+		}
 	}
 	
 	/**
