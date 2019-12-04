@@ -85,6 +85,17 @@ public class Controller {
         commands.add("save");
         commands.add("apply");
         commands.add("review app");
+        commands.add("create student org");
+        commands.add("add student to org");
+        commands.add("msg Org");
+        commands.add("show org");
+        commands.add("add bus");
+        commands.add("remove bus");
+        commands.add("deploy bus");
+        commands.add("add route");
+        commands.add("add stop");
+        commands.add("display bus");
+        commands.add("display route");
     }
 
 
@@ -161,6 +172,18 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                case "display route:":
+                    return"in progress";
+                case "display bus:":
+                    return displayBus(command);
+                case "add stop:":
+                    return addStop(command);
+                case "add route:":
+                    return addRoute(command);
+                case "add bus:":
+                    return addBus(command);
+                case "deploy bus:":
+                    return deployBus(command);
                 case "add book:":
                     return addBook(command);
                 case "remove book:":
@@ -400,11 +423,11 @@ public class Controller {
                 	
                 case "apply:":
                 	student stud = db.findStudent(user);
-                	
-                	if(stud == null) { 
+
+                	if(stud == null) {
                 		return "Cannot Apply, not a student";
                 	}
-                	
+
 				try {
 					stud.apply();
 				} catch (FileNotFoundException e) {
@@ -415,24 +438,24 @@ public class Controller {
 					e.printStackTrace();
 				}
                 	return "done";
-                	
+
                 case "review app:":
                 	faculty fac = db.findFaculty(user);
-                	
+
                 	if(fac == null) {
                 		return "Cannot review applications, not a faculty member";
                 	}
-                	
+
 				try {
 					fac.reviewApp();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
+
+
                 	return "done";
-                	
+
             }
         }
         return "invalid command";
@@ -731,6 +754,74 @@ public class Controller {
 
     }
 
+    public String addRoute(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        BusRoute temp = new BusRoute(com);
+        database.addBusRoute(temp);
+        return "create new bus route: " + com;
+    }
+
+    public String addBus(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. add bus:driver,bus number";
+        }
+        else{
+            if(database.findFaculty(args[0]) == null){
+                return "no faculty by that username";
+            }
+            else {
+                Bus temp = new Bus(database.findFaculty(args[0]), Integer.parseInt(args[1]));
+                database.addBus(temp);
+                return "sucessfully added a new bus";
+            }
+        }
+    }
+
+    public String addStop(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 3){
+            return "invalid parameters. add stop:route, stop name, stop time";
+        }
+        if(db.getBusRoute(args[0]) == null){
+            return "no route: " + args[1] + " found";
+        }
+        else{
+            db.getBusRoute(args[0]).addStop(args[1], Integer.parseInt(args[2]));
+            return "added stop: " + args[1] + " at " + args[2] + " to route: " + args[0];
+        }
+    }
+
+    public String displayBus(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if(db.getBus(Integer.parseInt(com)) == null){
+            return "no bus: " + com + " found";
+        }
+        else {
+            return db.getBus(Integer.parseInt(com)).toString();
+        }
+    }
+
+    public String deployBus(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. deploy bus:bus number,bus route";
+        }
+        if(db.getBusRoute(args[1]) == null){
+            return "no route: " + args[1] + " found";
+        }
+        if(db.getBus(Integer.parseInt(args[0])) == null){
+            return "no bus: " + args[0] + " found";
+        }
+        else {
+            db.getBus(Integer.parseInt(args[0])).assignRoute(db.getBusRoute(args[1]));
+            return "assigned bus: " + args[0] + " to route: " + args[1];
+        }
+    }
+
     public String addBook(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -772,7 +863,12 @@ public class Controller {
             Book temp = library.findBook(args[0], args[1]);
             if(temp != null){
                 student tempStudent = database.findStudent(user);
-                return library.checkOutBook(tempStudent, temp);
+                if(tempStudent != null) {
+                    return library.checkOutBook(tempStudent, temp);
+                }
+                else{
+                    return "must be a student in order to check out book";
+                }
             }
             else{
                 return "no book by that title and author";
