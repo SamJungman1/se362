@@ -22,9 +22,13 @@ public class database {
 	public static DiningCenter conversations;
 	public static DiningCenter udcc;
 	public static DiningCenter windows;
+	public static List<Bus> busTable;
+	public static List<BusRoute> busRoutetable;
 	public Calendar calendar;
 
 	public database() throws FileNotFoundException {
+		busTable = new ArrayList<Bus>();
+		busRoutetable = new ArrayList<BusRoute>();
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
 		groupTable = new ArrayList<Group>();
@@ -43,6 +47,34 @@ public class database {
 
 	public static void addStudent(student s) {
 		studentTable.add(s);
+	}
+
+	public static void addBus(Bus bus){busTable.add(bus);}
+
+	public static void removeBus(Bus bus){busTable.remove(bus);}
+
+	public static void addBusRoute(BusRoute route){busRoutetable.add(route);}
+
+	public BusRoute getBusRoute(String routeName){
+		BusRoute busRoute = null;
+
+		for (int i = 0; i < busRoutetable.size(); i++) {
+			if(busRoutetable.get(i).getRouteName().equals(routeName)) {
+				busRoute = busRoutetable.get(i);
+			}
+		}
+		return busRoute;
+	}
+
+	public Bus getBus(int busNumber){
+		Bus bus = null;
+
+		for (int i = 0; i < busTable.size(); i++) {
+			if(busTable.get(i).getBusNumber() == (busNumber)) {
+				bus = busTable.get(i);
+			}
+		}
+		return bus;
 	}
 
 	public static void addLot(Lot l){parkingLotTable.add(l);}
