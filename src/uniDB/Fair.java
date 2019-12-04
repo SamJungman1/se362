@@ -15,6 +15,7 @@ public class Fair {
         _building = building;
         _capacity = capacity;
         _date = date;
+        companies = new ArrayList<>();
     }
 
     public int get_capacity(){
@@ -45,5 +46,16 @@ public class Fair {
         }
     }
 
+    @Override
+    public String toString(){
+        String temp = "";
+   temp = "Building:" + get_building() + "\n" +
+    "Date:" + get_date().toString() + "\n" +
+    "Companies:" + "\n";
+   for(String x : companies){
+       temp += x + "\n";
+   }
+   return temp;
+    }
 
 }

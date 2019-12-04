@@ -57,6 +57,10 @@ public class database {
 		return fair;
 	}
 
+	public static void removeFair(Fair fair){
+		fairTable.remove(fair);
+	}
+
 	public static void addStudent(student s) {
 		studentTable.add(s);
 	}

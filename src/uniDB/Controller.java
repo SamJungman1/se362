@@ -1,7 +1,5 @@
 package uniDB;
 
-import sun.java2d.pipe.SpanShapeRenderer;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -101,6 +99,8 @@ public class Controller {
         commands.add("display route");
         commands.add("create fair");
         commands.add("register company");
+        commands.add("remove fair");
+        commands.add("display fair");
     }
 
 
@@ -177,8 +177,14 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                case "display fair:":
+                    return displayFair(command);
+                case "register company:":
+                    return registerCompany(command);
                 case "create fair:":
                     return createFair(command);
+                case "remove fair:":
+                    return removeFair(command);
                 case "display route:":
                     return displayRoute(command);
                 case "remove route:":
@@ -788,6 +794,87 @@ public class Controller {
         }
     }
 
+    public String displayFair(String command){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. display fair:building,date(dd-mm-yyyy)";
+        }
+        try {
+            Date tempDate = dateFormat.parse(args[1]);
+            if (database.getFair(args[0], tempDate) != null) {
+                return database.getFair(args[0],tempDate).toString();
+            } else {
+                return "there is no fair scheduled at that building on that day";
+            }
+        }
+             catch(Exception e){
+                if(e.getClass().equals(ParseException.class)) {
+                    return "invalid date format. dd-MM-yyyy";
+                }
+                else{
+                    return "error";
+                }
+            }
+    }
+
+    public String removeFair(String command){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 2){
+            return "invalid parameters. create fair:building,date(dd-mm-yyyy)";
+        }
+        try{
+            Date tempDate = dateFormat.parse(args[1]);
+            if(database.getFair(args[0], tempDate) != null) {
+                database.removeFair(database.getFair(args[0], tempDate));
+                return "removed fair at " + args[0] + " on " + tempDate.toString();
+            }
+            else{
+                return "there is no fair scheduled at that building on that day";
+            }
+        }
+        catch(Exception e){
+            if(e.getClass().equals(ParseException.class)) {
+                return "invalid date format";
+            }
+            else{
+                return "invalid capacity, please input integer";
+            }
+        }
+    }
+
+    public String registerCompany(String command){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 3){
+            return "invalid parameters. register company:building,date,company";
+        }
+        try{
+            Date tempDate = dateFormat.parse(args[1]);
+            if(database.getFair(args[0], tempDate) != null) {
+                Fair temp = database.getFair(args[0], tempDate);
+                temp.registerCompany(args[2]);
+                return "registered company for fair at " + args[0] + " on " + tempDate.toString();
+            }
+            else{
+                return "there is no fair scheduled at that building on that day";
+            }
+        }
+        catch(Exception e){
+            if(e.getClass().equals(ParseException.class)) {
+                return "invalid date format. dd-MM-yyyy";
+            }
+            else{
+                 e.printStackTrace();
+                 return"error";
+            }
+        }
+    }
+
     public String createFair(String command){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -797,16 +884,22 @@ public class Controller {
         }
         try{
             Date tempDate = dateFormat.parse(args[2]);
-            if(database.getFair(args[0], tempDate) != null) {
+            if(database.getFair(args[0], tempDate) == null) {
                 Fair temp = new Fair(args[0], Integer.parseInt(args[1]), tempDate);
+                database.addFair(temp);
                 return "created new fair at " + args[0] + " on " + tempDate.toString();
             }
             else{
                 return "there is already a fair scheduled at that building on that day";
             }
         }
-        catch(ParseException e){
-            return "invalid date format";
+        catch(Exception e){
+            if(e.getClass().equals(ParseException.class)) {
+                return "invalid date format. dd-MM-yyyy";
+            }
+            else{
+                return "invalid capacity, please input integer";
+            }
         }
     }
 
