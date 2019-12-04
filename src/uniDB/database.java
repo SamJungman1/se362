@@ -1,13 +1,11 @@
 package uniDB;
-import java.util.Calendar;
+import java.util.*;
 import java.lang.reflect.Array;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+
 import uniDB.Major;
 
 public class database {
@@ -24,6 +22,7 @@ public class database {
 	public static DiningCenter windows;
 	public static List<Bus> busTable;
 	public static List<BusRoute> busRoutetable;
+	public static List<Fair> fairTable;
 	public Calendar calendar;
 
 	public database() throws FileNotFoundException {
@@ -35,6 +34,7 @@ public class database {
 		majorTable = new ArrayList<Major>();
 		dormTable = new ArrayList<Dorm>();
 		studentOrgsTable = new ArrayList<StudentOrg>();
+		fairTable = new ArrayList<Fair>();
 		parkingLotTable = new ArrayList<Lot>();
 		int[][] hours = {{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19}};
 		seasons = new DiningCenter(hours, "Seasons");
@@ -43,6 +43,18 @@ public class database {
 		windows = new DiningCenter(hours, "Windows");
 		calendar = Calendar.getInstance();
 		this.load();
+	}
+
+	public static void addFair(Fair fair){fairTable.add(fair);}
+
+	public static Fair getFair(String building, Date date){
+		Fair fair = null;
+		for (int i = 0; i < fairTable.size(); i++) {
+			if(fairTable.get(i).get_building().equals(building) && fairTable.get(i).get_date().equals(date)) {
+				fair = fairTable.get(i);
+			}
+		}
+		return fair;
 	}
 
 	public static void addStudent(student s) {

@@ -1,12 +1,13 @@
 package uniDB;
 
+import sun.java2d.pipe.SpanShapeRenderer;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class Controller {
 
     public Controller() throws FileNotFoundException{
         db = new database();
-        
+
         library = new Library();
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room(11));
@@ -37,7 +38,7 @@ public class Controller {
         db.addDorm(new Dorm(rooms, "Friley"));
         db.majorTable.add(new Major("ComS"));
 //        db.getDorm("Friley").createRooms(0, 10, 0);
-        
+
         commands = new ArrayList<>();
         commands.add("get student");
         commands.add("remove student");
@@ -98,6 +99,8 @@ public class Controller {
         commands.add("remove stop");
         commands.add("display bus");
         commands.add("display route");
+        commands.add("create fair");
+        commands.add("register company");
     }
 
 
@@ -174,6 +177,8 @@ public class Controller {
                     else{
                         return "Error finding one or more students with given id's";
                     }
+                case "create fair:":
+                    return createFair(command);
                 case "display route:":
                     return displayRoute(command);
                 case "remove route:":
@@ -264,16 +269,16 @@ public class Controller {
 
                 case "getMsg faculty:":
                 	return db.getMsgsStudent(user);
-                
+
                 case "use swipe:":
                 	return db.useSwipe(user);
-                
+
                 case "get swipes:":
                 	return db.getMealSwipes(user);
-                	
+
                 case "check times:":
                     return db.checkDiningCenter(command.substring(13));
-                
+
                 case "check meal:":
                     return db.getMeal(command.substring(12));
                 case "save:":
@@ -284,7 +289,7 @@ public class Controller {
 					return "Save files not found";
 				}
                 	return "Saved!";
-                	
+
                 case "make major:":
                     String mc = command.replaceFirst("make major:", "").trim();
                     if(database.findMajor(mc) == null){
@@ -399,23 +404,23 @@ public class Controller {
                 case "create dorm:":
                 	db.addDorm(new Dorm(command.substring(13)));
                 	return "Dorm created";
-                
+
                 case "list dorms:":
                 	db.listDorms();
                 	return "done";
                 case "select housing:":
-                	
+
                 	String dormName = command.substring(16);
                 	Dorm dorm = db.getDorm(dormName);
                 	if(dorm != null) {
                 		dorm.listOpenRooms();
                 		Scanner scan = new Scanner(System.in);
-                		
+
                 		while(true) {
                 			System.out.print("Select room by id: ");
                 			String id = scan.next();
                 			Room room = dorm.getRoomById(Integer.parseInt(id));
-                			
+
                 			if(room != null) {
                 				room.changeCapacity(room.getCapacity() - 1);
                 				return "Added to room " + id;
@@ -426,7 +431,7 @@ public class Controller {
                 	} else {
                 		return "Dorm not found";
                 	}
-                	
+
                 case "apply:":
                 	student stud = db.findStudent(user);
 
@@ -780,6 +785,28 @@ public class Controller {
         }
         else{
             return "no bus route found";
+        }
+    }
+
+    public String createFair(String command){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 3){
+            return "invalid parameters. create fair:building,capacity,date(dd-mm-yyyy)";
+        }
+        try{
+            Date tempDate = dateFormat.parse(args[2]);
+            if(database.getFair(args[0], tempDate) != null) {
+                Fair temp = new Fair(args[0], Integer.parseInt(args[1]), tempDate);
+                return "created new fair at " + args[0] + " on " + tempDate.toString();
+            }
+            else{
+                return "there is already a fair scheduled at that building on that day";
+            }
+        }
+        catch(ParseException e){
+            return "invalid date format";
         }
     }
 
