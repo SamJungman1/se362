@@ -56,6 +56,8 @@ public class faculty extends user {
 		while(file.hasNextLine()) {
 			System.out.println(file.nextLine());
 		}
+		
+		
 	}
 	
 	/**
