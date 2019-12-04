@@ -93,7 +93,9 @@ public class Controller {
         commands.add("remove bus");
         commands.add("deploy bus");
         commands.add("add route");
+        commands.add("remove route");
         commands.add("add stop");
+        commands.add("remove stop");
         commands.add("display bus");
         commands.add("display route");
     }
@@ -173,11 +175,15 @@ public class Controller {
                         return "Error finding one or more students with given id's";
                     }
                 case "display route:":
-                    return"in progress";
+                    return displayRoute(command);
+                case "remove route:":
+                    return removeRoute(command);
                 case "display bus:":
                     return displayBus(command);
                 case "add stop:":
                     return addStop(command);
+                case "remove stop:":
+                    return removeStop(command);
                 case "add route:":
                     return addRoute(command);
                 case "add bus:":
@@ -756,9 +762,25 @@ public class Controller {
 
     public String addRoute(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
-        BusRoute temp = new BusRoute(com);
-        database.addBusRoute(temp);
-        return "create new bus route: " + com;
+        if(db.getBusRoute(com) != null){
+            return "route: " + com + " already exists";
+        }
+        else {
+            BusRoute temp = new BusRoute(com);
+            database.addBusRoute(temp);
+            return "create new bus route: " + com;
+        }
+    }
+
+    public String removeRoute(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if(db.getBusRoute(com) != null){
+            database.removeBusRoute(db.getBusRoute(com));
+            return "removed bus route";
+        }
+        else{
+            return "no bus route found";
+        }
     }
 
     public String addBus(String command){
@@ -794,6 +816,22 @@ public class Controller {
         }
     }
 
+    public String removeStop(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        String[] args = com.split(",");
+        if(args.length != 3){
+            return "invalid parameters. remove stop:route, stop name, stop time";
+        }
+        if(db.getBusRoute(args[0]) == null){
+            return "no route: " + args[1] + " found";
+        }
+        else{
+            BusRoute temp = db.getBusRoute(args[0]);
+            temp.removeStop(args[1],Integer.parseInt(args[2]));
+            return "removed stop";
+        }
+    }
+
     public String displayBus(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         if(db.getBus(Integer.parseInt(com)) == null){
@@ -801,6 +839,16 @@ public class Controller {
         }
         else {
             return db.getBus(Integer.parseInt(com)).toString();
+        }
+    }
+
+    public String displayRoute(String command){
+        String com = command.replaceFirst("(.*?)\\:", "");
+        if(db.getBusRoute((com)) == null){
+            return "no bus route: " + com + " found";
+        }
+        else {
+            return db.getBusRoute(com).toString();
         }
     }
 

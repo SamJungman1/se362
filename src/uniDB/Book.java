@@ -1,5 +1,9 @@
 package uniDB;
 
+/**
+ * @author Tyler Lund
+ * This class serves as a constructor for books to be used in the library object
+ */
 public class Book {
     private String author;
     private String title;

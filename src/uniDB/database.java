@@ -55,6 +55,8 @@ public class database {
 
 	public static void addBusRoute(BusRoute route){busRoutetable.add(route);}
 
+	public static void removeBusRoute(BusRoute route){busRoutetable.remove(route);}
+
 	public BusRoute getBusRoute(String routeName){
 		BusRoute busRoute = null;
 

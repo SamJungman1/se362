@@ -20,6 +20,8 @@ public class BusRoute {
         return routeName;
     }
 
+    public void removeStop(String location, Integer time) { stops.remove(location,time);}
+
     @Override
     public String toString(){
         String temp = "";
