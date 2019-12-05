@@ -1,13 +1,11 @@
 package uniDB;
-import java.util.Calendar;
+import java.util.*;
 import java.lang.reflect.Array;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+
 import uniDB.Major;
 
 public class database {
@@ -23,15 +21,21 @@ public class database {
 	public static DiningCenter conversations;
 	public static DiningCenter udcc;
 	public static DiningCenter windows;
+	public static List<Bus> busTable;
+	public static List<BusRoute> busRoutetable;
+	public static List<Fair> fairTable;
 	public Calendar calendar;
 
 	public database() throws FileNotFoundException {
+		busTable = new ArrayList<Bus>();
+		busRoutetable = new ArrayList<BusRoute>();
 		studentTable = new ArrayList<student>();
 		facultyTable = new ArrayList<faculty>();
 		groupTable = new ArrayList<Group>();
 		majorTable = new ArrayList<Major>();
 		dormTable = new ArrayList<Dorm>();
 		studentOrgsTable = new ArrayList<StudentOrg>();
+		fairTable = new ArrayList<Fair>();
 		parkingLotTable = new ArrayList<Lot>();
 		employerTable = new ArrayList<Employer>();
 		int[][] hours = {{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19}};
@@ -43,8 +47,54 @@ public class database {
 		this.load();
 	}
 
+	public static void addFair(Fair fair){fairTable.add(fair);}
+
+	public static Fair getFair(String building, Date date){
+		Fair fair = null;
+		for (int i = 0; i < fairTable.size(); i++) {
+			if(fairTable.get(i).get_building().equals(building) && fairTable.get(i).get_date().equals(date)) {
+				fair = fairTable.get(i);
+			}
+		}
+		return fair;
+	}
+
+	public static void removeFair(Fair fair){
+		fairTable.remove(fair);
+	}
+
 	public static void addStudent(student s) {
 		studentTable.add(s);
+	}
+
+	public static void addBus(Bus bus){busTable.add(bus);}
+
+	public static void removeBus(Bus bus){busTable.remove(bus);}
+
+	public static void addBusRoute(BusRoute route){busRoutetable.add(route);}
+
+	public static void removeBusRoute(BusRoute route){busRoutetable.remove(route);}
+
+	public BusRoute getBusRoute(String routeName){
+		BusRoute busRoute = null;
+
+		for (int i = 0; i < busRoutetable.size(); i++) {
+			if(busRoutetable.get(i).getRouteName().equals(routeName)) {
+				busRoute = busRoutetable.get(i);
+			}
+		}
+		return busRoute;
+	}
+
+	public Bus getBus(int busNumber){
+		Bus bus = null;
+
+		for (int i = 0; i < busTable.size(); i++) {
+			if(busTable.get(i).getBusNumber() == (busNumber)) {
+				bus = busTable.get(i);
+			}
+		}
+		return bus;
 	}
 
 	public static void addLot(Lot l){parkingLotTable.add(l);}
