@@ -25,6 +25,8 @@ public class database {
 	public static List<BusRoute> busRoutetable;
 	public static List<Fair> fairTable;
 	public static List<IntramuralSport> intramuralSportTable;
+	public static List<GymEquipment> gymequip;
+	public static List<GymRental> gymrent;
 	public Calendar calendar;
 
 	public database() throws FileNotFoundException {
@@ -45,6 +47,8 @@ public class database {
 		conversations = new DiningCenter(hours, "Conversations");
 	    udcc = new DiningCenter(hours, "UDCC");
 		windows = new DiningCenter(hours, "Windows");
+		gymequip = new ArrayList<GymEquipment>();
+		gymrent = new ArrayList<GymRental>();
 		calendar = Calendar.getInstance();
 		this.load();
 	}
@@ -109,6 +113,53 @@ public class database {
 		return null;
 	}
 	public static void removeLot(Lot l){parkingLotTable.remove(l);}
+	public static boolean addGymEquipment(GymEquipment addnew){
+		for (GymEquipment equi: gymequip){
+			if (equi == addnew){
+				return false;
+			}
+		}
+		gymequip.add(addnew);
+		return true;
+	}
+	public static GymEquipment findGymEquipment(String idname){
+		for (GymEquipment equi: gymequip){
+			if (equi.getId().equals(idname) || equi.getName().equals(idname)){
+				return equi;
+			}
+		}
+		return null;
+	}
+	public static boolean removeGymEquipment(String idname){
+		GymEquipment answer = findGymEquipment(idname);
+		if (answer != null) {
+			gymequip.remove(answer);
+			return true;
+		}
+		return false;
+	}
+	public static boolean addGymRent(GymRental addnew){
+		gymrent.add(addnew);
+		return true;
+	}
+	public static GymRental findGymRent(String usernameid){
+		for (GymRental ren: gymrent){
+			if (ren.getRenter().getUsername().equals(usernameid)){
+				return ren;
+			}
+			List<GymEquipment> items = ren.getRent();
+			for (GymEquipment item: items){
+				if ( item.id.equals(usernameid)){
+					return ren;
+				}
+			}
+		}
+		return null;
+	}
+	public static boolean removeGymRent(GymRental removeold){
+		gymrent.remove(removeold);
+		return true;
+	}
 
 	public static void addGroup(Group g){
 		groupTable.add(g);

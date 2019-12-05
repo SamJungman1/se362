@@ -502,6 +502,34 @@ public class Controller {
                     str = cl.classToString();
                     System.out.print(str);
                     return "end of Class list";
+                case "make gym equipment:":
+                    mc = command.replaceFirst("make gym equipment:","");
+                    argthree = mc.trim().split(",");  //[0] id [1] name  [2] condition
+                    if (GymEquipment.makeGymEquipment(argthree[0].trim(), argthree[1].trim(), argthree[2].trim())){
+                        //do later
+                    }
+                    return "";
+                case "delete gym equipment:":
+                    mc = command.replaceFirst("delete gym equipment:","");
+                case "set up gym:":
+                    GymEquipment.setupgym();
+                case "list gym:":
+                    mc = command.replaceFirst("list gym:", "");
+                case "change gym id:":
+                    mc = command.replaceFirst("change gym id:", "");
+                case "change gym name:":
+                    mc = command.replaceFirst("change gym name:", "");
+                case "change gym condition":
+                    mc = command.replaceFirst("change gym condition", "");
+                case "change gym description:":
+                    mc = command.replaceFirst("change gym description:","");
+                case "check out gym:":
+                    mc = command.replaceFirst("check out gym:","");
+                case "check in gym:":
+                    mc = command.replaceFirst("check in gym:","");
+                case "user rent list:":
+                    mc = command.replaceFirst("user rent list:","");
+                    return "";
                 case "create student org:":
                     return createStudentOrg(command);
                 case "add student to org:":
