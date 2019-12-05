@@ -37,6 +37,7 @@ public class GymRental {
     public List<GymEquipment> getRent(){
         return this.rent;
     }
+
     public String rentitem(String renter, String rent){
         user name = findUser(renter); if (name == null){return "invalid user name";}
         GymEquipment equip = database.findGymEquipment(rent); if (equip == null) { return "invalid equipment id";}
@@ -57,7 +58,7 @@ public class GymRental {
         }
         return "succefful";
     }
-    public String userreintlist(String username){
+    public String userrentlist(String username){
         GymRental gr = database.findGymRent(username); if (gr == null) {return "user rental is clear";}
         List<GymEquipment> ge = gr.getRent();  String answer = "";
         for (GymEquipment item: ge){

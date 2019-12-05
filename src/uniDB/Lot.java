@@ -3,6 +3,10 @@ package uniDB;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * @author Christian Mains
+ * management of physical parking lots on campus to ensure all assigned persons have a parking spot.
+ */
 public class Lot {
     String ID;    //ST for stadium, G for gimnasium, A for auditorium, D for dorm parking, f for faculty parking, S for student parking
     private int spaces;
@@ -20,6 +24,12 @@ public class Lot {
     public void changLotId(String id){
         this.ID = id;
     }
+
+    /**
+     * adds designated person to parking lot
+     * @param id username of person to be added as designated parker.
+     * @return true if person was added to parking designation, false other wise.
+     */
     public boolean addparker(String id){
         user looser = database.findFaculty(id);
         if(looser != null){ this.parkers.add(looser); return true;}
@@ -27,6 +37,12 @@ public class Lot {
         if(looser != null){this.parkers.add(looser); return true;}
         return false;
     }
+
+    /**
+     * removes designated person from parking permission list.
+     * @param id username of person to be removed.
+     * @return true if person is removed, false otherwise
+     */
     public boolean removeparker(String id){
         for(user looser: this.parkers){
             if(looser.getId().equals(id)){
@@ -81,13 +97,27 @@ public class Lot {
         return this.ID;
     }
 
+    /**
+     * adds spaces to parking lot number of spaces
+     * @param s number of spaces to be added
+     */
     public void addLotSpace(int s){
         this.spaces = spaces + s;
     }
+
+    /**
+     * removes spaces from parking lot number of spaces
+     * @param s number of spaces to be removed
+     */
     public void removeLotspace(int s){
         this.spaces = spaces - s;
     }
 
+    /**
+     * creates lot with designated id
+     * @param id to be assigned to new parking lot
+     * @return true if lot is created, false otherwise
+     */
     public static boolean makeLot(String id){
         if(database.findLot(id) == null){
             Lot newlot = new Lot(id);
@@ -96,6 +126,12 @@ public class Lot {
         }
         return false;
     }
+
+    /**
+     * deletes lot from data base and all spaces there in.
+     * @param id of lot to be deleted
+     * @return true of lot is deleted, false otherwise.
+     */
     public boolean removeLot(String id){
         Lot delete = database.findLot(id);
         if(delete != null){
