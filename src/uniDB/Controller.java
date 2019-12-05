@@ -108,6 +108,13 @@ public class Controller {
         commands.add("register company");
         commands.add("remove fair");
         commands.add("display fair");
+        commands.add("add sport");
+        commands.add("find sport");
+        commands.add("add team to sport");
+        commands.add("add player to team");
+        commands.add("add win to team");
+        commands.add("add loss to team");
+        commands.add("add tie to team");
     }
 
 
@@ -292,6 +299,53 @@ public class Controller {
 
                 case "getMsg faculty:":
                 	return db.getMsgsStudent(user);
+                	
+                case "add sport:":
+                	IntramuralSport sport = new IntramuralSport(command.substring(10));
+                	return "Success";
+                	
+                case "find sport:":
+                	return db.findSport(command.substring(11)).printTeams();
+                	
+                case "add team to sport:":
+                	String sportCom = command.substring(18);
+                	String[] sportSplit = sportCom.split(",");
+                	if(sportSplit.length < 2)
+                		return "Invalid command";
+                	db.addTeamToSport(sportSplit[0], sportSplit[1]);
+                	return "Success";
+                	
+                case "add player to team:":
+                	String sportCom2 = command.substring(18);
+                	String[] sportSplit2 = sportCom2.split(",");
+                	if(sportSplit2.length < 3)
+                		return "Invalid command";
+                	db.addPlayerToTeamToSport(sportSplit2[0], sportSplit2[1], sportSplit2[2]);
+                	return "Success";
+                	
+                case "add win to team:":
+                	String winCom = command.substring(16);
+                	String[] winSplit = winCom.split(",");
+                	if(winSplit.length < 2)
+                		return "Invalid command";
+                	db.addWLTtoTeamToSport(winSplit[0], winSplit[1], 0);
+                	return "Success";
+                	
+                case "add loss to team:":
+                	String lossCom = command.substring(17);
+                	String[] lossSplit = lossCom.split(",");
+                	if(lossSplit.length < 2)
+                		return "Invalid command";
+                	db.addWLTtoTeamToSport(lossSplit[0], lossSplit[1], 1);
+                	return "Success";
+                	
+                case "add tie to team:":
+                	String tieCom = command.substring(16);
+                	String[] tieSplit = tieCom.split(",");
+                	if(tieSplit.length < 2)
+                		return "Invalid command";
+                	db.addWLTtoTeamToSport(tieSplit[0], tieSplit[1], 2);
+                	return "Success";
 
                 case "use swipe:":
                 	return db.useSwipe(user);

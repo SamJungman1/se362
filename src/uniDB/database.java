@@ -24,6 +24,7 @@ public class database {
 	public static List<Bus> busTable;
 	public static List<BusRoute> busRoutetable;
 	public static List<Fair> fairTable;
+	public static List<IntramuralSport> intramuralSportTable;
 	public Calendar calendar;
 
 	public database() throws FileNotFoundException {
@@ -38,6 +39,7 @@ public class database {
 		fairTable = new ArrayList<Fair>();
 		parkingLotTable = new ArrayList<Lot>();
 		employerTable = new ArrayList<Employer>();
+		intramuralSportTable = new ArrayList<IntramuralSport>();
 		int[][] hours = {{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19}};
 		seasons = new DiningCenter(hours, "Seasons");
 		conversations = new DiningCenter(hours, "Conversations");
@@ -278,6 +280,77 @@ public class database {
 	
 	/**
 	 * 
+	 * @param is
+	 * Adds intramural sport, that is passed in, to the table
+	 */
+	public void addSport(IntramuralSport is)
+	{
+		intramuralSportTable.add(is);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * Finds a sport of a certain name and returns it
+	 * @return IntramuralSport
+	 */
+	public static IntramuralSport findSport(String name)
+	{
+		IntramuralSport temp = null;
+		for(IntramuralSport s: intramuralSportTable)
+		{
+			if(s.name.trim().equals(name.trim())) {
+				temp = s;
+				break;
+				}
+			}
+		return temp;
+	}
+	
+	/**
+	 * 
+	 * @param sport
+	 * @param team
+	 * Adds a team to a particular sport
+	 */
+	public void addTeamToSport(String sport, String team)
+	{
+		findSport(sport).addTeam(team);
+	}
+	
+	/**
+	 * 
+	 * @param sport
+	 * @param team
+	 * @param name
+	 * Adds a name to a particular team to a particular sport
+	 * 
+	 */
+	public void addPlayerToTeamToSport(String sport, String team, String name)
+	{
+		findSport(sport).addPlayer(team, name);
+	}
+	
+	/**
+	 * 
+	 * @param sport
+	 * @param team
+	 * @param WLT - Win, Loss, Tie
+	 * Adds a win, loss, or tie to a particular team of a particular sport. 
+	 * WLT is an int that can either be 0,1,2 representing Win, Loss, and Tie respectively
+	 */
+	public void addWLTtoTeamToSport(String sport, String team, int WLT)
+	{
+		if(WLT == 0)
+			findSport(sport).addWin(team);
+		else if(WLT == 1)
+			findSport(sport).addLoss(team);
+		else if(WLT == 2)
+			findSport(sport).addTie(team);
+	}
+	
+	/**
+	 * 
 	 * @param e
 	 * Adds an employer to the table
 	 */
@@ -329,7 +402,7 @@ public class database {
 	}
 	
 	/**
-	 * Gets all current job offers that have a minimum wage
+	 * Gets all current job offers that have a particular title
 	 * @return String
 	 */
 	public String getJobsTitle(String title)
@@ -344,7 +417,7 @@ public class database {
 	}
 
 	/**
-	 * Gets all current job offers that have a minimum wage
+	 * Gets all current job offers that have a particular type
 	 * @return String
 	 */
 	public String getJobsType(String type)
