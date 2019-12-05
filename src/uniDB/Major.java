@@ -100,6 +100,11 @@ public class Major {
 			}
 			return null;
 		}
+
+		/**
+		 * String representation of this class
+		 * @return String of class id, instructor, and attendance.
+		 */
 		public String classToString(){
 			String answer = this.ID+"\n";
 			answer += this.Instructor.getUsername()+"\n";
@@ -114,6 +119,10 @@ public class Major {
 		}
 	} // end class Class end class Class
 
+	/**
+	 * string identification of this major.
+	 * @return String of major id, advisers and classes.
+	 */
 	public String majorToString(){
 		String answer = this.ID+"\n";
 		for(faculty adv: this.Advisers){
