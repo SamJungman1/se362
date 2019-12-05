@@ -85,6 +85,13 @@ public class Controller {
         commands.add("save");
         commands.add("apply");
         commands.add("review app");
+        commands.add("add employer");
+        commands.add("get employer");
+        commands.add("add offer");
+        commands.add("get offers");
+        commands.add("get offers wage");
+        commands.add("get offers title");
+        commands.add("get offers type");
     }
 
 
@@ -100,6 +107,7 @@ public class Controller {
         //user user = null;
         student stu = db.findStudent(username);
         faculty fac = db.findFaculty(username);
+        Employer emp = db.findEmployer(username);
         boolean login = false;
 
         if(stu != null) {
@@ -114,6 +122,15 @@ public class Controller {
         } else if(fac != null) {
         	user = username;
         	login = fac.login(username, password);
+        	if(login) {
+        		return login;
+        	} else {
+        		System.out.println("Login Failed, invalid credentials");
+        		return false;
+        	}
+        } else if(emp != null) {
+        	user = username;
+        	login = emp.login(username, password);
         	if(login) {
         		return login;
         	} else {
@@ -255,7 +272,39 @@ public class Controller {
 					return "Save files not found";
 				}
                 	return "Saved!";
+                
+                case "add employer:":
+                	String s = command.substring(13);
+                	String[] cases = s.split(",");
+                	if(cases.length < 6)
+                		return "Invalid employer command";
+                	Employer e = new Employer(cases[0],cases[1],cases[2],cases[3],cases[4],cases[5]);
+                	db.addEmployer(e);
+                	return "Success";
                 	
+                case "get employer:":
+                	return db.findEmployer(command.substring(12)).toFile();
+                	
+                case "add offer:":
+                	String of = command.substring(10);
+                	String[] offerDetails = of.split(",");
+                	if(offerDetails.length < 3)
+                		return "Invalid command";
+                	db.addJob(user, offerDetails[0], offerDetails[1], Double.valueOf(offerDetails[2]));
+                	return "Success";
+                	
+                case "get offers:":
+                	return db.getJobs();
+                	
+                case "get offers wage:":
+                	return db.getJobsWage(Double.valueOf(command.substring(16).trim()));
+                	
+                case "get offers title:":
+                	return db.getJobsTitle(command.substring(17).trim());
+                
+                case "get offers type:":
+                	return db.getJobsType(command.substring(16).trim());
+                
                 case "make major:":
                     String mc = command.replaceFirst("make major:", "").trim();
                     if(database.findMajor(mc) == null){
@@ -407,12 +456,12 @@ public class Controller {
                 	
 				try {
 					stud.apply();
-				} catch (FileNotFoundException e) {
+				} catch (FileNotFoundException excep) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
+					excep.printStackTrace();
+				} catch (UnsupportedEncodingException excep) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					excep.printStackTrace();
 				}
                 	return "done";
                 	
@@ -425,9 +474,9 @@ public class Controller {
                 	
 				try {
 					fac.reviewApp();
-				} catch (FileNotFoundException e) {
+				} catch (FileNotFoundException excep) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					excep.printStackTrace();
 				}
 				
 				

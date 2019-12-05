@@ -18,6 +18,7 @@ public class database {
 	public static List<Dorm> dormTable;
 	public static List<StudentOrg> studentOrgsTable;
 	public static List<Lot> parkingLotTable;
+	public static List<Employer> employerTable;
 	public static DiningCenter seasons;
 	public static DiningCenter conversations;
 	public static DiningCenter udcc;
@@ -32,6 +33,7 @@ public class database {
 		dormTable = new ArrayList<Dorm>();
 		studentOrgsTable = new ArrayList<StudentOrg>();
 		parkingLotTable = new ArrayList<Lot>();
+		employerTable = new ArrayList<Employer>();
 		int[][] hours = {{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19},{8,10,12,14,17,19}};
 		seasons = new DiningCenter(hours, "Seasons");
 		conversations = new DiningCenter(hours, "Conversations");
@@ -132,7 +134,20 @@ public class database {
 				}
 			}
 		return temp;
-		}
+	}
+	
+	public static Employer findEmployer(String username)
+	{
+		Employer temp = null;
+		for(Employer s: employerTable)
+		{
+			if(s.getUsername().trim().equals(username.trim())) {
+				temp = s;
+				break;
+				}
+			}
+		return temp;
+	}
 
 	public static Group findGroup(String id)
 	{
@@ -153,6 +168,12 @@ public class database {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * Gets all messages from a particular student
+	 * @return String
+	 */
 	public String getMsgsStudent(String username)
 	{
 		String s = new String();
@@ -165,6 +186,12 @@ public class database {
 		return s;
 	}
 	
+	/**
+	 * 
+	 * @param username
+	 * Gets all messages from a particular faculty
+	 * @return String
+	 */
 	public String getMsgsFaculty(String username)
 	{
 		String s = new String();
@@ -176,17 +203,111 @@ public class database {
 		}
 		return s;
 	}
-
+	
+	/**
+	 * 
+	 * @param username
+	 * @param msg
+	 * Sends a message to a Student of a unique username
+	 */
 	public void msgStudent(String username, String msg)
 	{
 		findStudent(username).addMessage(msg);
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * @param msg
+	 * Sends a message to a Faculty of a unique username
+	 */
 	public void msgFacutly(String username, String msg)
 	{
 		findFaculty(username).addMessage(msg);
 	}
+	
+	/**
+	 * 
+	 * @param e
+	 * Adds an employer to the table
+	 */
+	public void addEmployer(Employer e)
+	{
+		employerTable.add(e);
+	}
+	/**
+	 * 
+	 * @param username
+	 * @param type
+	 * @param title
+	 * @param wage
+	 * Adds an offer to an employer's list of offers
+	 */
+	public void addJob(String username, String type, String title, double wage)
+	{
+		findEmployer(username).addOffer(type, title, wage);
+	}
+	
+	/**
+	 * Gets all current job offers
+	 * @return String
+	 */
+	public String getJobs()
+	{
+		String s = "---------------------------------";
+		for(Employer e: employerTable)
+		{
+			s += e.getOffers();
+		}
+		s += "\n---------------------------------";
+		return s;
+	}
+	
+	/**
+	 * Gets all current job offers that have a minimum wage
+	 * @return String
+	 */
+	public String getJobsWage(double wage)
+	{
+		String s = "---------------------------------";
+		for(Employer e: employerTable)
+		{
+			s += e.getOffersWage(wage);
+		}
+		s += "\n---------------------------------";
+		return s;
+	}
+	
+	/**
+	 * Gets all current job offers that have a minimum wage
+	 * @return String
+	 */
+	public String getJobsTitle(String title)
+	{
+		String s = "---------------------------------";
+		for(Employer e: employerTable)
+		{
+			s += e.getOffersTitle(title);
+		}
+		s += "\n---------------------------------";
+		return s;
+	}
 
+	/**
+	 * Gets all current job offers that have a minimum wage
+	 * @return String
+	 */
+	public String getJobsType(String type)
+	{
+		String s = "---------------------------------";
+		for(Employer e: employerTable)
+		{
+			s += e.getOffersType(type);
+		}
+		s += "\n---------------------------------";
+		return s;
+	}
+	
 	/**
 	 * Returns the current number of swipes a student has remaining
 	 * @param username of Current Student
@@ -214,7 +335,7 @@ public class database {
 	}
 	
 	/**
-	 * Based on current time, gives nearest availibility of a particluar dining center
+	 * Based on current time, gives nearest availability of a particular dining center
 	 * @param name Of Dining Center
 	 * @return String
 	 */
@@ -251,6 +372,11 @@ public class database {
 		return "No dining center by that name";
 	}
 	
+	/**
+	 * Saves data from tables to text files, returns a success message
+	 * @return String
+	 * @throws IOException
+	 */
 	public String save() throws IOException
 	{
 		ArrayList<String> lines = new ArrayList<String>();
@@ -293,6 +419,16 @@ public class database {
 		}
 		f.flush();
 		f.close();
+		lines = new ArrayList<String>();
+		for(Employer E: employerTable)
+			lines.add(E.toFile());
+		f = new FileWriter(System.getProperty("user.dir") + "\\saves\\employer.txt");
+		for(String l: lines)
+		{
+			f.write(l + "\n");
+		}
+		f.flush();
+		f.close();
 		return "Saved!";
 	}
 	/**
@@ -305,6 +441,7 @@ public class database {
 		loadFaculty();
 		loadGroup();
 		loadMajor();
+		loadEmployer();
 	}
 	
 	/**
@@ -462,4 +599,39 @@ public class database {
 			s.close();
 		}
 	}
+	
+	/**
+	 * Helper method for load, specifically handles the employerTable
+	 * @throws FileNotFoundException 
+	 */
+	private void loadEmployer() throws FileNotFoundException
+	{
+		FileReader f = new FileReader(System.getProperty("user.dir") + "\\saves\\employer.txt");
+		Scanner s = new Scanner(f);
+		
+		ArrayList<String> input = new ArrayList<String>();
+		while(s.hasNextLine())
+			input.add(s.nextLine());
+		
+		String[] attr;
+		for(String n: input)
+		{
+			 attr = n.split(":");
+			 Employer e = new Employer(attr[0], attr[1], attr[2], attr[3], attr[4], attr[5]);
+			 for(int i = 6; i < attr.length; i += 3)
+				 e.addOffer(attr[i], attr[i+1], Double.valueOf(attr[i+2]));
+			 employerTable.add(e);
+		}
+		s.close();
+	}
 }
+
+
+
+
+
+
+
+
+
+
