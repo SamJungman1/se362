@@ -53,8 +53,18 @@ public class database {
 		this.load();
 	}
 
+	/**
+	 * Adds fair to to table
+	 * @param fair
+	 */
 	public static void addFair(Fair fair){fairTable.add(fair);}
 
+	/**
+	 * Returns fair based on building and date
+	 * @param building
+	 * @param date
+	 * @return Fair
+	 */
 	public static Fair getFair(String building, Date date){
 		Fair fair = null;
 		for (int i = 0; i < fairTable.size(); i++) {
@@ -65,22 +75,51 @@ public class database {
 		return fair;
 	}
 
+	/**
+	 * Removes fair from fair table
+	 * @param fair
+	 */
 	public static void removeFair(Fair fair){
 		fairTable.remove(fair);
 	}
 
+	/**
+	 * Adds student to table
+	 * @param s
+	 */
 	public static void addStudent(student s) {
 		studentTable.add(s);
 	}
 
+	/**
+	 * Adds bus to table
+	 * @param bus
+	 */
 	public static void addBus(Bus bus){busTable.add(bus);}
 
+	/**
+	 * Removes bus from table
+	 * @param bus
+	 */
 	public static void removeBus(Bus bus){busTable.remove(bus);}
 
+	/**
+	 * Adds bus route
+	 * @param route
+	 */
 	public static void addBusRoute(BusRoute route){busRoutetable.add(route);}
 
+	/**
+	 * Removes Bus Route
+	 * @param route
+	 */
 	public static void removeBusRoute(BusRoute route){busRoutetable.remove(route);}
 
+	/**
+	 * Gets busroute based on name
+	 * @param routeName
+	 * @return BusRoute
+	 */
 	public BusRoute getBusRoute(String routeName){
 		BusRoute busRoute = null;
 
@@ -92,6 +131,11 @@ public class database {
 		return busRoute;
 	}
 
+	/**
+	 * Gets bus based on number
+	 * @param busNumber
+	 * @return Bus
+	 */
 	public Bus getBus(int busNumber){
 		Bus bus = null;
 
@@ -103,7 +147,17 @@ public class database {
 		return bus;
 	}
 
+	/**
+	 * Adds lot to table
+	 * @param l
+	 */
 	public static void addLot(Lot l){parkingLotTable.add(l);}
+	
+	/**
+	 * Finds a lot
+	 * @param id
+	 * @return Lot
+	 */
 	public static Lot findLot(String id){
 		for(Lot l: parkingLotTable){
 			if (l.getID().equals(id)){
@@ -112,7 +166,18 @@ public class database {
 		}
 		return null;
 	}
+	
+	/**
+	 * Removes lot
+	 * @param l
+	 */
 	public static void removeLot(Lot l){parkingLotTable.remove(l);}
+	
+	/**
+	 * Adds gym equipment
+	 * @param addnew
+	 * @return boolean
+	 */
 	public static boolean addGymEquipment(GymEquipment addnew){
 		for (GymEquipment equi: gymequip){
 			if (equi == addnew){
@@ -122,6 +187,12 @@ public class database {
 		gymequip.add(addnew);
 		return true;
 	}
+	
+	/**
+	 * Finds gym equipment and returns it
+	 * @param idname
+	 * @return GymEquipment
+	 */
 	public static GymEquipment findGymEquipment(String idname){
 		for (GymEquipment equi: gymequip){
 			if (equi.getId().equals(idname) || equi.getName().equals(idname)){
@@ -130,6 +201,12 @@ public class database {
 		}
 		return null;
 	}
+	
+	/**
+	 * Removes gym equipment
+	 * @param idname
+	 * @return
+	 */
 	public static boolean removeGymEquipment(String idname){
 		GymEquipment answer = findGymEquipment(idname);
 		if (answer != null) {
@@ -138,10 +215,22 @@ public class database {
 		}
 		return false;
 	}
+	
+	/**
+	 * Adds gym rental
+	 * @param addnew
+	 * @return boolean
+	 */
 	public static boolean addGymRent(GymRental addnew){
 		gymrent.add(addnew);
 		return true;
 	}
+	
+	/**
+	 * Finds gym rental based on id
+	 * @param usernameid
+	 * @return Gym rental
+	 */
 	public static GymRental findGymRent(String usernameid){
 		for (GymRental ren: gymrent){
 			if (ren.getRenter().getUsername().equals(usernameid)){
@@ -156,35 +245,74 @@ public class database {
 		}
 		return null;
 	}
+	
+	/**
+	 * Removes gym rent
+	 * @param removeold
+	 * @return boolean
+	 */
 	public static boolean removeGymRent(GymRental removeold){
 		gymrent.remove(removeold);
 		return true;
 	}
 
+	/**
+	 * Adds group to table
+	 * @param g
+	 */
 	public static void addGroup(Group g){
 		groupTable.add(g);
 	}
 
+	/**
+	 * Adds student org to table
+	 * @param studentOrg
+	 */
 	public void addStudentOrg(StudentOrg studentOrg) { studentOrgsTable.add(studentOrg);}
 
+	/**
+	 * Adds student to a student org
+	 * @param studentOrg
+	 * @param s
+	 */
 	public void addStudentToOrg(StudentOrg studentOrg, student s){if(!studentOrg.isMember(s)){ studentOrg.addMember(s);}}
 
+	/**
+	 * Adds faculty to the table
+	 * @param f
+	 */
 	public void addFaculty(faculty f) {
 		facultyTable.add(f);
 	}
 
+	/**
+	 * Adds major to the table
+	 * @param m
+	 */
 	public void addMajor(Major m){majorTable.add(m);}
 	
+	/**
+	 * Adds dorm to table
+	 * @param d
+	 */
 	public void addDorm(Dorm d) {
 		dormTable.add(d);
 	}
 	
+	/**
+	 * Lists all dorms availible
+	 */
 	public void listDorms() {
 		for (int i = 0; i < dormTable.size(); i++) {
 			System.out.println(dormTable.get(i).getName() + " " + dormTable.get(i).getSize() + " rooms");
 		}
 	}
 	
+	/**
+	 * Finds dorm based on name and returns it
+	 * @param name
+	 * @return Dorm
+	 */
 	public Dorm getDorm(String name) {
 		Dorm dorm = null;
 		
@@ -197,6 +325,11 @@ public class database {
 		return dorm;
 	}
 
+	/**
+	 * Gets student org based on name
+	 * @param name
+	 * @return StudentOrg
+	 */
 	public StudentOrg getStudentOrg(String name) {
 		for(int i = 0; i < studentOrgsTable.size(); i++){
 			if(studentOrgsTable.get(i).getOrgName().trim().equalsIgnoreCase(name.trim())){
@@ -206,16 +339,33 @@ public class database {
 		return null;
 	}
 
+	/**
+	 * Finds student and removes from list
+	 * @param username
+	 */
 	public void removeStudent(String username) {
 		studentTable.remove(studentTable.indexOf(findStudent(username)));
-}
+	}
 
+	/**
+	 * Finds faculty and removes from list
+	 * @param username
+	 */
 	public void removeFaculty(String username) {
 		facultyTable.remove(facultyTable.indexOf(findFaculty(username)));		
 	}
 
+	/**
+	 * Finds major and removes it from the list
+	 * @param id
+	 */
 	public void removeMajor(String id){majorTable.remove(majorTable.indexOf(findMajor(id)));}
 	
+	/**
+	 * Finds faculty based on username and returns it
+	 * @param usernamen
+	 * @return Faculty
+	 */
 	public static faculty findFaculty(String username)
 	{
 		for(faculty f: facultyTable)
@@ -226,6 +376,11 @@ public class database {
 		return null;
 	}
 	
+	/**
+	 * Finds student based on id and returns it
+	 * @param username
+	 * @return Student
+	 */
 	public static student findStudent(String username)
 	{
 		student temp = null;
@@ -239,6 +394,11 @@ public class database {
 		return temp;
 	}
 	
+	/**
+	 * Finds employer based on name and returns it
+	 * @param username
+	 * @return Employer
+	 */
 	public static Employer findEmployer(String username)
 	{
 		Employer temp = null;
@@ -252,6 +412,11 @@ public class database {
 		return temp;
 	}
 
+	/**
+	 * Finds group based on id and returns it
+	 * @param id
+	 * @return Group
+	 */
 	public static Group findGroup(String id)
 	{
 		for(Group g: groupTable)
@@ -262,6 +427,11 @@ public class database {
 		return null;
 	}
 
+	/**
+	 * Finds major based on id and returns it
+	 * @param id
+	 * @return Major
+	 */
 	public static Major findMajor(String id){
 		for(Major m: majorTable){
 			if(m.getId().equals(id)){

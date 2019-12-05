@@ -870,6 +870,11 @@ public class Controller {
         return found;
     }
 
+    /**
+     * Parses command and finds faculty based on command, returns success info
+     * @param command
+     * @return String
+     */
     public List<faculty> findFaculty(String command){
         //remove eveything before command colon
         List<faculty> found = new ArrayList<>();
@@ -907,6 +912,11 @@ public class Controller {
         return "added Student: Username:" + args[0] + " Password:" + args[1] + " Full Name:" + args[2] + " with id:" + temp.getId();
     }
 
+    /**
+     * Parses command and removes student based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String removeStudent(String command){
         String removed = "";
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -923,7 +933,12 @@ public class Controller {
         return "Successfully removed students";
 
     }
-
+    
+    /**
+     * Parses command and adds bus route based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String addRoute(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         if(db.getBusRoute(com) != null){
@@ -935,7 +950,12 @@ public class Controller {
             return "create new bus route: " + com;
         }
     }
-
+    
+    /**
+     * Parses command and removes bus route based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String removeRoute(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         if(db.getBusRoute(com) != null){
@@ -947,6 +967,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and displays fair based on command, returns fair info
+     * @param command
+     * @return String
+     */
     public String displayFair(String command){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -972,6 +997,11 @@ public class Controller {
             }
     }
 
+    /**
+     * Parses command and removes fair based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String removeFair(String command){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -999,6 +1029,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and registers company based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String registerCompany(String command){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -1028,6 +1063,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and creates fair based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String createFair(String command){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -1056,6 +1096,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and adds bus based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String addBus(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1074,6 +1119,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and adds bus stop based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String addStop(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1089,6 +1139,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses command and removes bus stop based on command, returns success info
+     * @param command
+     * @return String
+     */
     public String removeStop(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1105,6 +1160,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and displays bus based on command, returns bus info
+     * @return String
+     */
     public String displayBus(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         if(db.getBus(Integer.parseInt(com)) == null){
@@ -1119,7 +1180,7 @@ public class Controller {
      * 
      * @param command
      * Parses command and checks out books based on command, returns success info
-     * @return
+     * @return String
      */
     public String displayRoute(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
