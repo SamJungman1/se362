@@ -44,54 +44,110 @@ public class student extends user {
 		mealSwipes = 500;
 	}
 
+	/**
+	 * Get id
+	 * @return String
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * Gets GPA
+	 * @return double
+	 */
 	public double getGPA() {
 		return this.GPA;
 	}
 
+	/**
+	 * Sets GPA
+	 * @param GPA
+	 */
 	public void setGPA(double GPA) {
 		this.GPA = GPA;
 	}
 
+	/**
+	 * Gets classification
+	 * @return String
+	 */
 	public String getClassification() {
 		return this.classification;
 	}
 
+	/**
+	 * Sets classification
+	 * @param classification
+	 */
 	public void setClassification(String classification) {
 		this.classification = classification;
 	}
 
+	/**
+	 * Gets major
+	 * @return String
+	 */
 	public String getMajor() {
 		return this.major;
 	}
 
+	/**
+	 * Sets major
+	 * @param major
+	 */
 	public void setMajor(String major) {
 		this.major = major;
 	}
 
+	/**
+	 * 
+	 * @param attribut
+	 * @param value
+	 * Adds attribute to hashmap
+	 */
 	public void addAttribute(String attribut, String value) {
 		att.put(attribut, value);
 
 		// attribute.add(attribut);
 	}
 
+	/**
+	 * 
+	 * @param attribut
+	 * @param value
+	 * Edits attribute with new value
+	 */
 	public void editAttribute(String attribut, String value) {
 		att.put(attribut, value);
 	}
 
+	/**
+	 * 
+	 * @param dorm
+	 * @param room
+	 * Changes housing info based on new housing entered
+	 */
 	public void changeHousing(Dorm dorm, Room room) {
 		this.dormAssignment = dorm;
 		this.roomAssignment = room;
 	}
 
+	/**
+	 * 
+	 * @param attribut
+	 * Removes attribute entered
+	 */
 	public void removeAttribute(String attribut) {
 		att.remove(attribut);
 
 	}
 
+	/**
+	 * 
+	 * @param command
+	 * Pays tuition info based on command entered
+	 */
 	public void payTuition(String command) {
 		int amount = Integer.parseInt(command);
 		Scanner scanner = new Scanner(System.in);
@@ -124,6 +180,11 @@ public class student extends user {
 
 	}
 
+	/**
+	 * 
+	 * @param command
+	 * Pays housing info based on command entered
+	 */
 	public void payHousing(String command) {
 		int amount = Integer.parseInt(command);
 		Scanner scanner = new Scanner(System.in);
@@ -155,6 +216,12 @@ public class student extends user {
 		System.out.println("Montly housing Remaining: " + montlyHousing);
 	}
 	
+	/**
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws UnsupportedEncodingException
+	 * Fetches application and enters it into system
+	 */
 	public void apply() throws FileNotFoundException, UnsupportedEncodingException {
 		Scanner scanner = new Scanner(System.in);
 		

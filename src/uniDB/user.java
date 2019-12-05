@@ -36,31 +36,62 @@ public abstract class user {
 		this.password = psswrd;
 	}
 
+	/**
+	 * Gets username
+	 * @return String
+	 */
 	public String getUsername() {
 		return this.username;
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * Sets and gets username
+	 * @return String
+	 */
 	public String setUsername(String username) {
 		return this.username = username;
 	}
 	
+	/**
+	 * Fetches fullname
+	 * @return String
+	 */
 	public String getFullname()
 	{
 		return this.fullname;
 	}
 
+	/**
+	 * 
+	 * @param fullname
+	 * Sets and gets fullname
+	 * @return String
+	 */
 	public String setFullname(String fullname) {
 		return this.fullname = fullname;
 	}
 
+	/**
+	 * Gets ID
+	 * @return String
+	 */
 	public String getId() {
 		return ID.toString();
 	}
 
+	/**
+	 * Generates unique random ID string
+	 */
 	public void generateID() {
 		this.ID = ID.randomUUID();
 	}
 
+	/**
+	 * Pulls all messages out of user's inbox and returns them as a string
+	 * @return String
+	 */
 	public String[] flushInbox()
 	{
 		String[] arr = new String[inbox.size()];
@@ -76,6 +107,10 @@ public abstract class user {
 		return arr;
 	}
 
+	/**
+	 * Adds message to inbox
+	 * @param message
+	 */
 	public void addMessage(String message)
 	{
 		inbox.add(message);

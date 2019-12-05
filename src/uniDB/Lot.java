@@ -52,6 +52,9 @@ public class Lot {
         }
         return false;
     }
+    /**
+     * Generates lots
+     */
     public void generatelots(){
         int i = 0;
         String ids = "";

@@ -20,6 +20,10 @@ public class Major {
 		this.Classes = new ArrayList<Class>();
 	}
 	
+	/**
+	 * Runs through object and adds all data to a string which can be written to a file
+	 * @return String
+	 */
 	public String toFile()
 	{
 		String s = "ID:" + this.ID + ":" + "Faculty:";

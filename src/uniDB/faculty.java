@@ -18,22 +18,42 @@ public class faculty extends user {
 		this.inbox = new LinkedList();
 	}
 
+	/**
+	 * Gets salary
+	 * @return double
+	 */
 	public double getSalary() {
 		return this.salary;
 	}
 
+	/**
+	 * Sets salary
+	 * @param salary
+	 */
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
 
+	/**
+	 * Gets title
+	 * @return String
+	 */
 	public String getTitle() {
 		return this.title;
 	}
 
+	/**
+	 * Sets title
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	
+	/**
+	 * Allows faculty to review the application
+	 * @throws FileNotFoundException
+	 */
 	public void reviewApp() throws FileNotFoundException {
 		Scanner in = new Scanner(System.in);
 		
