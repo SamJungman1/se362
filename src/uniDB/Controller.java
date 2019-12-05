@@ -702,7 +702,13 @@ public class Controller {
         group = new Group(name, found);
         return group;
     }
-
+    
+    /**
+     * 
+     * @param command
+     * Helper method to parse and run the command that adds students to StudentOrgs and returns success information
+     * @return String
+     */
     public String addStudentToOrg(String command){
         String name = "";
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -732,7 +738,13 @@ public class Controller {
             return "no org found with the name " + name;
         }
     }
-
+    
+    /**
+     * 
+     * @param command
+     * Helper method to parse and run the command that creates StudentOrgs and returns success information
+     * @return String
+     */
     public String createStudentOrg(String command) {
         String[] args;
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -754,7 +766,12 @@ public class Controller {
         }
         return "invalid parameters. create student org:name,advisor";
     }
-
+    /**
+     * 
+     * @param command
+     * Helper method to parse and run the command that messages StudentOrgs and returns success information
+     * @return String
+     */
     public String msgOrg(String command){
         String name = "";
         String com = command.replaceFirst("(.*?)\\:", "");
@@ -779,7 +796,12 @@ public class Controller {
         return "no student org found by the name " + name;
     }
 
-
+    /**
+     * 
+     * @param command
+     * Helper method to parse and run the command that finds StudentOrgs and returns information on them
+     * @return StudentOrg
+     */
     public StudentOrg findStudentOrg(String command){
         StudentOrg studentOrg;
         String name = "";
@@ -1093,6 +1115,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and checks out books based on command, returns success info
+     * @return
+     */
     public String displayRoute(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         if(db.getBusRoute((com)) == null){
@@ -1103,6 +1131,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and deploys bus based on command, returns success info
+     * @return String
+     */
     public String deployBus(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1121,6 +1155,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and adds books based on command, returns success info
+     * @return String
+     */
     public String addBook(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1134,6 +1174,12 @@ public class Controller {
         return "added book";
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and checks in books based on command, returns success info
+     * @return String
+     */
     public String checkIn(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1152,6 +1198,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and checks out books based on command, returns success info
+     * @return String
+     */
     public String checkOut(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1175,6 +1227,12 @@ public class Controller {
         }
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and checks overdue books based on command, returns success info
+     * @return
+     */
     public String overDueBooks(String command){
         String temp = "";
         for(Map.Entry<Book,student> entry: library.checkForLate().entrySet()){
@@ -1186,7 +1244,13 @@ public class Controller {
     public String listBooks(String command){
         return library.getBooks();
     }
-
+    
+    /**
+     * 
+     * @param command
+     * Parses command and removes book based on command, returns success info
+     * @return String
+     */
     public String removeBook(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1202,6 +1266,12 @@ public class Controller {
         return "removed book";
     }
 
+    /**
+     * 
+     * @param command
+     * Parses command and creates faculty based on command, returns success info
+     * @return String
+     */
     public String createFaculty(String command){
         String com = command.replaceFirst("(.*?)\\:", "");
         String[] args = com.split(",");
@@ -1209,7 +1279,13 @@ public class Controller {
         db.addFaculty(temp);
         return "added Faculty: Username:" + args[0] + "Password:" + args[1] + "Full Name:" + args[2] + temp.getId();
     }
-
+    
+    /**
+     * 
+     * @param command
+     * Parses command and removes faculty based on command, returns success info
+     * @return String
+     */
     public String removeFaculty(String command){
         String removed = "";
         String com = command.replaceFirst("(.*?)\\:", "");
