@@ -115,6 +115,17 @@ public class Controller {
         commands.add("add win to team");
         commands.add("add loss to team");
         commands.add("add tie to team");
+        commands.add("make gym equipment");
+        commands.add("delete gym equipment");
+        commands.add("set up gym");
+        commands.add("list gym");
+        commands.add("change gym id");
+        commands.add("change gym name");
+        commands.add("change gym condition");
+        commands.add("change gym description");
+        commands.add("check out gym");
+        commands.add("check in gym");
+        commands.add("user rent list");
     }
 
 
