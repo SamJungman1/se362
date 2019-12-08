@@ -215,6 +215,14 @@ public class database {
 		}
 		return false;
 	}
+
+	public String deleteGymItem(String id){
+		GymRental check = findGymRent(id); if (check != null) {return "delete failed, item is checked out to"+ check.getRenter(); }
+		if (removeGymEquipment(id)){
+			return "delete of item "+ id +" successful";
+		}
+		return "delete failed, equipment id does not exist";
+	}
 	
 	/**
 	 * Adds gym rental

@@ -506,30 +506,58 @@ public class Controller {
                     mc = command.replaceFirst("make gym equipment:","");
                     argthree = mc.trim().split(",");  //[0] id [1] name  [2] condition
                     if (GymEquipment.makeGymEquipment(argthree[0].trim(), argthree[1].trim(), argthree[2].trim())){
-                        //do later
+                        return "Gym equipment "+argthree[0]+" and name "+argthree[1]+ "has been created";
                     }
-                    return "";
+                    return "failed to create Gym equipment "+argthree[0];
                 case "delete gym equipment:":
-                    mc = command.replaceFirst("delete gym equipment:","");
+                    mc = command.replaceFirst("delete gym equipment:","").trim();
+                    name = db.deleteGymItem(mc);
+                    return name;
                 case "set up gym:":
                     GymEquipment.setupgym();
+                    return "Gym is set up.";
                 case "list gym:":
-                    mc = command.replaceFirst("list gym:", "");
+                    mc = command.replaceFirst("list gym:", "").trim();
+                    if (mc.equals("all")){
+                        String answer = "";
+                        for (GymEquipment gym: db.gymequip){
+                            answer += gym.toString();
+                        }
+                        return answer += "end of gymEquipment list";
+                    }
+                    GymEquipment ge = db.findGymEquipment(mc); if (ge == null) {return "GymEquipment id is invalid"; }
+                    return ge.toString();
                 case "change gym id:":
                     mc = command.replaceFirst("change gym id:", "");
+                    argtwo = mc.trim().split(" "); // [0] old id  [1] new id
+                    ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "Equipment id does not exist"; }
+                    ge.setGymId(argtwo[1]);
+                    return "GymEquipment id "+argtwo[0] + " has been changed to " + argtwo[1];
                 case "change gym name:":
                     mc = command.replaceFirst("change gym name:", "");
+                    argtwo = mc.trim().split(" ");  // [0] gym id  [1] gym new name
+                    ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "GymEquipment id is invalid"; }
+                    ge.setGymName(argtwo[1]); return "GymEquipment "+argtwo[0]+" name has been changed to "+argtwo[1];
                 case "change gym condition":
                     mc = command.replaceFirst("change gym condition", "");
+                    argtwo = mc.trim().split(" ");  // [0] gym id  [1] gym new condition
+                    ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "GymEquipment id is invalid"; }
+                    ge.setGymCondition(argtwo[1]); return "GymEquipment "+argtwo[0]+" condition has been changed to "+argtwo[1];
                 case "change gym description:":
                     mc = command.replaceFirst("change gym description:","");
+                    argtwo = mc.trim().split(",");  // [0] gym id  [1] gym new description
+                    ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "GymEquipment id is invalid"; }
+                    ge.setGymDescription(argtwo[1]); return "GymEquipment "+argtwo[0]+" description has been changed to "+argtwo[1];
                 case "check out gym:":
                     mc = command.replaceFirst("check out gym:","");
+                    argtwo = mc.trim().split(" "); // [0] renter username  [1] rent id
+                    return GymRental.rentitem(argtwo[0], argtwo[1]);
                 case "check in gym:":
-                    mc = command.replaceFirst("check in gym:","");
+                    mc = command.replaceFirst("check in gym:","").trim();
+                    return GymRental.checkinitem(mc);
                 case "user rent list:":
-                    mc = command.replaceFirst("user rent list:","");
-                    return "";
+                    mc = command.replaceFirst("user rent list:","").trim();
+                    return GymRental.userrentlist(mc);
                 case "create student org:":
                     return createStudentOrg(command);
                 case "add student to org:":

@@ -25,7 +25,7 @@ public class GymRental {
      * @param username
      * @return
      */
-    public user findUser(String username){
+    public static user findUser(String username){
         user answer;
         student stu = database.findStudent(username);
         answer = stu;
@@ -53,9 +53,10 @@ public class GymRental {
      * @param rent id if item to be rented
      * @return String identifying success or type of failure
      */
-    public String rentitem(String renter, String rent){
+    public static String rentitem(String renter, String rent){
         user name = findUser(renter); if (name == null){return "invalid user name";}
         GymEquipment equip = database.findGymEquipment(rent); if (equip == null) { return "invalid equipment id";}
+        GymRental icurrent = database.findGymRent(rent); if (icurrent != null) {return "item is already checked out"; }
         GymRental current = database.findGymRent(renter);
         if (current == null){
             GymRental newrent = new GymRental(name, equip);
@@ -70,14 +71,14 @@ public class GymRental {
      * @param id of item to be cheched in.
      * @return String identifying successs or type of failure
      */
-    public String checkinitem(String id){
-        GymEquipment eq = database.findGymEquipment(id);
-        GymRental check = database.findGymRent(id); if (check == null) { return " invalid id or item not checked out";}
+    public static String checkinitem(String id){
+        GymEquipment eq = database.findGymEquipment(id); if (eq == null) {return "equipment id does not exist"; }
+        GymRental check = database.findGymRent(id); if (check == null) { return " item is not checked out";}
         check.removeitem(eq);
         if (check.rent.size() == 0){
             database.removeGymRent(check);
         }
-        return "succefful";
+        return "succeffuly checked in item "+id;
     }
 
     /**
@@ -85,7 +86,8 @@ public class GymRental {
      * @param username of person who has items checked out.
      * @return String of items checked out or statement of user has no items checked out.
      */
-    public String userrentlist(String username){
+    public static String userrentlist(String username){
+        user name = findUser(username); if (name == null) {return "username does not exist"; }
         GymRental gr = database.findGymRent(username); if (gr == null) {return "user rental is clear";}
         List<GymEquipment> ge = gr.getRent();  String answer = "";
         for (GymEquipment item: ge){

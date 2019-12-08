@@ -47,7 +47,7 @@ public class GymEquipment {
         }
         return false;
     }
-    public void setGymId(String id){ this.id = id;  }
+    public void setGymId(String id) {this.id = id; }
     public void setGymCondition(String condition) {this.condition = condition;}
     public void setGymName(String name) {this.name = name;}
     public void setGymDescription(String desc){this.description = desc;}
