@@ -25,6 +25,7 @@ public class student extends user {
 	private Dorm dormAssignment;
 	private Room roomAssignment;
 	private int mealSwipes;
+	private String application;
 
 	public student() {
 	}
@@ -232,6 +233,7 @@ public class student extends user {
 		app.openFile();
 		
 		app.writeToFile(name);
+		app.writeToFile("username: " + this.username);
 		
 		
 		System.out.println("Majors -------------");

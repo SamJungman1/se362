@@ -1,7 +1,10 @@
 package uniDB;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 public class faculty extends user {
@@ -69,12 +72,54 @@ public class faculty extends user {
 		System.out.print("Enter Student's Name: ");
 		String name = in.nextLine();
 		
+		System.out.println();
+		
 		File app = new File(System.getProperty("user.dir") + "\\apps\\" + name + ".txt");
 		
 		Scanner file = new Scanner(app);
+		String username = null;
 		
 		while(file.hasNextLine()) {
-			System.out.println(file.nextLine());
+			String line = file.nextLine();
+			
+			if(line.length() >= 10) {
+				if(line.substring(0, 10).equals("username: ") && username == null) {
+					username = line.substring(10, line.length());
+				}
+			}
+			
+			
+			System.out.println(line);
+		}
+		
+		System.out.println();
+		System.out.println("Enter Comments: ");
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\apps\\" + name + ".txt", true));
+			writer.write("Comment: " + in.nextLine());
+			writer.newLine();
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error");
+		} 
+		
+		System.out.print("Accept/Reject/none: ");
+		String decision = in.nextLine();
+		student student = Controller.db.findStudent(username);
+		
+		while(true) {
+			if(decision.toLowerCase().equals("accept")) {
+				student.setClassification("accepted");
+				break;
+			} else if(decision.toLowerCase().equals("reject")) {
+				student.setClassification("rejected");
+				break;
+			} else if(!decision.toLowerCase().equals("none")){
+				System.out.println("invalid command");
+			}
 		}
 		
 		

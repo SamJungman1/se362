@@ -22,7 +22,7 @@ public class Controller {
      * stored instance of available commands
      */
     private List<String> commands;
-    private database db;
+    public static database db;
     public String user;
     private Library library;
 

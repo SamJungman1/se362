@@ -1,10 +1,14 @@
 Evan Peterson
+username: test
 Major: ComS
 High School GPA: 6.0
 ACT/SAT Score: 36
 --- Extracurriculars ---
-tennis
+tennis 
 model UN
 -----------------------
 Why do you want to attend this university?
-i got big brain
+big brain
+Comment: he has a massive cranium
+Comment: gigantic cranial capacity
+Comment: j
