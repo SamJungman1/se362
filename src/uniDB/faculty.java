@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Scanner;
 public class faculty extends user {
@@ -75,8 +79,16 @@ public class faculty extends user {
 		System.out.println();
 		
 		File app = new File(System.getProperty("user.dir") + "\\apps\\" + name + ".txt");
+		Scanner file;
 		
-		Scanner file = new Scanner(app);
+		try {
+			file = new Scanner(app);
+		} catch (Exception e) {
+			System.out.println("File not found");
+			return;
+			
+		}
+		
 		String username = null;
 		
 		while(file.hasNextLine()) {
@@ -106,21 +118,26 @@ public class faculty extends user {
 			System.out.println("error");
 		} 
 		
+		file.close();
 		System.out.print("Accept/Reject/none: ");
 		String decision = in.nextLine();
 		student student = Controller.db.findStudent(username);
+		File appFile = new File(System.getProperty("user.dir") + "\\apps\\" + name);
 		
 		while(true) {
 			if(decision.toLowerCase().equals("accept")) {
 				student.setClassification("accepted");
+				app.delete();
 				break;
 			} else if(decision.toLowerCase().equals("reject")) {
 				student.setClassification("rejected");
+				app.delete();
 				break;
 			} else if(!decision.toLowerCase().equals("none")){
 				System.out.println("invalid command");
 			}
 		}
+		
 		
 		
 	}
