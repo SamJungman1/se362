@@ -312,10 +312,13 @@ public class Controller {
                 	return db.getMsgsStudent(user);
                 	
                 case "add sport:":
-                	IntramuralSport sport = new IntramuralSport(command.substring(10));
+                	IntramuralSport sport = new IntramuralSport(command.substring(10).trim());
+                	db.addSport(sport);
                 	return "Success";
                 	
                 case "find sport:":
+                	if(command.length() < 13)
+                		return "Invalid command";
                 	return db.findSport(command.substring(11)).printTeams();
                 	
                 case "add team to sport:":
@@ -327,7 +330,7 @@ public class Controller {
                 	return "Success";
                 	
                 case "add player to team:":
-                	String sportCom2 = command.substring(18);
+                	String sportCom2 = command.substring(19);
                 	String[] sportSplit2 = sportCom2.split(",");
                 	if(sportSplit2.length < 3)
                 		return "Invalid command";
@@ -401,13 +404,13 @@ public class Controller {
                 case "get offers:":
                 	return db.getJobs();
                 	
-                case "get offers wage:":
+                case "get offers wage:": 
                 	return db.getJobsWage(Double.valueOf(command.substring(16).trim()));
                 	
-                case "get offers title:":
+                case "get offers title:": //not working
                 	return db.getJobsTitle(command.substring(17).trim());
                 
-                case "get offers type:":
+                case "get offers type:": //not working
                 	return db.getJobsType(command.substring(16).trim());
                 
                 case "make major:":

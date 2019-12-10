@@ -36,7 +36,8 @@ public class IntramuralSport {
 	 */
 	public void addTeam(String name)
 	{
-		teams.add(new Team(name));
+		Team n = new Team(name);
+		teams.add(n);
 	}
 	
 	/**
@@ -48,7 +49,7 @@ public class IntramuralSport {
 	public Team getTeam(String name)
 	{
 		for(Team t: teams)
-			if(t.getName() == name)
+			if(t.getName().equals(name))
 				return t;
 		return null;
 	}
@@ -59,7 +60,7 @@ public class IntramuralSport {
 	 */
 	public String printTeams()
 	{
-		String s = this.name + "\n-------------------------";
+		String s = this.name + "\n-------------------------\n";
 		for(Team t: teams)
 			s += t.toString();
 		s += "-------------------------";
@@ -172,6 +173,7 @@ public class IntramuralSport {
 			s += "Players: ";
 			for(String n: players)
 				s+= n + ",";
+			s += "\n";
 			s += this.getRecord();
 			s += "\n";
 			return s;
