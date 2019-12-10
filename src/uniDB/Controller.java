@@ -517,7 +517,7 @@ public class Controller {
                     mc = command.replaceFirst("make gym equipment:","");
                     argthree = mc.trim().split(",");  //[0] id [1] name  [2] condition
                     if (GymEquipment.makeGymEquipment(argthree[0].trim(), argthree[1].trim(), argthree[2].trim())){
-                        return "Gym equipment "+argthree[0]+" and name "+argthree[1]+ "has been created";
+                        return "Gym equipment "+argthree[0]+" and name "+argthree[1]+ " has been created";
                     }
                     return "failed to create Gym equipment "+argthree[0];
                 case "delete gym equipment:":
@@ -540,18 +540,18 @@ public class Controller {
                     return ge.toString();
                 case "change gym id:":
                     mc = command.replaceFirst("change gym id:", "");
-                    argtwo = mc.trim().split(" "); // [0] old id  [1] new id
+                    argtwo = mc.trim().split(","); // [0] old id  [1] new id
                     ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "Equipment id does not exist"; }
                     ge.setGymId(argtwo[1]);
                     return "GymEquipment id "+argtwo[0] + " has been changed to " + argtwo[1];
                 case "change gym name:":
                     mc = command.replaceFirst("change gym name:", "");
-                    argtwo = mc.trim().split(" ");  // [0] gym id  [1] gym new name
+                    argtwo = mc.trim().split(",");  // [0] gym id  [1] gym new name
                     ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "GymEquipment id is invalid"; }
                     ge.setGymName(argtwo[1]); return "GymEquipment "+argtwo[0]+" name has been changed to "+argtwo[1];
-                case "change gym condition":
+                case "change gym condition:":
                     mc = command.replaceFirst("change gym condition", "");
-                    argtwo = mc.trim().split(" ");  // [0] gym id  [1] gym new condition
+                    argtwo = mc.trim().split(",");  // [0] gym id  [1] gym new condition
                     ge = db.findGymEquipment(argtwo[0]); if (ge == null) {return "GymEquipment id is invalid"; }
                     ge.setGymCondition(argtwo[1]); return "GymEquipment "+argtwo[0]+" condition has been changed to "+argtwo[1];
                 case "change gym description:":
@@ -562,7 +562,7 @@ public class Controller {
                 case "check out gym:":
                     mc = command.replaceFirst("check out gym:","");
                     argtwo = mc.trim().split(" "); // [0] renter username  [1] rent id
-                    return GymRental.rentitem(argtwo[0], argtwo[1]);
+                    return GymRental.rentitem(argtwo[0].trim(), argtwo[1].trim());
                 case "check in gym:":
                     mc = command.replaceFirst("check in gym:","").trim();
                     return GymRental.checkinitem(mc);

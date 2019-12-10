@@ -16,8 +16,9 @@ public class GymRental {
         this.rent = new ArrayList<GymEquipment>();
     }
     public GymRental(user renter, GymEquipment item){
-        super();
-        rent.add(item);
+        this.renter = renter;
+        this.rent = new ArrayList<GymEquipment>();
+        this.rent.add(item);
     }
 
     /**
@@ -29,8 +30,10 @@ public class GymRental {
         user answer;
         student stu = database.findStudent(username);
         answer = stu;
-        faculty fac = database.findFaculty(username);
-        answer = fac;
+        if (answer == null) {
+            faculty fac = database.findFaculty(username);
+            answer = fac;
+        }
         return answer;
     }
     public void additem(GymEquipment item){
@@ -61,6 +64,7 @@ public class GymRental {
         if (current == null){
             GymRental newrent = new GymRental(name, equip);
             database.addGymRent(newrent);
+            return rent+" checked out to "+ renter;
         }
         current.additem(equip);
         return "item success cheched out to "+ name.getUsername();

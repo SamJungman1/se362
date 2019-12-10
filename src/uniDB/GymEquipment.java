@@ -16,7 +16,9 @@ public class GymEquipment {
         this.description = "";
     }
     public GymEquipment(String id, String name, String cond, String desc){
-        super();
+        this.id = id;
+        this.name = name;
+        this.condition = cond;
         this.description = desc;
     }
 
@@ -25,10 +27,7 @@ public class GymEquipment {
      * @return String of this item id, name, condition, and description.
      */
     public String toString(){
-        String answer = this.id + "\n";
-        answer += this.name + "\n";
-        answer += this.condition +"\n";
-        answer += this.description + "\n";
+        String answer = "GymEquipment id: "+this.id + ", Equipment name: "+this.name + ", Equipment condition: "+this.condition +", Equipment description: "+this.description + ".\n";
         return answer;
     }
 

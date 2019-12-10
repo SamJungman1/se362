@@ -241,12 +241,12 @@ public class database {
 	 */
 	public static GymRental findGymRent(String usernameid){
 		for (GymRental ren: gymrent){
-			if (ren.getRenter().getUsername().equals(usernameid)){
+			if (ren.getRenter().getUsername().trim().equals(usernameid.trim())){
 				return ren;
 			}
 			List<GymEquipment> items = ren.getRent();
 			for (GymEquipment item: items){
-				if ( item.id.equals(usernameid)){
+				if ( item.getId().equals(usernameid)){
 					return ren;
 				}
 			}
@@ -371,7 +371,7 @@ public class database {
 	
 	/**
 	 * Finds faculty based on username and returns it
-	 * @param usernamen
+	 * @param username
 	 * @return Faculty
 	 */
 	public static faculty findFaculty(String username)
