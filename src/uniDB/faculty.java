@@ -1,7 +1,14 @@
 package uniDB;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Scanner;
 public class faculty extends user {
@@ -69,13 +76,68 @@ public class faculty extends user {
 		System.out.print("Enter Student's Name: ");
 		String name = in.nextLine();
 		
-		File app = new File(System.getProperty("user.dir") + "\\apps\\" + name + ".txt");
+		System.out.println();
 		
-		Scanner file = new Scanner(app);
+		File app = new File(System.getProperty("user.dir") + "\\apps\\" + name + ".txt");
+		Scanner file;
+		
+		try {
+			file = new Scanner(app);
+		} catch (Exception e) {
+			System.out.println("File not found");
+			return;
+			
+		}
+		
+		String username = null;
 		
 		while(file.hasNextLine()) {
-			System.out.println(file.nextLine());
+			String line = file.nextLine();
+			
+			if(line.length() >= 10) {
+				if(line.substring(0, 10).equals("username: ") && username == null) {
+					username = line.substring(10, line.length());
+				}
+			}
+			
+			
+			System.out.println(line);
 		}
+		
+		System.out.println();
+		System.out.println("Enter Comments: ");
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\apps\\" + name + ".txt", true));
+			writer.write("Comment: " + in.nextLine());
+			writer.newLine();
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error");
+		} 
+		
+		file.close();
+		System.out.print("Accept/Reject/none: ");
+		String decision = in.nextLine();
+		student student = Controller.db.findStudent(username);
+		File appFile = new File(System.getProperty("user.dir") + "\\apps\\" + name);
+		
+		while(true) {
+			if(decision.toLowerCase().equals("accept")) {
+				student.setClassification("accepted");
+				app.delete();
+				break;
+			} else if(decision.toLowerCase().equals("reject")) {
+				student.setClassification("rejected");
+				app.delete();
+				break;
+			} else if(!decision.toLowerCase().equals("none")){
+				System.out.println("invalid command");
+			}
+		}
+		
 		
 		
 	}
