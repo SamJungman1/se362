@@ -194,6 +194,7 @@ public class Controller {
         Matcher match = pattern.matcher(command);
         if(match.find()){
             MatchResult result = match.toMatchResult();
+            try {
             switch(match.group(0)) {
                 case "get student:":
                     String studentsFound = "";
@@ -646,6 +647,12 @@ public class Controller {
 
                 	return "done";
 
+            }
+            
+            }
+            catch(NullPointerException ne)
+            {
+            	System.out.println("Invalid Command");
             }
         }
         return "invalid command";
