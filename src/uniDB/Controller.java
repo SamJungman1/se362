@@ -654,6 +654,9 @@ public class Controller {
             {
             	System.out.println("Invalid Command");
             }
+            catch(Exception e){
+                return "invalid command";
+            }
         }
         return "invalid command";
     }
